@@ -1,3 +1,7 @@
+# Phase D
+
+## Gantt Chart
+
 ```mermaid
 gantt
     title Gantt Chart for MTRN4110
@@ -8,5 +12,3 @@ gantt
     Develop More Capabilities           :a3, after a2  , 6d
     Record Video Presentation           :a4, after a3  , 2d
 ```
-</div>
-</div>
