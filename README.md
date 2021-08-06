@@ -7,9 +7,9 @@ gantt
     title Gantt Chart for MTRN4110
     dateFormat  DD-MM-YYYY
     section Solution Comparison
-    Analyse Phase A Solutions       :03-08-2021, 07-08-2021
-    Analyse Phase B Solutions       :03-08-2021, 05-08-2021
-    Analyse Phase C Solution        :03-08-2021, 05-08-2021
+    Analyse Phase A Solutions       :04-08-2021, 07-08-2021
+    Analyse Phase B Solutions       :04-08-2021, 05-08-2021
+    Analyse Phase C Solution        :04-08-2021, 05-08-2021
 
     section Solution Integration
     Phase A Integration             :07-08-2021, 2d
@@ -28,5 +28,5 @@ gantt
     Record Comparison Milestone           :09-08-2021, 3d
     Record Integration Milestones         :12-08-2021, 4d
     Record Extra Features Milestones      :16-08-2021, 4d
-    Edit Video Segments                   :20-08-2021, 2d
+    Edit Video Segments                   :20-08-2021, 1d
 ```
