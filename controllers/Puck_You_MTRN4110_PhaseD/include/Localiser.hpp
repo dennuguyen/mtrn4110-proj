@@ -1,20 +1,21 @@
-#ifndef LOCALISATION_HPP
-#define LOCALISATION_HPP
+#ifndef LOCALISER_HPP
+#define LOCALISER_HPP
 
 #include <utility>
 
 namespace mtrn4110 {
 
+// An interface for a generic localiser.
 template <typename PoseType = defaultType::PoseType,
           typename HeadingType = defaultType::HeadingType>
-class Localisation {
+class Localiser {
    public:
     // Constructor to initialise required members.
-    Localisation(PoseType initialPose, HeadingType initialHeading)
+    Localiser(PoseType initialPose, HeadingType initialHeading)
         : currentPose_(initialPose), currentHeading_(initialHeading) {}
 
     // Enforce derived classes to implement this method.
-    virtual ~Localisation() = 0;
+    virtual ~Localiser() = 0;
 
     auto getCurrentPose() const noexcept -> PoseType { return currentPose_; }
     auto getCurrentHeading() const noexcept -> HeadingType { return currentHeading_; }
@@ -25,4 +26,4 @@ class Localisation {
 };
 }  // namespace mtrn4110
 
-#endif  // LOCALISATION_HPP
+#endif  // LOCALISER_HPP
