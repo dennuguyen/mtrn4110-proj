@@ -12,9 +12,9 @@ gantt
     Analyse Phase C Solution        :04-08-2021, 05-08-2021
 
     section Solution Integration
-    Phase A Integration             :07-08-2021, 2d
-    Phase B Integration             :05-08-2021, 4d
-    Phase C Integration             :05-08-2021, 4d
+    Phase A Integration             :07-08-2021, 3d
+    Phase B Integration             :05-08-2021, 5d
+    Phase C Integration             :05-08-2021, 5d
 
     section Phase Integration
     Phase Integrations              :08-08-2021, 2d
