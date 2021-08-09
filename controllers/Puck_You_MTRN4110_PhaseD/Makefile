@@ -43,7 +43,7 @@ CXX_SOURCES = $(wildcard src/*.cpp) Puck_You_MTRN4110_PhaseD.cpp
 ###
 ### ---- Compilation options ----
 ### if special compilation flags are necessary:
-CFLAGS = -std=c++20 -Wall
+CFLAGS = -std=c++20 -Wall -W -Werror
 ###
 ### ---- Linked libraries ----
 ### if your program needs additional libraries:
