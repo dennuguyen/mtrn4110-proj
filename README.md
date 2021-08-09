@@ -20,9 +20,9 @@ gantt
     Phase Integrations              :08-08-2021, 2d
 
     section Extra Features
-    Teleoperation              :10-08-2021, 8d
-    Obstacle avoidance         :10-08-2021, 8d
-    Bang-bang trajectory       :10-08-2021, 8d
+    Teleoperation              :12-08-2021, 6d
+    Obstacle avoidance         :12-08-2021, 6d
+    Bang-bang trajectory       :12-08-2021, 6d
 
     section Video
     Record Comparison Milestone           :09-08-2021, 3d
