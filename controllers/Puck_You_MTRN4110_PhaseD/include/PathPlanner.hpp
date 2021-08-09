@@ -6,10 +6,9 @@
 
 namespace mtrn4110 {
 
-template <typename PoseType = defaultType::PoseType,
-          typename HeadingType = defaultType::HeadingType,
-          typename MotionType = defaultType::MotionType,
-          typename GraphType = defaultType::GraphType>
+template <
+    typename PoseType = defaultType::PoseType, typename HeadingType = defaultType::HeadingType,
+    typename MotionType = defaultType::MotionType, typename GraphType = defaultType::GraphType>
 class PathPlanner {
    public:
     // Constructor to initialise required members.
