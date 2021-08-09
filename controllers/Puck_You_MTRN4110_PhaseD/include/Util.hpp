@@ -7,6 +7,7 @@
 
 namespace mtrn4110 {
 namespace defaultTypes {
+using HeadingType = int;
 using PoseType = std::pair<int, int>;
 using VelocityType = double;
 using MotionType = std::pair<PoseType, VelocityType>;
