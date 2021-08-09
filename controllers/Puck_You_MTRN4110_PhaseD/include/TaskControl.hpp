@@ -4,7 +4,7 @@
 #include <vector>
 #include <webots/Robot.hpp>
 
-#include "Localisation.hpp"
+#include "Localiser.hpp"
 #include "Mapper.hpp"
 #include "PathPlanner.hpp"
 #include "Timer.hpp"
@@ -31,8 +31,8 @@ class TaskControl {
     auto expired(int timer) const -> bool;
 
    public:
-    Mapping<>& mapping;
-    Localisation<>& localisation;
+    Mapper<>& mapper;
+    Localiser<>& localiser;
     PathPlanner<>& pathPlanner;
     TrajectoryPlanner<>& trajectoryPlanner;
     WaypointDeliberator<>& waypointDeliberator;
