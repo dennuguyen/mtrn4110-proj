@@ -5,7 +5,7 @@
 #include <webots/Robot.hpp>
 
 #include "Localisation.hpp"
-#include "Mapping.hpp"
+#include "Mapper.hpp"
 #include "PathPlanner.hpp"
 #include "Timer.hpp"
 #include "TrajectoryPlanner.hpp"

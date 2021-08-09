@@ -6,18 +6,29 @@
 
 namespace mtrn4110 {
 
-template <typename PoseType = std::pair<int, int>, typename HeadingType = int,
-          typename MotionType = std::pair<double, double>,
-          typename GraphType = std::map<PoseType, std::pair<int, std::vector<PoseType>>>>
+template <typename PoseType = defaultType::PoseType,
+          typename HeadingType = defaultType::HeadingType,
+          typename MotionType = defaultType::MotionType,
+          typename GraphType = defaultType::GraphType>
 class PathPlanner {
    public:
-    virtual ~PathPlanner() = 0;
+    // Constructor to initialise required members.
+    PathPlanner(GraphType graph, PoseType destination, PoseType initialPose,
+                HeadingType initialHeading, MotionType motion)
+        : graph_(graph),
+          destination_(destination),
+          currentPose_(initialPose),
+          currentHeading_(initialHeading),
+          motion_(motion) {}
 
-    virtual auto getGraph() const noexcept -> GraphType { return graph_; }
-    virtual auto getDestination() const noexcept -> PoseType { return destination_; }
-    virtual auto getCurrentPose() const noexcept -> PoseType { return currentPose_; }
-    virtual auto getCurrentHeading() const noexcept -> HeadingType { return currentHeading_; }
-    virtual auto getMotion() const noexcept -> MotionType { return motion_; }
+    // Enforce derived classes to implement this method.
+    virtual auto tick() -> void = 0;
+
+    auto getGraph() const noexcept -> GraphType { return graph_; }
+    auto getDestination() const noexcept -> PoseType { return destination_; }
+    auto getCurrentPose() const noexcept -> PoseType { return currentPose_; }
+    auto getCurrentHeading() const noexcept -> HeadingType { return currentHeading_; }
+    auto getMotion() const noexcept -> MotionType { return motion_; }
 
    private:
     GraphType graph_;

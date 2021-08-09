@@ -5,12 +5,16 @@
 
 namespace mtrn4110 {
 
-template <typename PoseType = std::pair<int, int>>
+template <typename PoseType = defaultType::PoseType>
 class WaypointDeliberator {
    public:
-    virtual ~WaypointDeliberator() = 0;
+    // Constructor to initialise required members.
+    WaypointDeliberator(PoseType destination) : destination_(destination) {}
 
-    virtual auto getDestination() const noexcept -> PoseType { return destination_; }
+    // Enforce derived classes to implement this method.
+    virtual auto tick() -> void = 0;
+
+    auto getDestination() const noexcept -> PoseType { return destination_; }
 
    private:
     PoseType destination_;
