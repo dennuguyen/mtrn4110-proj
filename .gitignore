@@ -1,0 +1,18 @@
+# Ignore everything
+*
+
+# Except
+!.gitignore
+!README.md
+!Makefile
+!*.hpp
+!*.cpp
+!*.pdf
+!*.txt
+!*.png
+!*.wbt
+!*.wbproj
+!*.drawio
+
+# and in their subdirectories
+!*/
