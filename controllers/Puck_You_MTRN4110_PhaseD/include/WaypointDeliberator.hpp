@@ -9,9 +9,6 @@ namespace mtrn4110 {
 template <typename PoseType = defaultType::PoseType>
 class WaypointDeliberator {
    public:
-    // Constructor to initialise required members.
-    WaypointDeliberator(PoseType destination) : destination_(destination) {}
-
     // Enforce derived classes to implement this method.
     virtual auto tick() -> void = 0;
 

@@ -12,10 +12,6 @@ template <typename PoseType = defaultType::PoseType,
           typename HeadingType = defaultType::HeadingType>
 class Localiser {
    public:
-    // Constructor to initialise required members.
-    Localiser(PoseType initialPose, HeadingType initialHeading)
-        : currentPose_(initialPose), currentHeading_(initialHeading) {}
-
     // Enforce derived classes to implement this method.
     virtual ~Localiser() = 0;
 

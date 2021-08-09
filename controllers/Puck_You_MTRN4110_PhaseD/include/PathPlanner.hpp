@@ -16,12 +16,11 @@ class PathPlanner {
    public:
     // Constructor to initialise required members.
     PathPlanner(GraphType graph, PoseType destination, PoseType initialPose,
-                HeadingType initialHeading, MotionType motion)
+                HeadingType initialHeading)
         : graph_(graph),
           destination_(destination),
           currentPose_(initialPose),
-          currentHeading_(initialHeading),
-          motion_(motion) {}
+          currentHeading_(initialHeading) {}
 
     // Enforce derived classes to implement this method.
     virtual auto tick() -> void = 0;

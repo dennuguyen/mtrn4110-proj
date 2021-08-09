@@ -9,7 +9,7 @@ namespace mtrn4110 {
 template <typename GraphType = defaultType::GraphType>
 class HCMapper : public Mapper<GraphType> {
    public:
-    HCMapper() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    HCMapper() : Mapper() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
     auto tick() -> void override final {}
 

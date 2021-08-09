@@ -6,12 +6,9 @@
 namespace mtrn4110 {
 
 // An interface for a generic mapper.
-template <typename GraphType = defaultType::GraphType>
+template <typename InputType, typename GraphType = defaultType::GraphType>
 class Mapper {
    public:
-    // Constructor to initialise required members.
-    Mapper(GraphType graph) : graph_(graph) {}
-
     // Enforce derived classes to implement this method.
     virtual auto tick() -> void = 0;
 

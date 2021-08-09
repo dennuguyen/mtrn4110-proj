@@ -11,7 +11,10 @@ template <
     typename MotionType = defaultType::MotionType, typename GraphType = defaultType::GraphType>
 class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
    public:
-    FloodFill() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    FloodFill(GraphType graph, PoseType destination, PoseType initialPose,
+              HeadingType initialHeading)
+        : PathPlanner(graph, destination, initialPose, initialHeading) {
+    }  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
     auto tick() -> void override final {}
 
