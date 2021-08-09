@@ -1,28 +1,34 @@
 #ifndef TASK_CONTROL_HPP_
 #define TASK_CONTROL_HPP_
 
-#include <WaypointDeliberator.hpp>
 #include <vector>
 #include <webots/Robot.hpp>
 
 #include "Localisation.hpp"
 #include "Mapping.hpp"
 #include "PathPlanner.hpp"
+#include "Timer.hpp"
 #include "TrajectoryPlanner.hpp"
+#include "WaypointDeliberator.hpp"
 
 namespace mtrn4110 {
 class TaskControl {
    public:
-    explicit TaskControl(webots::Robot&);
-    TaskControl(TaskControl const&) = delete;
-    TaskControl(TaskControl&&) noexcept;
+    TaskControl(webots::Robot& robot, int numLocks, int numTimers);
+    TaskControl(TaskControl const& taskControl) = delete;
+    TaskControl(TaskControl&& taskControl) noexcept;
     ~TaskControl() = default;
-    auto operator=(TaskControl const&) -> TaskControl& = delete;
-    auto operator=(TaskControl&&) -> TaskControl& = delete;
-    auto tick() noexcept -> void;
-    auto acquireLock() noexcept -> void;
-    auto releaseLock() noexcept -> void;
-    auto isLockBusy() const noexcept -> bool;
+    auto operator=(TaskControl const& taskControl) -> TaskControl& = delete;
+    auto operator=(TaskControl&& taskControl) -> TaskControl& = delete;
+
+    // Lock methods.
+    auto acquireLock(int lock) -> void;
+    auto releaseLock(int lock) -> void;
+    auto isLockBusy(int lock) const -> bool;
+
+    // Timer methods.
+    auto time(int timer, double duration) -> void;
+    auto expired(int timer) const -> bool;
 
    public:
     Mapping<>& mapping;
@@ -33,7 +39,10 @@ class TaskControl {
 
    private:
     unsigned int step_ = 0;
-    bool bigLock_ = false;
+    int numLocks_;
+    int numTimers_;
+    std::vector<bool> locks_ = {false};
+    std::vector<Timer> timers_;
 };
 
 }  // namespace mtrn4110
