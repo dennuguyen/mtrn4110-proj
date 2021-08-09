@@ -5,6 +5,7 @@
 
 namespace mtrn4110 {
 
+// An interface for a generic waypoint deliberator.
 template <typename PoseType = defaultType::PoseType>
 class WaypointDeliberator {
    public:

@@ -6,6 +6,7 @@
 
 namespace mtrn4110 {
 
+// An interface for a generic path planner.
 template <
     typename PoseType = defaultType::PoseType, typename HeadingType = defaultType::HeadingType,
     typename MotionType = defaultType::MotionType, typename GraphType = defaultType::GraphType>
