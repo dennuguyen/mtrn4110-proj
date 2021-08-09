@@ -6,7 +6,7 @@
 namespace mtrn4110 {
 
 // An interface for a generic trajectory planner.
-template <typename MotionType = defaultTypes::MotionType>
+template <typename MotionType = defaultType::MotionType>
 class TrajectoryPlanner {
    public:
     // Constructor to initialise required members.

@@ -14,6 +14,7 @@
 namespace mtrn4110 {
 class TaskControl {
    public:
+    TaskControl(webots::Robot& robot);
     TaskControl(webots::Robot& robot, int numLocks, int numTimers);
     TaskControl(TaskControl const& taskControl) = delete;
     TaskControl(TaskControl&& taskControl) noexcept;
@@ -31,11 +32,11 @@ class TaskControl {
     auto expired(int timer) const -> bool;
 
    public:
-    Mapper<>& mapper;
-    Localiser<>& localiser;
-    PathPlanner<>& pathPlanner;
-    TrajectoryPlanner<>& trajectoryPlanner;
-    WaypointDeliberator<>& waypointDeliberator;
+    // Mapper<>& mapper;
+    // Localiser<>& localiser;
+    // PathPlanner<>& pathPlanner;
+    // TrajectoryPlanner<>& trajectoryPlanner;
+    // WaypointDeliberator<>& waypointDeliberator;
 
    private:
     unsigned int step_ = 0;

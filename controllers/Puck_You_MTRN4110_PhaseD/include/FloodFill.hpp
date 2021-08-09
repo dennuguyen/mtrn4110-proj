@@ -7,13 +7,13 @@
 namespace mtrn4110 {
 // Implementation of path planner interface using flood filling.
 template <
-    typename PoseType = defaultTypes::PoseType, typename HeadingType = defaultTypes::HeadingType,
-    typename MotionType = defaultTypes::MotionType, typename GraphType = defaultTypes::GraphType>
+    typename PoseType = defaultType::PoseType, typename HeadingType = defaultType::HeadingType,
+    typename MotionType = defaultType::MotionType, typename GraphType = defaultType::GraphType>
 class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
    public:
-    FloodFill();  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    FloodFill() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
-    auto tick() -> void override final;
+    auto tick() -> void override final {}
 
     // ADD ANY PUBLIC METHODS BELOW HERE
 

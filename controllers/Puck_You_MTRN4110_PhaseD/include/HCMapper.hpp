@@ -6,12 +6,12 @@
 
 namespace mtrn4110 {
 // Implementation of mapper interface using a hard-coded algorithm.
-template <typename GraphType = defaultTypes::GraphType>
+template <typename GraphType = defaultType::GraphType>
 class HCMapper : public Mapper<GraphType> {
    public:
-    HCMapper();  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    HCMapper() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
-    auto tick() -> void override final;
+    auto tick() -> void override final {}
 
     // ADD ANY PUBLIC METHODS BELOW HERE
 

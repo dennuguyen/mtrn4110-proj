@@ -6,7 +6,7 @@
 namespace mtrn4110 {
 
 // An interface for a generic mapper.
-template <typename GraphType = defaultTypes::GraphType>
+template <typename GraphType = defaultType::GraphType>
 class Mapper {
    public:
     // Constructor to initialise required members.

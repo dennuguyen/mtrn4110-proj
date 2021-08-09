@@ -4,6 +4,8 @@
 #include <map>
 #include <vector>
 
+#include "Util.hpp"
+
 namespace mtrn4110 {
 
 // An interface for a generic path planner.
