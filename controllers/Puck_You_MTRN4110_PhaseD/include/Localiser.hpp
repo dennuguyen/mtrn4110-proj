@@ -13,7 +13,7 @@ template <typename PoseType = defaultType::PoseType,
 class Localiser {
    public:
     // Enforce derived classes to implement this method.
-    virtual ~Localiser() = 0;
+    virtual auto tick() -> void = 0;
 
     auto getCurrentPose() const noexcept -> PoseType { return currentPose_; }
     auto getCurrentHeading() const noexcept -> HeadingType { return currentHeading_; }
