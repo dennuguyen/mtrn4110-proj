@@ -13,7 +13,7 @@ class Timer {
     ~Timer() = default;
 
     auto time(double expiry) noexcept -> void;
-    auto const expired() const noexcept -> bool;
+    auto expired() const noexcept -> bool;
     friend auto operator<<(std::ostream& os, Timer const& timer) noexcept -> std::ostream&;
 
    private:

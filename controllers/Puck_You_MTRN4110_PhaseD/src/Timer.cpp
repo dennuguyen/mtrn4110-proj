@@ -9,7 +9,7 @@ auto Timer::time(double expiry) noexcept -> void {
     exp_ = expiry;
 }
 
-auto const Timer::expired() const noexcept -> bool { return (robot_.getTime() - ref_) > exp_; }
+auto Timer::expired() const noexcept -> bool { return (robot_.getTime() - ref_) > exp_; }
 
 auto operator<<(std::ostream& os, Timer const& timer) noexcept -> std::ostream& {
     os << "Time: " << timer.ref_ << std::endl;
