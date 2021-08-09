@@ -1,5 +1,5 @@
-#ifndef TIMER_HPP_
-#define TIMER_HPP_
+#ifndef TIMER_HPP
+#define TIMER_HPP
 
 #include <memory>
 #include <ostream>
@@ -9,19 +9,19 @@ namespace mtrn4110 {
 
 class Timer {
    public:
-    explicit Timer(webots::Robot &);
+    explicit Timer(webots::Robot const& robot);
     ~Timer() = default;
 
     auto time(double expiry) noexcept -> void;
     auto const expired() const noexcept -> bool;
-    friend auto operator<<(std::ostream &, Timer const &) noexcept -> std::ostream &;
+    friend auto operator<<(std::ostream& os, Timer const& timer) noexcept -> std::ostream&;
 
    private:
-    std::shared_ptr<webots::Robot> robot_;
+    webots::Robot const& robot_;
     double ref_;  // Time of reference
     double exp_;  // Expiry duration
 };
 
 }  // namespace mtrn4110
 
-#endif  // TIMER_HPP_
+#endif  // TIMER_HPP
