@@ -12,17 +12,17 @@ gantt
     Analyse Phase C Solution        :04-08-2021, 05-08-2021
 
     section Solution Integration
-    Phase A Integration             :07-08-2021, 3d
-    Phase B Integration             :05-08-2021, 5d
-    Phase C Integration             :05-08-2021, 5d
+    Phase A Integration             :07-08-2021, 4d
+    Phase B Integration             :05-08-2021, 6d
+    Phase C Integration             :05-08-2021, 6d
 
     section Phase Integration
     Phase Integrations              :08-08-2021, 2d
 
     section Extra Features
-    Teleoperation              :10-08-2021, 8d
-    Obstacle avoidance         :10-08-2021, 8d
-    Bang-bang trajectory       :10-08-2021, 8d
+    Teleoperation              :12-08-2021, 6d
+    Obstacle avoidance         :12-08-2021, 6d
+    Bang-bang trajectory       :12-08-2021, 6d
 
     section Video
     Record Comparison Milestone           :09-08-2021, 3d
