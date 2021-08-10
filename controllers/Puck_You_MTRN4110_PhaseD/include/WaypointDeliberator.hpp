@@ -6,17 +6,28 @@
 namespace mtrn4110 {
 
 // An interface for a generic waypoint deliberator.
-template <typename PoseType = defaultType::PoseType>
+template<typename PoseType = defaultType::PoseType>
 class WaypointDeliberator {
    public:
-    // Enforce derived classes to implement this method.
+    // Automate any simple and periodic behaviours.
     virtual auto tick() -> void = 0;
 
-    auto getDestination() const noexcept -> PoseType { return destination_; }
+    auto getDestination() const noexcept -> PoseType {
+        return destination_;
+    }
+
+    // Operator overload for <<.
+    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
+        pathPlanner.print(os);
+        return os;
+    }
 
    private:
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
+
     PoseType destination_;
 };
-}  // namespace mtrn4110
+} // namespace mtrn4110
 
-#endif  // WAYPOINT_DELIBERATOR_HPP
+#endif // WAYPOINT_DELIBERATOR_HPP
