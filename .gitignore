@@ -3,6 +3,7 @@
 
 # Except
 !.gitignore
+!.clang-format
 !README.md
 !Makefile
 !*.hpp
