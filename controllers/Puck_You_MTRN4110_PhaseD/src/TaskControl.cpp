@@ -7,16 +7,17 @@
 
 namespace mtrn4110 {
 
-TaskControl::TaskControl(webots::Robot& robot) : TaskControl(robot, 4, 2) {}
+TaskControl::TaskControl(webots::Robot& robot)
+: TaskControl(robot, 4, 2) {}
 
-TaskControl::TaskControl(webots::Robot &robot, int numLocks, int numTimers)
-    :  //     : pathPlanner(PathPlanner())),
-       //       mapper(Mapping(pathPlanPath)),
-       //       motionControl(MotionControl(robot)),
-       //       localiser(Localisation(robot),
-       //       wallPerception(WallPerception(robot)),
-      numLocks_(numLocks),
-      numTimers_(numTimers) {
+TaskControl::TaskControl(webots::Robot& robot, int numLocks, int numTimers)
+:  //     : pathPlanner(PathPlanner())),
+   //       mapper(Mapping(pathPlanPath)),
+   //       motionControl(MotionControl(robot)),
+   //       localiser(Localisation(robot),
+   //       wallPerception(WallPerception(robot)),
+    numLocks_(numLocks)
+, numTimers_(numTimers) {
     (void)robot;
 }
 

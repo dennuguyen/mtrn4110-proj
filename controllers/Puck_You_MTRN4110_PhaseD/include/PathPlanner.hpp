@@ -28,15 +28,19 @@ class PathPlanner {
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }
+
     auto getDestination() const noexcept -> PoseType {
         return destination_;
     }
+
     auto getCurrentPose() const noexcept -> PoseType {
         return currentPose_;
     }
+
     auto getCurrentHeading() const noexcept -> HeadingType {
         return currentHeading_;
     }
+
     auto getMotion() const noexcept -> MotionType {
         return motion_;
     }
@@ -57,6 +61,6 @@ class PathPlanner {
     HeadingType currentHeading_;
     MotionType motion_;
 };
-} // namespace mtrn4110
+}  // namespace mtrn4110
 
-#endif // PATH_PLANNER_HPP
+#endif  // PATH_PLANNER_HPP

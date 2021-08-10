@@ -23,6 +23,7 @@ class TrajectoryPlanner {
     auto getNextMotion() const noexcept -> MotionType {
         return nextMotion_;
     }
+
     auto getPreviousMotion() const noexcept -> MotionType {
         return nextMotion_;
     }
@@ -40,6 +41,6 @@ class TrajectoryPlanner {
     MotionType nextMotion_;
     MotionType previousMotion_;
 };
-} // namespace mtrn4110
+}  // namespace mtrn4110
 
-#endif // TRAJECTORY_PLANNER_HPP
+#endif  // TRAJECTORY_PLANNER_HPP

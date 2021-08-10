@@ -27,6 +27,6 @@ class Mapper {
 
     GraphType graph_;
 };
-} // namespace mtrn4110
+}  // namespace mtrn4110
 
-#endif // MAPPER_HPP
+#endif  // MAPPER_HPP

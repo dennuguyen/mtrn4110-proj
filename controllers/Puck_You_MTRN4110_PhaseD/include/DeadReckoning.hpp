@@ -7,8 +7,9 @@
 
 namespace mtrn4110 {
 
-template <typename PoseType = double, typename VelocityType = double,
-          typename MotionType = std::pair<PoseType, VelocityType>>
+template<typename PoseType = double,
+         typename VelocityType = double,
+         typename MotionType = std::pair<PoseType, VelocityType>>
 class DeadReckoning : public TrajectoryPlanner {
    public:
     DeadReckoning();
@@ -18,8 +19,12 @@ class DeadReckoning : public TrajectoryPlanner {
     auto operator=(DeadReckoning&&) -> DeadReckoning& = default;
     ~DeadReckoning() override {}
 
-    auto getNextMotion() const noexcept override final -> MotionType { return nextMotion_; }
-    auto getPreviousMotion() const noexcept override final -> MotionType { return nextMotion_; }
+    auto getNextMotion() const noexcept override final -> MotionType {
+        return nextMotion_;
+    }
+    auto getPreviousMotion() const noexcept override final -> MotionType {
+        return nextMotion_;
+    }
 
    private:
     MotionType nextMotion_;

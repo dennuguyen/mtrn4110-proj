@@ -34,6 +34,6 @@ class Localiser {
     PoseType currentPose_;
     HeadingType currentHeading_;
 };
-} // namespace mtrn4110
+}  // namespace mtrn4110
 
-#endif // LOCALISER_HPP
+#endif  // LOCALISER_HPP

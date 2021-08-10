@@ -28,6 +28,6 @@ class WaypointDeliberator {
 
     PoseType destination_;
 };
-} // namespace mtrn4110
+}  // namespace mtrn4110
 
-#endif // WAYPOINT_DELIBERATOR_HPP
+#endif  // WAYPOINT_DELIBERATOR_HPP

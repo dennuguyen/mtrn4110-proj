@@ -13,8 +13,8 @@ template<typename PoseType = defaultType::PoseType,
 class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
    public:
     FloodFill(GraphType graph, PoseType destination, PoseType initialPose, HeadingType initialHeading)
-    : PathPlanner(graph, destination, initialPose, initialHeading) {} // EDIT CONSTRUCTOR PARAMETERS
-                                                                      // AS REQUIRED
+    : PathPlanner(graph, destination, initialPose, initialHeading) {}  // EDIT CONSTRUCTOR
+                                                                       // PARAMETERS AS REQUIRED
 
     auto tick() -> void override final {}
 
@@ -23,9 +23,9 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
    private:
     // ADD ANY PRIVATE METHODS BELOW HERE
     auto print(std::ostream& os) const noexcept -> void override final {}
-    
+
     // ADD ANY PRIVATE MEMBERS BELOW HERE
 };
-} // namespace mtrn4110
+}  // namespace mtrn4110
 
-#endif // FLOOD_FILL
+#endif  // FLOOD_FILL

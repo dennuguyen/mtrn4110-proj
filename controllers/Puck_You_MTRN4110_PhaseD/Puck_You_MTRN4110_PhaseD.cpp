@@ -5,14 +5,14 @@
 #include "Timer.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
-static auto simulationSteps(webots::Robot &robot) -> void {
+static auto simulationSteps(webots::Robot& robot) -> void {
     auto const timeStep = robot.getBasicTimeStep();
     while (robot.step(timeStep) != -1) {
     }
 }
 
 // Perform real-time steps.
-static auto realtimeSteps(mtrn4110::TaskControl &taskControl) -> void {
+static auto realtimeSteps(mtrn4110::TaskControl& taskControl) -> void {
     // constexpr auto csvPath = "../../MotionExecution.csv";
     // constexpr auto mapPath = "../../Map.txt";
     // constexpr auto pathPlanPath = "../../PathPlan.txt";
@@ -22,7 +22,7 @@ static auto realtimeSteps(mtrn4110::TaskControl &taskControl) -> void {
     }
 }
 
-auto main(int argc, char **argv) -> int {
+auto main(int argc, char** argv) -> int {
     (void)argc;
     (void)argv;
 
