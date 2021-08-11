@@ -3,6 +3,8 @@
 
 #include <utility>
 
+#include "Util.hpp"
+
 namespace mtrn4110 {
 
 // An interface for a generic waypoint deliberator.
