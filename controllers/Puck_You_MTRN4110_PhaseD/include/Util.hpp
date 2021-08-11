@@ -10,7 +10,7 @@ namespace defaultType {
 using HeadingType = int;
 using PoseType = std::pair<int, int>;
 using VelocityType = double;
-using MotionType = std::pair<PoseType, VelocityType>;
+using MotionType = char;  // F, L, R
 using GraphType = std::map<PoseType, std::pair<int, std::vector<PoseType>>>;
 }  // namespace defaultType
 
