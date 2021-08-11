@@ -5,28 +5,29 @@
 
 namespace mtrn4110 {
 // An interface for a generic motion planner.
-template<typename PoseType = defaultTypes::PoseType, typename VelocityType = defaultTypes::VelocityType>
+template<typename AngleType = defaultTypes::AngleType,
+         typename DistanceType = defaultTypes::DistanceType,
+         typename LinearVelocityType = defaultTypes::LinearVelocityType,
+         typename AngularVelocityType = defaultTypes::AngularVelocityType>
 class MotionPlanner {
    public:
-    // Initialise the motion planner with zero pose and zero velocity.
-    MotionPlanner()
-    : pose_({0, 0})
-    , velocity(0) {}
+    // Initialise the motion planner with a motor position and motor velocity.
+    MotionPlanner(double motorPosition, double motorVelocity)
+    : motorPosition_(motorPosition)
+    , motorVelocity_(motorVelocity) {}
 
-    // Initialise the motion planner with a pose and velocity.
-    MotionPlanner(PoseType pose, VelocityType velocity)
-    : pose_(pose)
-    , velocity_(velocity) {}
+    // Compute the required motor position and velocity setpoints to achieve the given kinematics.
+    virtual auto computeMotorSetpoints(AngleType angle,
+                                       DistanceType distance,
+                                       LinearVelocityType linearVelocity,
+                                       AngularVelocityType angularVelocity) -> void = 0;
 
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
-    auto getNextMotion() const noexcept -> MotionType {
-        return nextMotion_;
+    auto getMotorPosition() const noexcept -> double {
+        return motorPosition_;
     }
 
-    auto getPreviousMotion() const noexcept -> MotionType {
-        return nextMotion_;
+    auto getMotorVelocity() const noexcept -> double {
+        return motorVelocity_;
     }
 
     // Operator overload for <<.
@@ -40,8 +41,8 @@ class MotionPlanner {
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 
-    PoseType pose_;
-    VelocityType velocity_;
+    double motorPosition_;
+    double motorVelocity_;
 };
 }  // namespace mtrn4110
 
