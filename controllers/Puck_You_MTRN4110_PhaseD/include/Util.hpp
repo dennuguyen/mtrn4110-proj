@@ -13,6 +13,12 @@ using VelocityType = double;
 using MotionType = std::pair<PoseType, VelocityType>;
 using GraphType = std::map<PoseType, std::pair<int, std::vector<PoseType>>>;
 }  // namespace defaultType
+
+namespace file {
+constexpr auto csvPath = "../../MotionExecution.csv";
+constexpr auto mapPath = "../../Map.txt";
+constexpr auto pathPlanPath = "../../PathPlan.txt";
+}  // namespace file
 }  // namespace mtrn4110
 
 #endif  // UTIL_HPP

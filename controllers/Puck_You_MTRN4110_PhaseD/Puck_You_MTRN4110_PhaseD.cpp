@@ -13,9 +13,6 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 
 // Perform real-time steps.
 static auto realtimeSteps(mtrn4110::TaskControl& taskControl) -> void {
-    // constexpr auto csvPath = "../../MotionExecution.csv";
-    // constexpr auto mapPath = "../../Map.txt";
-    // constexpr auto pathPlanPath = "../../PathPlan.txt";
     (void)taskControl;
     // Enter control loop.
     while (1) {
