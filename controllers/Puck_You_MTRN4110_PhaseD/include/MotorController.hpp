@@ -8,6 +8,7 @@
 #include <memory>
 #include <tuple>
 
+namespace mtrn4110 {
 class MotorController {
    public:
     MotorController(webots::Robot& robot)
@@ -26,7 +27,7 @@ class MotorController {
         setVelocity(0, 0);
     }
 
-    auto isAtPosition() const noexcept -> void {
+    auto isAtPosition() const noexcept -> bool {
         auto const diffLeft = leftMotor_->getTargetPosition() - leftPositionSensor_->getValue();
         auto const diffRight = rightMotor_->getTargetPosition() - rightPositionSensor_->getValue();
         return diffLeft < atPositionSensitivity && diffRight < atPositionSensitivity;
@@ -67,5 +68,6 @@ class MotorController {
     std::unique_ptr<webots::PositionSensor> leftPositionSensor_;
     std::unique_ptr<webots::PositionSensor> rightPositionSensor_;
 };
+}
 
 #endif  // MOTOR_CONTROLLER_HPP
