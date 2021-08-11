@@ -5,27 +5,53 @@
 
 namespace mtrn4110 {
 // An interface for a generic trajectory planner.
-template<typename MotionType = defaultType::MotionType>
+template<typename AngleType = defaultType::AngleType,
+         typename DistanceType = defaultType::DistanceType,
+         typename LinearVelocityType = defaultType::LinearVelocityType,
+         typename AngularVelocityType = defaultType::AngularVelocityType,
+         typename MotionType = defaultType::MotionType>
 class TrajectoryPlanner {
    public:
-    // Initialise the trajectory planner with just the initial motion.
-    TrajectoryPlanner(MotionType initialMotion)
-    : TrajectoryPlanner(initialMotion, initialMotion) {}
+    // Initialise the trajectory planner with initial motion, distance, linear velocity, and angular
+    // velocity.
+    TrajectoryPlanner(MotionType motion,
+                      AngleType angle,
+                      DistanceType distance,
+                      LinearVelocityType linearVelocity,
+                      AngularVelocityType angularVelocity)
+    : motion_(motion)
+    , angle_(angle)
+    , distance_(distance)
+    , linearVelocity_(linearVelocity)
+    , angularVelocity_(angularVelocity) {}
 
-    // Initialise the trajectory planner with the next and previous motions.
-    TrajectoryPlanner(MotionType nextMotion, MotionType previousMotion)
-    : nextMotion_(nextMotion)
-    , previousMotion_(previousMotion) {}
+    // Compute the distance and velocities from the next and previous motions. It is up to the user
+    // to update the motion if required.
+    virtual auto computeKinematics() -> void = 0;
 
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
-    auto getNextMotion() const noexcept -> MotionType {
-        return nextMotion_;
+    // Update the motion. It is up to the user to keep track of the progress of each motion.
+    auto updateMotion(MotionType motion) noexcept -> void {
+        motion_ = motion;
     }
 
-    auto getPreviousMotion() const noexcept -> MotionType {
-        return nextMotion_;
+    auto getCurrentMotion() const noexcept -> MotionType {
+        return motion_;
+    }
+
+    auto getAngle() const noexcept -> AngleType {
+        return angle_;
+    }
+
+    auto getDistance() const noexcept -> DistanceType {
+        return distance_;
+    }
+
+    auto getLinearVelocity() const noexcept -> LinearVelocityType {
+        return linearVelocity_;
+    }
+
+    auto getAngularVelocity() const noexcept -> AngularVelocityType {
+        return angularVelocity_;
     }
 
     // Operator overload for <<.
@@ -39,8 +65,11 @@ class TrajectoryPlanner {
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 
-    MotionType nextMotion_;
-    MotionType previousMotion_;
+    MotionType motion_;  // High-level representation of the motion the robot will follow.
+    AngleType angle_;  // Robot angular travel.
+    DistanceType distance_;  // Robot travel distance.
+    LinearVelocityType linearVelocity_;  // Robot linear velocity.
+    AngularVelocityType angularVelocity_;  // Robot angular velocity.
 };
 }  // namespace mtrn4110
 
