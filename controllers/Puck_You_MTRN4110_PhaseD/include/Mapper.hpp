@@ -16,8 +16,8 @@ class Mapper {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
-        pathPlanner.print(os);
+    friend auto operator<<(std::ostream& os, Mapper const& mapper) noexcept -> std::ostream& {
+        mapper.print(os);
         return os;
     }
 

@@ -29,8 +29,9 @@ class TrajectoryPlanner {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
-        pathPlanner.print(os);
+    friend auto operator<<(std::ostream& os, TrajectoryPlanner const& trajectoryPlanner) noexcept
+        -> std::ostream& {
+        trajectoryPlanner.print(os);
         return os;
     }
 

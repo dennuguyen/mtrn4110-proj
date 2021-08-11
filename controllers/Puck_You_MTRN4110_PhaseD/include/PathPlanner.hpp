@@ -46,7 +46,8 @@ class PathPlanner {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
+    friend auto operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept
+        -> std::ostream& {
         pathPlanner.print(os);
         return os;
     }

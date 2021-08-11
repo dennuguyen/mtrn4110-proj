@@ -17,8 +17,9 @@ class WaypointDeliberator {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
-        pathPlanner.print(os);
+    friend auto operator<<(std::ostream& os, WaypointDeliberator const& waypointDeliberator) noexcept
+        -> std::ostream& {
+        waypointDeliberator.print(os);
         return os;
     }
 

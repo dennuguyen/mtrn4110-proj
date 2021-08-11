@@ -22,8 +22,8 @@ class Localiser {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
-        pathPlanner.print(os);
+    friend auto operator<<(std::ostream& os, Localiser const& localiser) noexcept -> std::ostream& {
+        localiser.print(os);
         return os;
     }
 
