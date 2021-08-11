@@ -22,12 +22,13 @@ class MotorController {
 
         // Initialise motors.
         setGain({10, 0, 0}, {10, 0, 0});
-        setPoint({0, 0}, {0, 0});
+        setPosition(0, 0);
+        setVelocity(0, 0);
     }
 
     auto isAtPosition() const noexcept -> void {
         auto const diffLeft = leftMotor_->getTargetPosition() - leftPositionSensor_->getValue();
-        auto const diffRight = rightMotor->getTargetPosition() - rightPositionSensor_->getValue();
+        auto const diffRight = rightMotor_->getTargetPosition() - rightPositionSensor_->getValue();
         return diffLeft < atPositionSensitivity && diffRight < atPositionSensitivity;
     }
 
@@ -37,8 +38,12 @@ class MotorController {
 
     auto setGain(std::tuple<double, double, double> const leftMotorPID,
                  std::tuple<double, double, double> const rightMotorPID) noexcept -> void {
-        leftMotor_->setControlPID(std::get<0>(left), std::get<1>(left), std::get<2>(left));
-        rightMotor_->setControlPID(std::get<0>(right), std::get<1>(right), std::get<2>(right));
+        leftMotor_->setControlPID(std::get<0>(leftMotorPID),
+                                  std::get<1>(leftMotorPID),
+                                  std::get<2>(leftMotorPID));
+        rightMotor_->setControlPID(std::get<0>(rightMotorPID),
+                                   std::get<1>(rightMotorPID),
+                                   std::get<2>(rightMotorPID));
     }
 
     auto setPosition(double const leftMotorPosition, double const rightMotorPosition) noexcept
@@ -56,7 +61,7 @@ class MotorController {
     }
 
    private:
-    constexpr auto atPositionSensitivity = 0.0035;
+    static constexpr auto atPositionSensitivity = 0.0035;
     std::unique_ptr<webots::Motor> leftMotor_;
     std::unique_ptr<webots::Motor> rightMotor_;
     std::unique_ptr<webots::PositionSensor> leftPositionSensor_;
