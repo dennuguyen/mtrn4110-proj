@@ -5,11 +5,11 @@
 
 namespace mtrn4110 {
 // An interface for a generic trajectory planner.
-template<typename AngleType = defaultTypes::AngleType,
+template<typename MotionType = defaultTypes::MotionType,
+         typename AngleType = defaultTypes::AngleType,
          typename DistanceType = defaultTypes::DistanceType,
          typename LinearVelocityType = defaultTypes::LinearVelocityType,
-         typename AngularVelocityType = defaultTypes::AngularVelocityType,
-         typename MotionType = defaultTypes::MotionType>
+         typename AngularVelocityType = defaultTypes::AngularVelocityType>
 class TrajectoryPlanner {
    public:
     // Initialise the trajectory planner with initial motion, distance, linear velocity, and angular
@@ -24,10 +24,6 @@ class TrajectoryPlanner {
     , distance_(distance)
     , linearVelocity_(linearVelocity)
     , angularVelocity_(angularVelocity) {}
-
-    // Compute the distance and velocities from the next and previous motions. It is up to the user
-    // to update the motion if required.
-    virtual auto computeKinematics() -> void = 0;
 
     // Update the motion. It is up to the user to keep track of the progress of each motion.
     auto updateMotion(MotionType motion) noexcept -> void {
@@ -61,15 +57,20 @@ class TrajectoryPlanner {
         return os;
     }
 
-   private:
-    // Write any required data to an output stream.
-    virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
+   protected:
     MotionType motion_;  // High-level representation of the motion the robot will follow.
     AngleType angle_;  // Robot angular travel.
     DistanceType distance_;  // Robot travel distance.
     LinearVelocityType linearVelocity_;  // Robot linear velocity.
     AngularVelocityType angularVelocity_;  // Robot angular velocity.
+
+   private:
+    // Compute the distance and velocities from the next and previous motions. It is up to the user
+    // to update the motion if required.
+    virtual auto computeKinematics() -> void = 0;
+
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
 }  // namespace mtrn4110
 
