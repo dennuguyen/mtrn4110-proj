@@ -4,11 +4,17 @@
 namespace mtrn4110 {
 // ADD ANY OTHER CLASSES HERE
 
-class Map {
-   public:
+class Node {
+    public:
     // ADD PUBLIC STUFF HERE
-
-   private:
+    bool up;
+    bool down;
+    bool left;
+    bool right;
+    int distance;
+    int row;
+    int col;
+    private:
     // ADD PRIVATE STUFF HERE
 };
 }  // namespace mtrn4110
