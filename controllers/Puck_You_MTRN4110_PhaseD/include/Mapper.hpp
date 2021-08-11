@@ -5,7 +5,7 @@
 
 namespace mtrn4110 {
 // An interface for a generic mapper.
-template<typename InputType, typename GraphType = defaultType::GraphType>
+template<typename InputType, typename GraphType = defaultTypes::GraphType>
 class Mapper {
    public:
     // Automate any simple and periodic behaviours.

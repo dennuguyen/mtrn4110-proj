@@ -9,10 +9,10 @@
 namespace mtrn4110 {
 
 // An interface for a generic path planner.
-template<typename PoseType = defaultType::PoseType,
-         typename HeadingType = defaultType::HeadingType,
-         typename MotionType = defaultType::MotionType,
-         typename GraphType = defaultType::GraphType>
+template<typename PoseType = defaultTypes::PoseType,
+         typename HeadingType = defaultTypes::HeadingType,
+         typename MotionType = defaultTypes::MotionType,
+         typename GraphType = defaultTypes::GraphType>
 class PathPlanner {
    public:
     // Constructor to initialise required members.

@@ -8,11 +8,11 @@
 
 namespace mtrn4110 {
 
-template<typename AngleType = defaultType::AngleType,
-         typename DistanceType = defaultType::DistanceType,
-         typename LinearVelocityType = defaultType::LinearVelocityType,
-         typename AngularVelocityType = defaultType::AngularVelocityType,
-         typename MotionType = defaultType::MotionType>
+template<typename AngleType = defaultTypes::AngleType,
+         typename DistanceType = defaultTypes::DistanceType,
+         typename LinearVelocityType = defaultTypes::LinearVelocityType,
+         typename AngularVelocityType = defaultTypes::AngularVelocityType,
+         typename MotionType = defaultTypes::MotionType>
 class DeadReckoning final : public TrajectoryPlanner<DistanceType, VelocityType, MotionType> {
    public:
     DeadReckoning(MotionType initialMotion)

@@ -6,10 +6,10 @@
 
 namespace mtrn4110 {
 // Implementation of path planner interface using flood filling.
-template<typename PoseType = defaultType::PoseType,
-         typename HeadingType = defaultType::HeadingType,
-         typename MotionType = defaultType::MotionType,
-         typename GraphType = defaultType::GraphType>
+template<typename PoseType = defaultTypes::PoseType,
+         typename HeadingType = defaultTypes::HeadingType,
+         typename MotionType = defaultTypes::MotionType,
+         typename GraphType = defaultTypes::GraphType>
 class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
    public:
     FloodFill(GraphType graph, PoseType destination, PoseType initialPose, HeadingType initialHeading)

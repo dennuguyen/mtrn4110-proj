@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace mtrn4110 {
-namespace defaultType {
+namespace defaultTypes {
 using HeadingType = int;
 using PoseType = std::pair<int, int>;
 using DistanceType = double;  // metres
@@ -15,13 +15,13 @@ using LinearVelocityType = std::tuple<double, double, double>;  // (x, y, z)
 using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch, yaw)
 using MotionType = char;  // F, L, R
 using GraphType = std::map<PoseType, std::pair<int, std::vector<PoseType>>>;
-}  // namespace defaultType
+}  // namespace defaultTypes
 
-namespace file {
+namespace files {
 constexpr auto csvPath = "../../MotionExecution.csv";
 constexpr auto mapPath = "../../Map.txt";
 constexpr auto pathPlanPath = "../../PathPlan.txt";
-}  // namespace file
+}  // namespace files
 }  // namespace mtrn4110
 
 #endif  // UTIL_HPP

@@ -5,11 +5,11 @@
 
 namespace mtrn4110 {
 // An interface for a generic trajectory planner.
-template<typename AngleType = defaultType::AngleType,
-         typename DistanceType = defaultType::DistanceType,
-         typename LinearVelocityType = defaultType::LinearVelocityType,
-         typename AngularVelocityType = defaultType::AngularVelocityType,
-         typename MotionType = defaultType::MotionType>
+template<typename AngleType = defaultTypes::AngleType,
+         typename DistanceType = defaultTypes::DistanceType,
+         typename LinearVelocityType = defaultTypes::LinearVelocityType,
+         typename AngularVelocityType = defaultTypes::AngularVelocityType,
+         typename MotionType = defaultTypes::MotionType>
 class TrajectoryPlanner {
    public:
     // Initialise the trajectory planner with initial motion, distance, linear velocity, and angular

@@ -5,7 +5,7 @@
 
 namespace mtrn4110 {
 // An interface for a generic motion planner.
-template<typename PoseType = defaultType::PoseType, typename VelocityType = defaultType::VelocityType>
+template<typename PoseType = defaultTypes::PoseType, typename VelocityType = defaultTypes::VelocityType>
 class MotionPlanner {
    public:
     // Initialise the motion planner with zero pose and zero velocity.
