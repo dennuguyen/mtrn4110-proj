@@ -9,6 +9,7 @@ namespace mtrn4110 {
 namespace defaultType {
 using HeadingType = int;
 using PoseType = std::pair<int, int>;
+using DistanceType = double;
 using VelocityType = double;
 using MotionType = char;  // F, L, R
 using GraphType = std::map<PoseType, std::pair<int, std::vector<PoseType>>>;
