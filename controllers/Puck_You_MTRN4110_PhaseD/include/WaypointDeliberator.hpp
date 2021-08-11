@@ -9,9 +9,6 @@ namespace mtrn4110 {
 template<typename PoseType = defaultTypes::PoseType>
 class WaypointDeliberator {
    public:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     auto getDestination() const noexcept -> PoseType {
         return destination_;
     }
@@ -23,11 +20,15 @@ class WaypointDeliberator {
         return os;
     }
 
+   protected:
+    PoseType destination_;
+
    private:
+    // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
-    PoseType destination_;
 };
 }  // namespace mtrn4110
 

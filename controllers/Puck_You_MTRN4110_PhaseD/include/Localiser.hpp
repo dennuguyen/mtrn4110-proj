@@ -11,9 +11,6 @@ namespace mtrn4110 {
 template<typename PoseType = defaultTypes::PoseType, typename HeadingType = defaultTypes::HeadingType>
 class Localiser {
    public:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     auto getCurrentPose() const noexcept -> PoseType {
         return currentPose_;
     }
@@ -27,12 +24,16 @@ class Localiser {
         return os;
     }
 
-   private:
-    // Write any required data to an output stream.
-    virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
+   protected:
     PoseType currentPose_;
     HeadingType currentHeading_;
+
+   private:
+    // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
 }  // namespace mtrn4110
 

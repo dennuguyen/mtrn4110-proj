@@ -22,9 +22,6 @@ class PathPlanner {
     , currentPose_(initialPose)
     , currentHeading_(initialHeading) {}
 
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }
@@ -52,15 +49,19 @@ class PathPlanner {
         return os;
     }
 
-   private:
-    // Write any required data to an output stream.
-    virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
+   protected:
     GraphType graph_;
     PoseType destination_;
     PoseType currentPose_;
     HeadingType currentHeading_;
     MotionType motion_;
+
+   private:
+   // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
 }  // namespace mtrn4110
 

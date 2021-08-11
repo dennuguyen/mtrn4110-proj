@@ -8,9 +8,6 @@ namespace mtrn4110 {
 template<typename InputType, typename GraphType = defaultTypes::GraphType>
 class Mapper {
    public:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }
@@ -21,11 +18,15 @@ class Mapper {
         return os;
     }
 
+   protected:
+    GraphType graph_;
+
    private:
+   // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
-    GraphType graph_;
 };
 }  // namespace mtrn4110
 

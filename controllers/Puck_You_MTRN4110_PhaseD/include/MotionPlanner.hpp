@@ -16,12 +16,6 @@ class MotionPlanner {
     : motorPosition_(motorPosition)
     , motorVelocity_(motorVelocity) {}
 
-    // Compute the required motor position and velocity setpoints to achieve the given kinematics.
-    virtual auto computeMotorSetpoints(AngleType angle,
-                                       DistanceType distance,
-                                       LinearVelocityType linearVelocity,
-                                       AngularVelocityType angularVelocity) -> void = 0;
-
     auto getMotorPosition() const noexcept -> double {
         return motorPosition_;
     }
@@ -37,12 +31,19 @@ class MotionPlanner {
         return os;
     }
 
-   private:
-    // Write any required data to an output stream.
-    virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
+   protected:
     double motorPosition_;
     double motorVelocity_;
+
+   private:
+    // Compute the required motor position and velocity setpoints to achieve the given kinematics.
+    virtual auto computeMotorSetpoints(AngleType angle,
+                                       DistanceType distance,
+                                       LinearVelocityType linearVelocity,
+                                       AngularVelocityType angularVelocity) -> void = 0;
+
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
 }  // namespace mtrn4110
 
