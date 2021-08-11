@@ -7,29 +7,10 @@
 
 namespace mtrn4110 {
 
-TaskControl::TaskControl(webots::Robot& robot)
-: TaskControl(robot, 4, 2) {}
-
-TaskControl::TaskControl(webots::Robot& robot, int numLocks, int numTimers)
-:  //     : pathPlanner(PathPlanner())),
-   //       mapper(Mapping(pathPlanPath)),
-   //       motionControl(MotionControl(robot)),
-   //       localiser(Localisation(robot),
-   //       wallPerception(WallPerception(robot)),
-    numLocks_(numLocks)
+TaskControl::TaskControl(int numLocks, int numTimers)
+: numLocks_(numLocks)
 , numTimers_(numTimers) {
-    (void)robot;
 }
-
-// TaskControl::TaskControl(TaskControl &&taskControl) noexcept
-//     : mapper(std::exchange(mapper, taskControl.mapper)),
-//       localiser(std::exchange(localiser, taskControl.localiser)),
-//       pathPlanner(std::exchange(pathPlanner, taskControl.pathPlanner)),
-//       trajectoryPlanner(std::exchange(trajectoryPlanner, taskControl.trajectoryPlanner)),
-//       waypointDeliberator(std::exchange(waypointDeliberator, taskControl.waypointDeliberator)),
-//       step_(std::exchange(step_, taskControl.step_)),
-//       locks_(std::exchange(locks_, taskControl.locks_)),
-//       timers_(std::exchange(timers_, taskControl.timers_)) {}
 
 auto TaskControl::acquireLock(int lock) -> void {
     if (lock < 0 || numLocks_ < lock) {

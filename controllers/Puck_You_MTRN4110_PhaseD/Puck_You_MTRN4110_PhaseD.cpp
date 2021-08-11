@@ -1,8 +1,9 @@
 #include <thread>
 #include <webots/Robot.hpp>
 
+#include "EPuckMotionPlanner.hpp"
+#include "MotorController.hpp"
 #include "TaskControl.hpp"
-#include "Timer.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
 static auto simulationSteps(webots::Robot& robot) -> void {
@@ -12,8 +13,16 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 }
 
 // Perform real-time steps.
-static auto realtimeSteps(mtrn4110::TaskControl& taskControl) -> void {
+static auto realtimeSteps(webots::Robot& robot) -> void {
+    // Instantiate our task controller class.
+    auto taskControl = mtrn4110::TaskControl(2, 2);
+
+    // Instantiate RSA elements.
+    auto motorController = mtrn4110::MotorController(robot);
+    auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
     (void)taskControl;
+    (void)motorController;
+    (void)motionPlanner;
     // Enter control loop.
     while (1) {
     }
@@ -26,12 +35,9 @@ auto main(int argc, char** argv) -> int {
     // Instantiate webots robot.
     auto robot = webots::Robot();
 
-    // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot);
-
     // Spin threads.
     auto t1 = std::thread(simulationSteps, std::ref(robot));
-    auto t2 = std::thread(realtimeSteps, std::ref(taskControl));
+    auto t2 = std::thread(realtimeSteps, std::ref(robot));
 
     // Wait for threads to finish.
     t1.join();
