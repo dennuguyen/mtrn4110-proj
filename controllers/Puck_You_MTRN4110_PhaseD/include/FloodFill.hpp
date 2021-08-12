@@ -46,13 +46,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
     : PathPlanner<PoseType, HeadingType, MotionType, GraphType>(graph,
                                                                 destination,
                                                                 initialPose,
-                                                                initialHeading) {}  // EDIT
-                                                                                    // CONSTRUCTOR
-    // PARAMETERS AS REQUIRED
-
-    auto tick() -> void override final {}
-
-    // ADD ANY PUBLIC METHODS BELOW HERE
+                                                                initialHeading) {}
 
     // Flood fills the input map
     auto floodFill() -> void final {

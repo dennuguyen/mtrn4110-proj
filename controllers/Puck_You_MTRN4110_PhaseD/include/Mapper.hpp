@@ -26,9 +26,6 @@ class Mapper {
     GraphType graph_;
 
    private:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };

@@ -14,12 +14,10 @@ class HCMapper : public Mapper<GraphType> {
     HCMapper()
     : Mapper<GraphType>(models::maze.nCols) {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
-    auto tick() -> void override final {}
-
     // ADD ANY PUBLIC METHODS BELOW HERE
 
     // Reads the map file
-    auto readMap() -> void final {
+    auto readMap() -> void {
         auto mapFile = std::ifstream(files::mapPath);
         if (mapFile.good() == false) {
             throw std::runtime_error("Could not open file.");
@@ -39,7 +37,7 @@ class HCMapper : public Mapper<GraphType> {
     }
 
     // Extracts information from the map
-    auto extractMap() -> void final {
+    auto extractMap() -> void {
         for (int lineNumber = 0; lineNumber < maxLines; lineNumber++) {
             // Determine the row
             int row = lineNumber / 2;
@@ -54,7 +52,7 @@ class HCMapper : public Mapper<GraphType> {
     }
 
     // Builds the map from read inputs
-    auto buildMap() -> void final {
+    auto buildMap() -> void {
         for (int row = 0; row < models::maze.nRows; row++) {
             for (int col = 0; col < models::maze.nCols; col++) {
                 // checking upwards connections
