@@ -1,5 +1,5 @@
-#ifndef HC_MAPPER
-#define HC_MAPPER
+#ifndef HC_MAPPER_HPP
+#define HC_MAPPER_HPP
 
 #include "Mapper.hpp"
 #include "Util.hpp"
@@ -12,7 +12,7 @@ template<typename PoseType = defaultTypes::PoseType,
 class HCMapper : public Mapper<GraphType> {
    public:
     HCMapper()
-    : Mapper() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    : Mapper<GraphType>() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
     auto tick() -> void override final {}
 
@@ -46,7 +46,8 @@ class HCMapper : public Mapper<GraphType> {
             // Determine is line is for horizontal or vertical walls
             if (lineNumber % 2 == 0) {
                 extractHorizontalLine(map_[lineNumber], row);
-            } else {
+            }
+            else {
                 extractVerticalLine(map_[lineNumber], row);
             }
         }
@@ -59,25 +60,29 @@ class HCMapper : public Mapper<GraphType> {
                 // checking upwards connections
                 if (!horizontalWalls_[row][col]) {
                     graph_[row][col].up = true;
-                } else {
+                }
+                else {
                     graph_[row][col].up = false;
                 }
                 // checking downwards connections
                 if (!horizontalWalls_[row + 1][col]) {
                     graph_[row][col].down = true;
-                } else {
+                }
+                else {
                     graph_[row][col].down = false;
                 }
                 // checking leftwards connections
                 if (!verticalWalls_[row][col]) {
                     graph_[row][col].left = true;
-                } else {
+                }
+                else {
                     graph_[row][col].left = false;
                 }
                 // checking rightwards connections
                 if (!verticalWalls_[row][col + 1]) {
                     graph_[row][col].right = true;
-                } else {
+                }
+                else {
                     graph_[row][col].right = false;
                 }
                 // default values
@@ -101,7 +106,8 @@ class HCMapper : public Mapper<GraphType> {
             // detecting walls
             if (line[i] == hWall) {
                 horizontalWalls_[row][col] = true;
-            } else {
+            }
+            else {
                 horizontalWalls_[row][col] = false;
             }
         }
@@ -117,33 +123,31 @@ class HCMapper : public Mapper<GraphType> {
             if (i % cellSize == 0) {
                 if (line[i] == vWall) {
                     verticalWalls_[row][col] = true;
-                } else {
+                }
+                else {
                     verticalWalls_[row][col] = false;
                 }
             }
             // for robot start or target
             switch (line[i]) {
-                case north:
-                    initialHeading_ = north; // TODO: might need updating
-                    initialPose_ = {row, col};
-                    break;
-                case east:
-                    initialHeading_ = east; // TODO: might need updating
-                    initialPose_ = {row, col};
-                    break;
-                case south:
-                    initialHeading_ = south; // TODO: might need updating
-                    initialPose_ = {row, col};
-                    break;
-                case west:
-                    initialHeading_ = west; // TODO: might need updating
-                    initialPose_ = {row, col};
-                    break;
-                case target:
-                    destination_ = {row, col};
-                    break;
-                default:
-                    break;
+            case north:
+                initialHeading_ = north;  // TODO: might need updating
+                initialPose_ = {row, col};
+                break;
+            case east:
+                initialHeading_ = east;  // TODO: might need updating
+                initialPose_ = {row, col};
+                break;
+            case south:
+                initialHeading_ = south;  // TODO: might need updating
+                initialPose_ = {row, col};
+                break;
+            case west:
+                initialHeading_ = west;  // TODO: might need updating
+                initialPose_ = {row, col};
+                break;
+            case target: destination_ = {row, col}; break;
+            default: break;
             }
         }
     }
@@ -160,12 +164,12 @@ class HCMapper : public Mapper<GraphType> {
     static const int maxChars = models::maze.nCols * cellSize + 1;
     static const int maxLines = 2 * models::maze.nRows + 1;
     std::vector<std::string> map_;
-    std::array< std::array<bool, models::maze.nCols>, models::maze.nRows + 1> horizontalWalls_;
-    std::array< std::array<bool, models::maze.nCols + 1>, models::maze.nRows> verticalWalls_;
+    std::array<std::array<bool, models::maze.nCols>, models::maze.nRows + 1> horizontalWalls_;
+    std::array<std::array<bool, models::maze.nCols + 1>, models::maze.nRows> verticalWalls_;
     PoseType initialPose_;
     PoseType destination_;
     HeadingType initialHeading_;
 };
 }  // namespace mtrn4110
 
-#endif  // HC_MAPPER
+#endif  // HC_MAPPER_HPP

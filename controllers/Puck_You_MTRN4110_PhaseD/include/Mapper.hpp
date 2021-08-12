@@ -5,9 +5,13 @@
 
 namespace mtrn4110 {
 // An interface for a generic mapper.
-template<typename InputType, typename GraphType = defaultTypes::GraphType>
+template<typename GraphType = defaultTypes::GraphType>
 class Mapper {
    public:
+    // Constructor to initialise graph.
+    Mapper(GraphType graph)
+    : graph_(graph) {}
+
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }
@@ -22,7 +26,7 @@ class Mapper {
     GraphType graph_;
 
    private:
-   // Automate any simple and periodic behaviours.
+    // Automate any simple and periodic behaviours.
     virtual auto tick() -> void = 0;
 
     // Write any required data to an output stream.

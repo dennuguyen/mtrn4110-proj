@@ -1,5 +1,5 @@
-#ifndef FLOOD_FILL
-#define FLOOD_FILL
+#ifndef FLOOD_FILL_HPP
+#define FLOOD_FILL_HPP
 
 #include "PathPlanner.hpp"
 #include "Util.hpp"
@@ -12,44 +12,43 @@ template<typename PoseType = defaultTypes::PoseType,
          typename GraphType = defaultTypes::GraphType>
 class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
    public:
-
-   // Enumerates the in and out directions
-    enum Direction {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        NIL
-    };
+    // Enumerates the in and out directions
+    enum Direction { UP, DOWN, LEFT, RIGHT, NIL };
 
     // A step of the path
     class Step {
-    public:
+       public:
         // ADD PUBLIC STUFF HERE
         int row;
         int col;
         int distance;
         Direction inDirection;
         Direction outDirection;
-    private:
+
+       private:
         // ADD PRIVATE STUFF HERE
     };
 
     // A path to the target
     class Path {
-    public:
+       public:
         // ADD PUBLIC STUFF HERE
         std::vector<Step> route;
         int numSteps;
         int numTurns;
         std::string pathString;
-    private:
+
+       private:
         // ADD PRIVATE STUFF HERE
     };
 
     FloodFill(GraphType graph, PoseType destination, PoseType initialPose, HeadingType initialHeading)
-    : PathPlanner(graph, destination, initialPose, initialHeading) {}  // EDIT CONSTRUCTOR
-                                                                       // PARAMETERS AS REQUIRED
+    : PathPlanner<PoseType, HeadingType, MotionType, GraphType>(graph,
+                                                                destination,
+                                                                initialPose,
+                                                                initialHeading) {}  // EDIT
+                                                                                    // CONSTRUCTOR
+    // PARAMETERS AS REQUIRED
 
     auto tick() -> void override final {}
 
@@ -70,34 +69,34 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
             // looping through the grid
             for (int row = 0; row < models::maze.nRows; row++) {
                 for (int col = 0; col < models::maze.nCols; col++) {
-                    Node *current = &graph_[row][col];
+                    Node* current = &graph_[row][col];
                     // if node is at current step
                     if (current->distance == step) {
                         finished = false;
                         // fill up nodes
                         if (current->up) {
-                            Node *up = &graph_[row - 1][col];
+                            Node* up = &graph_[row - 1][col];
                             if (up->distance > step + 1) {
                                 up->distance = step + 1;
                             }
                         }
                         // fill down nodes
                         if (current->down) {
-                            Node *down = &graph_[row + 1][col];
+                            Node* down = &graph_[row + 1][col];
                             if (down->distance > step + 1) {
                                 down->distance = step + 1;
                             }
                         }
                         // fill left nodes
                         if (current->left) {
-                            Node *left = &graph_[row][col - 1];
+                            Node* left = &graph_[row][col - 1];
                             if (left->distance > step + 1) {
                                 left->distance = step + 1;
                             }
                         }
                         // fill right nodes
                         if (current->right) {
-                            Node *right = &graph_[row][col + 1];
+                            Node* right = &graph_[row][col + 1];
                             if (right->distance > step + 1) {
                                 right->distance = step + 1;
                             }
@@ -116,7 +115,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
 
         int startRow = currentPose_.first;
         int startCol = currentPose_.second;
-        Node *start = &graph_[startRow][startCol];
+        Node* start = &graph_[startRow][startCol];
 
         Path path;
         path.numSteps = start->distance;
@@ -125,23 +124,23 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
         // determine the starting direction
         Direction inDirection = NIL;
         switch (currentHeading_) {
-        case NORTH: // TODO: fix according to direction
+        case NORTH:  // TODO: fix according to direction
             inDirection = DOWN;
             path.pathString += "N";
             break;
-        case EAST: // TODO: fix according to direction
+        case EAST:  // TODO: fix according to direction
             inDirection = LEFT;
             path.pathString += "E";
             break;
-        case SOUTH: // TODO: fix according to direction
+        case SOUTH:  // TODO: fix according to direction
             inDirection = UP;
             path.pathString += "S";
             break;
-        case WEST: // TODO: fix according to direction
+        case WEST:  // TODO: fix according to direction
             inDirection = RIGHT;
             path.pathString += "W";
             break;
-        default: // TODO: throw error
+        default:  // TODO: throw error
             break;
         }
 
@@ -152,7 +151,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
             incompletePaths.erase(incompletePaths.begin());
 
             // get the last step in the path
-            Step *step = &path.route.back();
+            Step* step = &path.route.back();
             int row = step->row;
             int col = step->col;
             int distance = step->distance;
@@ -163,7 +162,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
                 continue;
             }
 
-            Node *current = &graph_[row][col];
+            Node* current = &graph_[row][col];
             // if the upwards cell has a smaller step
             if (current->up && graph_[row - 1][col].distance < distance) {
                 step->outDirection = UP;
@@ -220,29 +219,24 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
     auto print(std::ostream& os) const noexcept -> void override final {}
 
     // Adds the next step to the path
-    auto addNextStep(std::vector<Path> *paths, Path path, int row, int col, Direction in, Direction out) -> void final {
+    auto
+    addNextStep(std::vector<Path>* paths, Path path, int row, int col, Direction in, Direction out)
+        -> void final {
         Step nextStep = {row, col, graph_[row][col].distance, in, out};
         path.route.push_back(nextStep);
         paths->push_back(path);
     }
-    
+
     // ADD ANY PRIVATE MEMBERS BELOW HERE
 
     // Determines the number of turns
-    static constexpr int numTurns[4][4] = {
-        {2, 0, 1, 1},
-        {0, 2, 1 ,1},
-        {1, 1, 2, 0},
-        {1, 1, 0, 2}
-    };
+    static constexpr int numTurns[4][4] = {{2, 0, 1, 1}, {0, 2, 1, 1}, {1, 1, 2, 0}, {1, 1, 0, 2}};
 
     // Determines the string for turns
-    static constexpr std::string turnString[4][4] = {
-        {"LLF", "F",   "RF",  "LF"},
-        {"F",   "LLF", "LF" , "RF"},
-        {"LF",  "RF",  "LLF", "F"},
-        {"RF",  "LF",  "F",   "LLF"}
-    };
+    static constexpr std::string turnString[4][4] = {{"LLF", "F", "RF", "LF"},
+                                                     {"F", "LLF", "LF", "RF"},
+                                                     {"LF", "RF", "LLF", "F"},
+                                                     {"RF", "LF", "F", "LLF"}};
 
     // Holds all the shortest paths
     std::vector<Path> paths_;
@@ -252,4 +246,4 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
 };
 }  // namespace mtrn4110
 
-#endif  // FLOOD_FILL
+#endif  // FLOOD_FILL_HPP
