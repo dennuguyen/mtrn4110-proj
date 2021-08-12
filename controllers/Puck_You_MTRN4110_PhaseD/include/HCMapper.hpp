@@ -9,7 +9,7 @@ namespace mtrn4110 {
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
          typename GraphType = defaultTypes::GraphType>
-class HCMapper : public Mapper<GraphType> {
+class HCMapper final : public Mapper<GraphType> {
    public:
     HCMapper()
     : Mapper<GraphType>(models::maze.nCols) {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
@@ -96,7 +96,7 @@ class HCMapper : public Mapper<GraphType> {
     auto print(std::ostream& os) const noexcept -> void override final {}
 
     // Extract information from line for horizontal walls
-    auto extractHorizontalLine(std::string line, int row) -> void final {
+    auto extractHorizontalLine(std::string line, int row) -> void {
         // extracting horizontal walls
         for (int i = 1; i < line.size() && i < maxChars; i += cellSize) {
             // calculating column
@@ -112,7 +112,7 @@ class HCMapper : public Mapper<GraphType> {
     }
 
     // Extract information from line for vertical walls
-    auto extractVerticalLine(std::string line, int row) -> void final {
+    auto extractVerticalLine(std::string line, int row) -> void {
         // extracting vertical walls
         for (int i = 0; i < line.size() && i < maxChars; i++) {
             // calculating column

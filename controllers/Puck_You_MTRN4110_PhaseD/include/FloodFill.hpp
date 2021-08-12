@@ -10,7 +10,7 @@ template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
          typename MotionType = defaultTypes::MotionType,
          typename GraphType = defaultTypes::GraphType>
-class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
+class FloodFill final : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
    public:
     // Enumerates the in and out directions
     enum Direction { UP, DOWN, LEFT, RIGHT, NIL };
@@ -49,7 +49,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
                                                                 initialHeading) {}
 
     // Flood fills the input map
-    auto floodFill() -> void final {
+    auto floodFill() -> void {
         // get target position from the maps
         int destinationRow = destination_.first;
         int destinationCol = destination_.second;
@@ -103,7 +103,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
     }
 
     // Finds shortest paths to the destination
-    auto processPaths() -> void final {
+    auto processPaths() -> void {
         std::vector<Path> completePaths;
         std::vector<Path> incompletePaths;
 
@@ -182,7 +182,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
     }
 
     // Finds the final path
-    auto findFinalPath() -> void final {
+    auto findFinalPath() -> void {
         Path finalPath;
         int minTurns = INT_MAX;
         for (std::vector<Path>::iterator i = paths_.begin(); i != paths_.end(); ++i) {
@@ -204,7 +204,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
     }
 
     // Gets the steps of the final path
-    auto getFinalPathSteps() -> int final {
+    auto getFinalPathSteps() -> int {
         return finalPath_.route.front().distance + finalPath_.numTurns;
     }
 
@@ -215,7 +215,7 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
     // Adds the next step to the path
     auto
     addNextStep(std::vector<Path>* paths, Path path, int row, int col, Direction in, Direction out)
-        -> void final {
+        -> void {
         Step nextStep = {row, col, graph_[row][col].distance, in, out};
         path.route.push_back(nextStep);
         paths->push_back(path);
