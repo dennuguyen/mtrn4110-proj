@@ -3,33 +3,66 @@
 
 #include <utility>
 
+#include "Models.hpp"
 #include "TrajectoryPlanner.hpp"
 
 namespace mtrn4110 {
 
-template<typename PoseType = double,
-         typename VelocityType = double,
-         typename MotionType = std::pair<PoseType, VelocityType>>
-class DeadReckoning : public TrajectoryPlanner {
+template<typename MotionType = defaultTypes::MotionType,
+         typename AngleType = defaultTypes::AngleType,
+         typename DistanceType = defaultTypes::DistanceType,
+         typename LinearVelocityType = defaultTypes::LinearVelocityType,
+         typename AngularVelocityType = defaultTypes::AngularVelocityType>
+class DeadReckoning final
+: public TrajectoryPlanner<MotionType, AngleType, DistanceType, LinearVelocityType, AngularVelocityType> {
    public:
-    DeadReckoning();
-    DeadReckoning(const&) = delete;
-    DeadReckoning(&&) = default;
-    auto operator=(DeadReckoning const&) -> DeadReckoning& = delete;
-    auto operator=(DeadReckoning&&) -> DeadReckoning& = default;
-    ~DeadReckoning() override {}
+    DeadReckoning(MotionType initialMotion)
+    : TrajectoryPlanner<MotionType, AngleType, DistanceType, LinearVelocityType, AngularVelocityType>(
+        initialMotion,
+        0,
+        0,
+        {0, 0, 0},
+        {0, 0, 0}) {}
 
-    auto getNextMotion() const noexcept override final -> MotionType {
-        return nextMotion_;
-    }
-    auto getPreviousMotion() const noexcept override final -> MotionType {
-        return nextMotion_;
+    auto computeKinematics() -> void override final {
+        switch (this->motion_) {
+        case 'L':
+            // Set linear distance and velocity.
+            this->distance_ = 0.0;
+            this->linearVelocity_ = {0, 0, 0};
+
+            // Set angle distance and velocity.
+            this->angle_ = 90;
+            this->angularVelocity_ = {0, 0, models::ePuck.maxSpeed};
+            break;
+        case 'R':
+            // Set linear distance and velocity.
+            this->distance_ = 0.0;
+            this->linearVelocity_ = {0, 0, 0};
+
+            // Set angle distance and velocity.
+            this->angle_ = -90;
+            this->angularVelocity_ = {0, 0, models::ePuck.maxSpeed};
+            break;
+        case 'F':
+            // Set linear distance and velocity.
+            this->distance_ = models::maze.distanceBetweenCells;
+            this->linearVelocity_ = {models::ePuck.maxSpeed, 0, 0};
+
+            // Set angle distance and velocity.
+            this->angle_ = -90;
+            this->angularVelocity_ = {0, 0, 0};
+            break;
+        case '\0': break;
+        default: throw std::runtime_error("Invalid motion.");
+        }
     }
 
    private:
-    MotionType nextMotion_;
-    MotionType previousMotion_;
-};
+    auto print(std::ostream& os) const noexcept -> void override final {
+        (void)os;
+    }
+};  // namespace mtrn4110
 }  // namespace mtrn4110
 
 #endif  // DEAD_RECKONING_HPP

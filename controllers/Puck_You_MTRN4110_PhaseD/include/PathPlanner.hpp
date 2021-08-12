@@ -9,10 +9,10 @@
 namespace mtrn4110 {
 
 // An interface for a generic path planner.
-template<typename PoseType = defaultType::PoseType,
-         typename HeadingType = defaultType::HeadingType,
-         typename MotionType = defaultType::MotionType,
-         typename GraphType = defaultType::GraphType>
+template<typename PoseType = defaultTypes::PoseType,
+         typename HeadingType = defaultTypes::HeadingType,
+         typename MotionType = defaultTypes::MotionType,
+         typename GraphType = defaultTypes::GraphType>
 class PathPlanner {
    public:
     // Constructor to initialise required members.
@@ -21,9 +21,6 @@ class PathPlanner {
     , destination_(destination)
     , currentPose_(initialPose)
     , currentHeading_(initialHeading) {}
-
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
 
     auto getGraph() const noexcept -> GraphType {
         return graph_;
@@ -46,20 +43,25 @@ class PathPlanner {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
+    friend auto operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept
+        -> std::ostream& {
         pathPlanner.print(os);
         return os;
     }
 
-   private:
-    // Write any required data to an output stream.
-    virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
+   protected:
     GraphType graph_;
     PoseType destination_;
     PoseType currentPose_;
     HeadingType currentHeading_;
     MotionType motion_;
+
+   private:
+   // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
 }  // namespace mtrn4110
 

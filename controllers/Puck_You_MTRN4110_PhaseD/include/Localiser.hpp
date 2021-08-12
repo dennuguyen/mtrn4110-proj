@@ -8,12 +8,9 @@
 namespace mtrn4110 {
 
 // An interface for a generic localiser.
-template<typename PoseType = defaultType::PoseType, typename HeadingType = defaultType::HeadingType>
+template<typename PoseType = defaultTypes::PoseType, typename HeadingType = defaultTypes::HeadingType>
 class Localiser {
    public:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     auto getCurrentPose() const noexcept -> PoseType {
         return currentPose_;
     }
@@ -22,17 +19,21 @@ class Localiser {
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
-        pathPlanner.print(os);
+    friend auto operator<<(std::ostream& os, Localiser const& localiser) noexcept -> std::ostream& {
+        localiser.print(os);
         return os;
     }
 
-   private:
-    // Write any required data to an output stream.
-    virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
+   protected:
     PoseType currentPose_;
     HeadingType currentHeading_;
+
+   private:
+    // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
+    // Write any required data to an output stream.
+    virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
 }  // namespace mtrn4110
 

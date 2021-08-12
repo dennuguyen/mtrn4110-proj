@@ -5,27 +5,28 @@
 
 namespace mtrn4110 {
 // An interface for a generic mapper.
-template<typename InputType, typename GraphType = defaultType::GraphType>
+template<typename InputType, typename GraphType = defaultTypes::GraphType>
 class Mapper {
    public:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }
 
     // Operator overload for <<.
-    friend operator<<(std::ostream& os, PathPlanner const& pathPlanner) noexcept->std::ostream& {
-        pathPlanner.print(os);
+    friend auto operator<<(std::ostream& os, Mapper const& mapper) noexcept -> std::ostream& {
+        mapper.print(os);
         return os;
     }
 
+   protected:
+    GraphType graph_;
+
    private:
+   // Automate any simple and periodic behaviours.
+    virtual auto tick() -> void = 0;
+
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
-
-    GraphType graph_;
 };
 }  // namespace mtrn4110
 

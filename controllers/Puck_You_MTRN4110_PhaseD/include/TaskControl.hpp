@@ -2,25 +2,18 @@
 #define TASK_CONTROL_HPP_
 
 #include <vector>
-#include <webots/Robot.hpp>
 
-#include "Localiser.hpp"
-#include "Mapper.hpp"
-#include "PathPlanner.hpp"
 #include "Timer.hpp"
-#include "TrajectoryPlanner.hpp"
-#include "WaypointDeliberator.hpp"
 
 namespace mtrn4110 {
 class TaskControl {
    public:
-    TaskControl(webots::Robot& robot);
-    TaskControl(webots::Robot& robot, int numLocks, int numTimers);
+    TaskControl(int numLocks, int numTimers);
     TaskControl(TaskControl const& taskControl) = delete;
-    TaskControl(TaskControl&& taskControl) noexcept;
+    TaskControl(TaskControl&& taskControl) noexcept = delete;
     ~TaskControl() = default;
     auto operator=(TaskControl const& taskControl) -> TaskControl& = delete;
-    auto operator=(TaskControl&& taskControl) -> TaskControl& = delete;
+    auto operator=(TaskControl&& taskControl) noexcept -> TaskControl& = delete;
 
     // Lock methods.
     auto acquireLock(int lock) -> void;
@@ -30,13 +23,6 @@ class TaskControl {
     // Timer methods.
     auto time(int timer, double duration) -> void;
     auto expired(int timer) const -> bool;
-
-   public:
-    // Mapper<>& mapper;
-    // Localiser<>& localiser;
-    // PathPlanner<>& pathPlanner;
-    // TrajectoryPlanner<>& trajectoryPlanner;
-    // WaypointDeliberator<>& waypointDeliberator;
 
    private:
     unsigned int step_ = 0;
