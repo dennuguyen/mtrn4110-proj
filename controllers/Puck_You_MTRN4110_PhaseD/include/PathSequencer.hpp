@@ -1,24 +1,28 @@
 #ifndef HC_PATH_PLANNER_HPP
 #define HC_PATH_PLANNER_HPP
 
-#include "PathPlanner.hpp"
+#include <stdexcept>
+
+#include "Util.hpp"
 
 namespace mtrn4110 {
 // Class which takes in some path with valid motion types
-template<typename PoseType = defaultTypes::PoseType,
-         typename HeadingType = defaultTypes::HeadingType,
-         typename MotionType = defaultTypes::MotionType,
-         typename PathType = defaultTypes::PathType>
+template<typename MotionType = defaultTypes::MotionType, typename PathType = defaultTypes::PathType>
 class PathSequencer {
    public:
     // Constructor for path sequencer to initialise the path.
-    PathSequencer(DeliberateType motionSequence)
-    : PathPlanner<PoseType, HeadingType, MotionType, GraphType>(graph,
-                                                                destination,
-                                                                initialPose,
-                                                                initialHeading) {}
+    PathSequencer(PathType path)
+    : path_(path)
+    , pathIndex_(0) {}
 
-    auto nextMotion() -> void {}
+    // Gets the next motion of the motion sequence.
+    auto nextMotion() -> MotionType {
+        try {
+            return path_.at(pathIndex_++);
+        } catch (std::out_of_range const& e) {
+            return '\0';
+        }
+    }
 
     // Operator overload for <<.
     friend auto operator<<(std::ostream& os, PathSequencer const& pathSequencer) noexcept
@@ -31,6 +35,9 @@ class PathSequencer {
     auto print(std::ostream& os) const noexcept -> void {
         (void)os;
     }
+
+    PathType path_;
+    int pathIndex_;  // Index to current motion of path sequence.
 };
 }  // namespace mtrn4110
 

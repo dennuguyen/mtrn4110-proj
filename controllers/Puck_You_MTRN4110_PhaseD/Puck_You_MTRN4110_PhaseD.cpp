@@ -6,9 +6,9 @@
 #include "EPuckMotionPlanner.hpp"
 #include "HCDeliberator.hpp"
 #include "HCLocaliser.hpp"
-#include "HCPathPlanner.hpp"
 #include "LidarSensor.hpp"
 #include "MotorController.hpp"
+#include "PathSequencer.hpp"
 #include "TaskControl.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
@@ -26,19 +26,20 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
 
     // Instantiate RSA elements.
     auto distanceSensor = mtrn4110::DistanceSensor(robot);
-    auto lidarSensor = mtrn4110::LidarSensor(robot);
-    auto motorController = mtrn4110::MotorController(robot);
-    auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
-    auto deadReckoning = mtrn4110::DeadReckoning(' ');
-    auto hcPathPlanner = mtrn4110::HCPathPlanner({}, {0, 0}, {0, 0}, 2);
-    auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
-    auto hcDeliberator = mtrn4110::HCDeliberator();
     (void)distanceSensor;
+    auto lidarSensor = mtrn4110::LidarSensor(robot);
     (void)lidarSensor;
+    auto motorController = mtrn4110::MotorController(robot);
     (void)motorController;
+    auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
     (void)motionPlanner;
+    auto deadReckoning = mtrn4110::DeadReckoning(' ');
     (void)deadReckoning;
+    auto pathSequencer = mtrn4110::PathSequencer({'F', 'L', 'R'});
+    (void)pathSequencer;
+    auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
     (void)hcLocaliser;
+    auto hcDeliberator = mtrn4110::HCDeliberator();
     (void)hcDeliberator;
     // Enter control loop.
     while (1) {
