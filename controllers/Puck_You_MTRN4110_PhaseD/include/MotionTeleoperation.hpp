@@ -25,6 +25,9 @@ class MotionTeleoperation final : public Deliberator<DeliberateType>() {
 
    private:
     // PUT PRIVATE METHODS HERE
+    auto print(std::ostream& os) const noexcept -> void {
+        (void)os;
+    }
 
     // PUT PRIVATE MEMBERS HERE
     std::unique_ptr<webots::Keyboard> keyboard_;

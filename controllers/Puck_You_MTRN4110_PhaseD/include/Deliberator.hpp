@@ -27,12 +27,9 @@ class Deliberator {
     }
 
    protected:
-    DeliberateType delib_;
+    DeliberateType delib_;  // This is the variable we want to output.
 
    private:
-    // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
-
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
