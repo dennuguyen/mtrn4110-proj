@@ -8,7 +8,9 @@
 namespace mtrn4110 {
 
 // An interface for a generic localiser.
-template<typename PoseType = defaultTypes::PoseType, typename HeadingType = defaultTypes::HeadingType>
+template<typename PoseType = defaultTypes::PoseType,
+         typename HeadingType = defaultTypes::HeadingType,
+         typename MotionType = defaultTypes::MotionType>
 class Localiser {
    public:
     // Constructor taking an initial pose and initial heading.

@@ -24,7 +24,7 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     auto motorController = mtrn4110::MotorController(robot);
     auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
     auto deadReckoning = mtrn4110::DeadReckoning(' ');
-    auto hcLocaliser = mtrn4110::HCLocaliser();
+    auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
     (void)motorController;
     (void)motionPlanner;
     (void)deadReckoning;

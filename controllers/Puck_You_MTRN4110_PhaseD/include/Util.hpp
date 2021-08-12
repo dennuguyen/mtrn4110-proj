@@ -1,6 +1,7 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <array>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -9,7 +10,7 @@
 
 namespace mtrn4110 {
 
-enum class Heading { N, E, S, W };
+constexpr std::array<char, 4> cardinalPoints = {'N', 'E', 'S', 'W'};
 
 namespace defaultTypes {
 using HeadingType = int;  // N, E, S, W
