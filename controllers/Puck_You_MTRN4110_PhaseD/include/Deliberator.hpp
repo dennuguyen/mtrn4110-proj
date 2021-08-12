@@ -1,5 +1,5 @@
-#ifndef WAYPOINT_DELIBERATOR_HPP
-#define WAYPOINT_DELIBERATOR_HPP
+#ifndef DELIBERATOR_HPP
+#define DELIBERATOR_HPP
 
 #include <utility>
 
@@ -8,22 +8,26 @@
 namespace mtrn4110 {
 
 // An interface for a generic waypoint deliberator.
-template<typename PoseType = defaultTypes::PoseType>
-class WaypointDeliberator {
+template<typename DeliberateType = defaultTypes::PoseType>
+class Deliberator {
    public:
-    auto getDestination() const noexcept -> PoseType {
-        return destination_;
+    // Constructor to initialise deliberation type.
+    Deliberator()
+    : delib_() {}
+
+    auto getDeliberatedValue() const noexcept -> DeliberateType {
+        return delib_;
     }
 
     // Operator overload for <<.
-    friend auto operator<<(std::ostream& os, WaypointDeliberator const& waypointDeliberator) noexcept
+    friend auto operator<<(std::ostream& os, Deliberator const& deliberator) noexcept
         -> std::ostream& {
-        waypointDeliberator.print(os);
+        deliberator.print(os);
         return os;
     }
 
    protected:
-    PoseType destination_;
+    DeliberateType delib_;
 
    private:
     // Automate any simple and periodic behaviours.
@@ -34,4 +38,4 @@ class WaypointDeliberator {
 };
 }  // namespace mtrn4110
 
-#endif  // WAYPOINT_DELIBERATOR_HPP
+#endif  // DELIBERATOR_HPP
