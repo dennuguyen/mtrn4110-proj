@@ -11,12 +11,12 @@
 namespace mtrn4110 {
 class DistanceSensor {
    public:
-    DistanceSensor(webots::Webots& robot) {
+    DistanceSensor(webots::Robot& robot) {
         sensors_.resize(3);
         for (auto i = 0; i < 3; i++) {
             sensors_.emplace_back(robot.getDistanceSensor("ds" + std::to_string(i)),
                                   wallDistanceThreshold);
-        });
+        }
     }
 
     auto updateDistance() noexcept -> void {

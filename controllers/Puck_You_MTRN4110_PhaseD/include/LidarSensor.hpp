@@ -12,14 +12,14 @@
 namespace mtrn4110 {
 class LidarSensor {
    public:
-    LidarSensor(webots::Webots& robot)
+    LidarSensor(webots::Robot& robot)
     : lidar_(robot.getLidar("lidar")) {
         auto const timeStep = robot.getBasicTimeStep();
         lidar_->enable(timeStep);
         lidar_->enablePointCloud();
 
         // Let LIDAR initialise because poor simulation design.
-        while (tick() == -1) {
+        while (updateLidar() == -1) {
             robot.step(timeStep);
         }
     }

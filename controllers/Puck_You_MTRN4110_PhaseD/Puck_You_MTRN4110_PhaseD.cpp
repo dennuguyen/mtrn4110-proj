@@ -30,9 +30,9 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     auto motorController = mtrn4110::MotorController(robot);
     auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
     auto deadReckoning = mtrn4110::DeadReckoning(' ');
-    auto hcPathPlanner = mtrn4110::HCPathPlanner(NULL, {0, 0}, {0, 0}, 2);
+    auto hcPathPlanner = mtrn4110::HCPathPlanner({}, {0, 0}, {0, 0}, 2);
     auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
-    auto hcDeliberator = mtrn4110::HCDeliberator({});
+    auto hcDeliberator = mtrn4110::HCDeliberator();
     (void)distanceSensor;
     (void)lidarSensor;
     (void)motorController;
