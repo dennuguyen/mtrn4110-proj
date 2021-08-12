@@ -8,7 +8,7 @@
 namespace mtrn4110 {
 
 // An interface for a generic waypoint deliberator.
-template<typename DeliberateType = defaultTypes::PoseType>
+template<typename DeliberateType = defaultTypes::MotionType>
 class Deliberator {
    public:
     // Constructor to initialise deliberation type.
