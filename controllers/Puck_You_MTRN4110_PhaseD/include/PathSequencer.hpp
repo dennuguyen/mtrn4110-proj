@@ -1,5 +1,5 @@
-#ifndef HC_PATH_PLANNER_HPP
-#define HC_PATH_PLANNER_HPP
+#ifndef PATH_SEQUENCER_HPP
+#define PATH_SEQUENCER_HPP
 
 #include <stdexcept>
 
@@ -41,4 +41,4 @@ class PathSequencer {
 };
 }  // namespace mtrn4110
 
-#endif  // HC_PATH_PLANNER_HPP
+#endif  // PATH_SEQUENCER_HPP
