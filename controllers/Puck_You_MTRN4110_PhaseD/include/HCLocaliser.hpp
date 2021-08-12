@@ -7,12 +7,14 @@ namespace mtrn4110 {
 template<typename PoseType = defaultTypes::PoseType, typename HeadingType = defaultTypes::HeadingType>
 class HCLocaliser final : public Localiser<PoseType, HeadingType> {
    public:
-    auto tick() -> void override final {}
+    // Initialiser the localiser with an initial position and initial heading.
+    HCLocaliser(PoseType initialPose, HeadingType initialHeading)
+    : Localiser<PoseType, HeadingType>(initialPose, initialHeading) {}
 
     // Update the position and heading of the robot by checking the given motion type and current
     // position and heading. It is up to the user that this function is called the right number of
     // times.
-    auto updateLocale(MotionType motion) -> void {
+    auto updateLocale(MotionType motion) -> void override final {
         switch (motion) {
         case 'F': updatePosition(); break;
         case 'L':
