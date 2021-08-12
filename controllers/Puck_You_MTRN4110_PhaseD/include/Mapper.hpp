@@ -9,8 +9,8 @@ template<typename GraphType = defaultTypes::GraphType>
 class Mapper {
    public:
     // Constructor to initialise graph.
-    Mapper(GraphType graph)
-    : graph_(graph) {}
+    Mapper(int size)
+    : graph_(GraphType(static_cast<std::size_t>(size))) {}
 
     auto getGraph() const noexcept -> GraphType {
         return graph_;

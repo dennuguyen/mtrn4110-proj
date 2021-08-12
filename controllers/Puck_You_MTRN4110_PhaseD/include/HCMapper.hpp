@@ -2,7 +2,7 @@
 #define HC_MAPPER_HPP
 
 #include "Mapper.hpp"
-#include "Util.hpp"
+#include "Models.hpp"
 
 namespace mtrn4110 {
 // Implementation of mapper interface using a hard-coded algorithm.
@@ -12,7 +12,7 @@ template<typename PoseType = defaultTypes::PoseType,
 class HCMapper : public Mapper<GraphType> {
    public:
     HCMapper()
-    : Mapper<GraphType>() {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    : Mapper<GraphType>(models::maze.nCols) {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
 
     auto tick() -> void override final {}
 

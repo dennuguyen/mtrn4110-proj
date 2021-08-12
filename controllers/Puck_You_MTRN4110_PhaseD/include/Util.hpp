@@ -1,23 +1,25 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
-#include <map>
+#include <tuple>
 #include <utility>
 #include <vector>
 
-#include "Models.hpp"
 #include "Node.hpp"
 
 namespace mtrn4110 {
+
+enum class Heading { N, E, S, W };
+
 namespace defaultTypes {
-using HeadingType = int;
-using PoseType = std::pair<int, int>;
+using HeadingType = int;  // N, E, S, W
+using PoseType = std::pair<int, int>;  // Coordinates.
 using DistanceType = double;  // metres
 using AngleType = double;  // degrees
 using LinearVelocityType = std::tuple<double, double, double>;  // (x, y, z)
 using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch, yaw)
 using MotionType = char;  // F, L, R
-using GraphType = std::array<std::array<Node, models::maze.nCols>, models::maze.nRows>;
+using GraphType = std::vector<std::vector<Node>>;
 }  // namespace defaultTypes
 
 namespace files {
