@@ -2,8 +2,11 @@
 #include <webots/Robot.hpp>
 
 #include "DeadReckoning.hpp"
+#include "DistanceSensor.hpp"
 #include "EPuckMotionPlanner.hpp"
 #include "HCLocaliser.hpp"
+#include "HCPathPlanner.hpp"
+#include "LidarSensor.hpp"
 #include "MotorController.hpp"
 #include "TaskControl.hpp"
 
@@ -21,10 +24,15 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)taskControl;
 
     // Instantiate RSA elements.
+    auto distanceSensor = mtrn4110::DistanceSensor(robot);
+    auto lidarSensor = mtrn4110::LidarSensor(robot);
     auto motorController = mtrn4110::MotorController(robot);
     auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
     auto deadReckoning = mtrn4110::DeadReckoning(' ');
+    auto hcPathPlanner = mtrn4110::HCPathPlanner(NULL, {0, 0}, {0, 0}, 2);
     auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
+    (void)distanceSensor;
+    (void)lidarSensor;
     (void)motorController;
     (void)motionPlanner;
     (void)deadReckoning;

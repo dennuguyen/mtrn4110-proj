@@ -17,11 +17,12 @@ class HCPathPlanner final : public PathPlanner<PoseType, HeadingType, MotionType
                                                                 destination,
                                                                 initialPose,
                                                                 initialHeading) {}
+    auto tick() -> void override final {}
 
     auto computePath() -> void {}
 
    private:
-    auto print(std::ostream& os) const noexcept -> void {
+    auto print(std::ostream& os) const noexcept -> void override final {
         (void)os;
     }
 };

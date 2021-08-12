@@ -5,6 +5,7 @@
 #include <webots/Robot.hpp>
 
 #include <algorithm>
+#include <cmath>
 #include <memory>
 #include <vector>
 
@@ -80,7 +81,7 @@ class LidarSensor {
     }
 
     auto isRightWall() const noexcept -> bool {
-        return walls[2];
+        return walls_[2];
     }
 
    private:
