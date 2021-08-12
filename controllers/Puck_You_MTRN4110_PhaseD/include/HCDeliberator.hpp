@@ -1,6 +1,8 @@
 #ifndef HC_DELIBERATOR_HPP
 #define HC_DELIBERATOR_HPP
 
+#include <vector>
+
 #include "Deliberator.hpp"
 #include "Util.hpp"
 

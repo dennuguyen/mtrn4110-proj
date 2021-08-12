@@ -2,6 +2,7 @@
 #define MOTION_TELEOPERATION_HPP
 
 #include <memory>
+#include <vector>
 #include <webots/Keyboard.hpp>
 #include <webots/Webots.hpp>
 
