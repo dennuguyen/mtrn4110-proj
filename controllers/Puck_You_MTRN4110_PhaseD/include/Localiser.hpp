@@ -11,6 +11,11 @@ namespace mtrn4110 {
 template<typename PoseType = defaultTypes::PoseType, typename HeadingType = defaultTypes::HeadingType>
 class Localiser {
    public:
+    // Constructor taking an initial pose and initial heading.
+    Localiser(PoseType initialPose, HeadingType initialHeading)
+    : currentPose_(initialPose)
+    , currentHeading_(initialHeading) {}
+
     auto getCurrentPose() const noexcept -> PoseType {
         return currentPose_;
     }
