@@ -24,9 +24,11 @@ using GraphType = std::vector<std::vector<Node>>;
 }  // namespace defaultTypes
 
 namespace files {
-constexpr auto csvPath = "../../MotionExecution.csv";
-constexpr auto mapPath = "../../Map.txt";
-constexpr auto pathPlanPath = "../../PathPlan.txt";
+constexpr auto csvPath = "../../MotionExecution.csv";  // Path to output Phase A execution.
+constexpr auto motionPlanPath = "../../MotionPlan.txt";  // Path to read Phase A motion sequence.
+constexpr auto mapPath = "../../Map.txt";  // Path to read in map for Phase B.
+constexpr auto outputPath = "../../Output.txt";  // Path to output Phase B execution.
+constexpr auto pathPlanPath = "../../PathPlan.txt";  // Path to output Phase B motion sequence.
 }  // namespace files
 }  // namespace mtrn4110
 
