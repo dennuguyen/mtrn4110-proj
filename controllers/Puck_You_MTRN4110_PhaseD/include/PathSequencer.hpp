@@ -18,10 +18,17 @@ class PathSequencer {
                                                                 initialPose,
                                                                 initialHeading) {}
 
-    auto computePath() -> void {}
+    auto nextMotion() -> void {}
+
+    // Operator overload for <<.
+    friend auto operator<<(std::ostream& os, PathSequencer const& pathSequencer) noexcept
+        -> std::ostream& {
+        pathSequencer.print(os);
+        return os;
+    }
 
    private:
-    auto print(std::ostream& os) const noexcept -> void override final {
+    auto print(std::ostream& os) const noexcept -> void {
         (void)os;
     }
 };

@@ -37,7 +37,18 @@ class DistanceSensor {
         return sensors_[1].second < wallDistanceThreshold;
     }
 
+    // Operator overload for <<.
+    friend auto operator<<(std::ostream& os, DistanceSensor const& distanceSensor) noexcept
+        -> std::ostream& {
+        distanceSensor.print(os);
+        return os;
+    }
+
    private:
+    auto print(std::ostream& os) const noexcept -> void {
+        (void)os;
+    }
+
     static constexpr auto wallDistanceThreshold = 575;
     std::vector<std::pair<std::unique_ptr<webots::DistanceSensor>, double>> sensors_;
 };

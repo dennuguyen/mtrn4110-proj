@@ -84,7 +84,18 @@ class LidarSensor {
         return walls_[2];
     }
 
+    // Operator overload for <<.
+    friend auto operator<<(std::ostream& os, LidarSensor const& lidarSensor) noexcept
+        -> std::ostream& {
+        lidarSensor.print(os);
+        return os;
+    }
+
    private:
+    auto print(std::ostream& os) const noexcept -> void {
+        (void)os;
+    }
+
     static constexpr auto wallDistance = 0.085;  // Distance from centre of cell to wall.
     static constexpr auto sectorWidth = 20.0;  // Width of sector in degrees.
     static constexpr auto startAngle = static_cast<double>(90.0 - 0.75 * sectorWidth);
