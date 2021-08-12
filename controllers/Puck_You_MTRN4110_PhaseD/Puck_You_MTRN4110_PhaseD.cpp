@@ -39,6 +39,7 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)motionPlanner;
     (void)deadReckoning;
     (void)hcLocaliser;
+    (void)hcDeliberator;
     // Enter control loop.
     while (1) {
     }
