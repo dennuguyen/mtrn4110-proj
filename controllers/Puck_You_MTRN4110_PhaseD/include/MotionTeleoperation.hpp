@@ -13,7 +13,7 @@ namespace mtrn4110 {
 
 // A deliberator to teleoperate the robot based on input motion commands. The input may be a
 // character or string of motions.
-template<typename DeliberateType = std::vector<defaultTypes::MotionType>>
+template<typename DeliberateType = defaultTypes::PathType>
 class MotionTeleoperation final : public Deliberator<DeliberateType>() {
    public:
     MotionTeleoperation(webots::Webots& robot)

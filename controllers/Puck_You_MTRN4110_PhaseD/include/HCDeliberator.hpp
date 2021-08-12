@@ -13,7 +13,7 @@ namespace mtrn4110 {
 // A deliberator to operate the robot based on input motion commands from a file.
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
-         typename DeliberateType = std::vector<defaultTypes::MotionType>>
+         typename DeliberateType = defaultTypes::PathType>
 class HCDeliberator final : public Deliberator<DeliberateType> {
    public:
     HCDeliberator()

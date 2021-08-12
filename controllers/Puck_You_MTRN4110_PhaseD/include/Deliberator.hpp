@@ -8,7 +8,7 @@
 namespace mtrn4110 {
 
 // An interface for a generic waypoint deliberator.
-template<typename DeliberateType = defaultTypes::MotionType>
+template<typename DeliberateType = defaultTypes::PathType>
 class Deliberator {
    public:
     // Constructor to initialise deliberation type.
@@ -27,7 +27,7 @@ class Deliberator {
     }
 
    protected:
-    DeliberateType delib_;  // This is the variable we want to output.
+    DeliberateType delib_;  // Variable to be outputted by user deliberation.
 
    private:
     // Write any required data to an output stream.

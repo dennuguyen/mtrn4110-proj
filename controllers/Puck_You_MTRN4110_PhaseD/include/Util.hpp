@@ -20,6 +20,7 @@ using AngleType = double;  // degrees
 using LinearVelocityType = std::tuple<double, double, double>;  // (x, y, z)
 using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch, yaw)
 using MotionType = char;  // F, L, R
+using PathType = std::vector<MotionType>;
 using GraphType = std::vector<std::vector<Node>>;
 }  // namespace defaultTypes
 
