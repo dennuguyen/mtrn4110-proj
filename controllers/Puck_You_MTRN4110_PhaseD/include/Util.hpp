@@ -5,10 +5,8 @@
 #include <utility>
 #include <vector>
 
+#include "Models.hpp"
 #include "Node.hpp"
-
-const int N_ROWS = 5;
-const int N_COLS = 9;
 
 namespace mtrn4110 {
 namespace defaultTypes {
@@ -19,7 +17,7 @@ using AngleType = double;  // degrees
 using LinearVelocityType = std::tuple<double, double, double>;  // (x, y, z)
 using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch, yaw)
 using MotionType = char;  // F, L, R
-using GraphType = std::array<std::array<Node, N_COLS>, N_ROWS>;
+using GraphType = std::array<std::array<Node, models::maze.nCols>, models::maze.nRows>;
 }  // namespace defaultTypes
 
 namespace files {
