@@ -11,19 +11,6 @@ template<typename AngleType = defaultTypes::AngleType,
          typename AngularVelocityType = defaultTypes::AngularVelocityType>
 class MotionPlanner {
    public:
-    // Initialise the motion planner with a motor position and motor velocity.
-    MotionPlanner(double motorPosition, double motorVelocity)
-    : motorPosition_(motorPosition)
-    , motorVelocity_(motorVelocity) {}
-
-    auto getMotorPosition() const noexcept -> double {
-        return motorPosition_;
-    }
-
-    auto getMotorVelocity() const noexcept -> double {
-        return motorVelocity_;
-    }
-
     // Operator overload for <<.
     friend auto operator<<(std::ostream& os, MotionPlanner const& MotionPlanner) noexcept
         -> std::ostream& {
@@ -31,12 +18,8 @@ class MotionPlanner {
         return os;
     }
 
-   protected:
-    double motorPosition_;
-    double motorVelocity_;
-
    private:
-    // Compute the required motor position and velocity setpoints to achieve the given kinematics.
+    // Compute the required motor setpoints to achieve the given kinematics.
     virtual auto computeMotorSetpoints(AngleType angle,
                                        DistanceType distance,
                                        LinearVelocityType linearVelocity,
