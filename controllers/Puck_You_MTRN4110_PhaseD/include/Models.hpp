@@ -5,10 +5,14 @@ namespace mtrn4110 {
 namespace models {
 // Struct outlining the properties of a map.
 struct MapModel {
-    MapModel(double distanceBetweenCells)
-    : distanceBetweenCells(distanceBetweenCells) {}
+    MapModel(double distanceBetweenCells, int nRows, int nCols)
+    : distanceBetweenCells(distanceBetweenCells)
+    , nRows(nRows)
+    , nCols(nCols) {}
 
     double const distanceBetweenCells;  // m
+    int const nRows;
+    int const nCols;
 };
 
 // Struct outlining the properties of a robot.
@@ -25,7 +29,7 @@ struct RobotModel {
     double const maxMotorSpeed;  // rad/s
 };
 
-auto maze = MapModel(0.165);
+auto maze = MapModel(0.165, 5, 9);
 auto ePuck = RobotModel(0.02, 0.0566, 0.1287, 6.28);
 
 }  // namespace models
