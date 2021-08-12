@@ -4,20 +4,19 @@
 #include "PathPlanner.hpp"
 
 namespace mtrn4110 {
+// Class which takes in some path with valid motion types
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
          typename MotionType = defaultTypes::MotionType,
-         typename GraphType = std::string>
-class HCPathPlanner final : public PathPlanner<PoseType, HeadingType, MotionType, GraphType> {
+         typename PathType = defaultTypes::PathType>
+class PathSequencer {
    public:
-    // Constructor for hard-coded path planner to initialise graph, destination, initial pose, and
-    // initial heading.
-    HCPathPlanner(GraphType graph, PoseType destination, PoseType initialPose, HeadingType initialHeading)
+    // Constructor for path sequencer to initialise the path.
+    PathSequencer(DeliberateType motionSequence)
     : PathPlanner<PoseType, HeadingType, MotionType, GraphType>(graph,
                                                                 destination,
                                                                 initialPose,
                                                                 initialHeading) {}
-    auto tick() -> void override final {}
 
     auto computePath() -> void {}
 
