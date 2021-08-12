@@ -1,6 +1,10 @@
 #ifndef MOTION_TELEOPERATION_HPP
 #define MOTION_TELEOPERATION_HPP
 
+#include <memory>
+#include <webots/Keyboard.hpp>
+#include <webots/Webots.hpp>
+
 #include "Deliberator.hpp"
 #include "Util.hpp"
 
@@ -11,8 +15,11 @@ namespace mtrn4110 {
 template<typename DeliberateType = std::vector<defaultTypes::MotionType>>
 class MotionTeleoperation final : public Deliberator<DeliberateType>() {
    public:
-    MotionTeleoperation()
-    : Deliberator<DeliberateType>() {}
+    MotionTeleoperation(webots::Webots& robot)
+    : Deliberator<DeliberateType>()
+    , keyboard_(robot.getKeyboard()) {
+        // INITIALISE OTHER STUFF HERE
+    }
 
     // PUT PUBLIC METHODS HERE
 
@@ -20,6 +27,7 @@ class MotionTeleoperation final : public Deliberator<DeliberateType>() {
     // PUT PRIVATE METHODS HERE
 
     // PUT PRIVATE MEMBERS HERE
+    std::unique_ptr<webots::Keyboard> keyboard_;
 };
 }  // namespace mtrn4110
 
