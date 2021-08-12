@@ -3,6 +3,7 @@
 
 #include "PathPlanner.hpp"
 #include "Util.hpp"
+#include "Path.hpp"
 
 namespace mtrn4110 {
 // Implementation of path planner interface using flood filling.
@@ -23,8 +24,13 @@ class FloodFill : public PathPlanner<PoseType, HeadingType, MotionType, GraphTyp
    private:
     // ADD ANY PRIVATE METHODS BELOW HERE
     auto print(std::ostream& os) const noexcept -> void override final {}
-
+    auto floodFill() -> void final {}
+    auto processPaths() -> void final {}
+    auto addNextStep(std::vector<Path> *paths, Path path, int row, int col, Direction in, Direction out) -> void final {}
+    auto findFinalPath() -> void final {}
     // ADD ANY PRIVATE MEMBERS BELOW HERE
+    std::vector<Path> paths_;
+    Path finalPath_;
 };
 }  // namespace mtrn4110
 
