@@ -31,7 +31,7 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)lidarSensor;
     auto motorController = mtrn4110::MotorController(robot);
     (void)motorController;
-    auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
+    auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     (void)motionPlanner;
     auto deadReckoning = mtrn4110::DeadReckoning(' ');
     (void)deadReckoning;
