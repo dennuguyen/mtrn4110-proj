@@ -3,6 +3,7 @@
 
 #include "DeadReckoning.hpp"
 #include "EPuckMotionPlanner.hpp"
+#include "HCLocaliser.hpp"
 #include "MotorController.hpp"
 #include "TaskControl.hpp"
 
@@ -23,9 +24,11 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     auto motorController = mtrn4110::MotorController(robot);
     auto motionPlanner = mtrn4110::EPuckMotionPlanner(0, 0);
     auto deadReckoning = mtrn4110::DeadReckoning(' ');
+    auto hcLocaliser = mtrn4110::HCLocaliser();
     (void)motorController;
     (void)motionPlanner;
     (void)deadReckoning;
+    (void)hcLocaliser;
     // Enter control loop.
     while (1) {
     }
