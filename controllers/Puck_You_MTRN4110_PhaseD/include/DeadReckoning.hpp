@@ -62,7 +62,7 @@ class DeadReckoning final
     auto print(std::ostream& os) const noexcept -> void override final {
         (void)os;
     }
-};  // namespace mtrn4110
+};
 }  // namespace mtrn4110
 
 #endif  // DEAD_RECKONING_HPP
