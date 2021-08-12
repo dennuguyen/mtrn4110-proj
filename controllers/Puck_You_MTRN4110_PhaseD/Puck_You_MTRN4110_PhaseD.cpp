@@ -4,6 +4,7 @@
 #include "DeadReckoning.hpp"
 #include "DistanceSensor.hpp"
 #include "EPuckMotionPlanner.hpp"
+#include "HCDeliberator.hpp"
 #include "HCLocaliser.hpp"
 #include "HCPathPlanner.hpp"
 #include "LidarSensor.hpp"
@@ -31,6 +32,7 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     auto deadReckoning = mtrn4110::DeadReckoning(' ');
     auto hcPathPlanner = mtrn4110::HCPathPlanner(NULL, {0, 0}, {0, 0}, 2);
     auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
+    auto hcDeliberator = mtrn4110::HCDeliberator({});
     (void)distanceSensor;
     (void)lidarSensor;
     (void)motorController;
