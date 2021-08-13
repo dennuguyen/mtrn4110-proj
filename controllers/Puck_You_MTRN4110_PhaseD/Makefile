@@ -35,7 +35,7 @@
 ###
 ### ---- C Sources ----
 ### if your program uses several C source files:
-### C_SOURCES = my_plugin.c my_clever_algo.c my_graphics.c
+C_SOURCES = src/CVPuckYou.c
 ###
 ### ---- C++ Sources ----
 ### if your program uses several C++ source files:
@@ -43,12 +43,12 @@ CXX_SOURCES = $(wildcard src/*.cpp) Puck_You_MTRN4110_PhaseD.cpp
 ###
 ### ---- Compilation options ----
 ### if special compilation flags are necessary:
-CFLAGS = -std=c++20 -Wall -W -Werror -Wuninitialized -Wfloat-equal -Wcast-qual -Wpedantic
+CFLAGS = -std=c++20 -Wall # -W -Werror -Wuninitialized -Wfloat-equal -Wcast-qual -Wpedantic
 ###
 ### ---- Linked libraries ----
 ### if your program needs additional libraries:
-INCLUDE = -I./include
-### LIBRARIES = -L"/path/to/my/library" -lmy_library -lmy_other_library
+INCLUDE = -I./include -I../../Python3.6/windows/include
+LIBRARIES = -L../../Python3.6/windows/libs -lpython36
 ###
 ### ---- Linking options ----
 ### if special linking flags are needed:
