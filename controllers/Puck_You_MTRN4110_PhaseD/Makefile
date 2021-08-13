@@ -12,6 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ifeq ($(OS),Windows_NT)
+    DETECTED_OS := windows
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+        DETECTED_OS := linux
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        DETECTED_OS := -D osx
+    endif
+endif
+
 ### Generic Makefile.include for Webots controllers, physics plugins, robot
 ### window libraries, remote control libraries and other libraries
 ### to be used with GNU make
@@ -47,8 +59,8 @@ CFLAGS = -std=c++20 -Wall # -W -Werror -Wuninitialized -Wfloat-equal -Wcast-qual
 ###
 ### ---- Linked libraries ----
 ### if your program needs additional libraries:
-INCLUDE = -I./include -I../../Python3.6/windows/include
-LIBRARIES = -L../../Python3.6/windows/libs -lpython36
+INCLUDE = -I./include -I../../Python3.6/$(DETECTED_OS)/include
+LIBRARIES = -L../../Python3.6/$(DETECTED_OS)/libs -lpython36
 ###
 ### ---- Linking options ----
 ### if special linking flags are needed:
