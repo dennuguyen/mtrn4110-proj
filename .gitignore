@@ -8,13 +8,18 @@
 !Makefile
 !*.hpp
 !*.cpp
+!*.h
+!*.c
 !*.pdf
 !*.txt
 !*.png
 !*.wbt
 !*.wbproj
 !*.drawio
-!.ipynb
+!*.ipynb
+!*.py
+!*.pyx
+!*.sh
 
 # and in their subdirectories
 !*/
