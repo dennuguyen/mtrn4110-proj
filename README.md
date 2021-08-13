@@ -63,6 +63,6 @@ pip install cython
 
 ## Build Instructions
 
-`.pyx` files currently should be compiled on Ubuntu by running `cython-build-script.sh`. The option to compile on other OS have not been explored.
+`.pyx` files currently should be compiled on Ubuntu by running `cython-build-script.sh`. The option to compile on other OS has not been explored.
 
 
