@@ -1,3 +1,3 @@
-cython --embed scripts/CVPuckYou.pyx
+cython scripts/CVPuckYou.pyx
 mv scripts/CVPuckYou.c src/
 mv scripts/CVPuckYou.h include/
