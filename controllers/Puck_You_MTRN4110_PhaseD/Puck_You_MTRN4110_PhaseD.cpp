@@ -1,3 +1,10 @@
+#define _hypot hypot  // Somewhere deep in Webots incorrectly defines this.
+
+#include <Python.h>
+
+#include "CVPuckYou.h"
+
+#include <stdlib.h>
 #include <thread>
 #include <webots/Robot.hpp>
 
@@ -49,6 +56,26 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
 auto main(int argc, char** argv) -> int {
     (void)argc;
     (void)argv;
+
+    // TEST CYTHON
+    if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
+        throw std::runtime_error("Could not extend built-in modules table.");
+    }
+    Py_Initialize();
+
+    auto module = std::unique_ptr<PyObject>(PyImport_ImportModule("CVPuckYou"));
+    if (module == nullptr) {
+        PyErr_Print();
+        Py_Finalize();
+        return -42;
+    }
+
+    print_hello();
+    openImage();
+    // runCVWaypointer();
+    print_hello();
+
+    Py_Finalize();
 
     // Instantiate webots robot.
     auto robot = webots::Robot();

@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="C91cKKwiNIsFAHS6rGZc" name="Page-1">
-        <mxGraphModel dx="2322" dy="861" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
+        <mxGraphModel dx="2230" dy="709" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -16,7 +16,7 @@
                 <mxCell id="110" value="&lt;u&gt;TaskControl&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;textDirection=ltr;" parent="1" vertex="1">
                     <mxGeometry x="-1180" y="120" width="540" height="600" as="geometry"/>
                 </mxCell>
-                <mxCell id="161" value="Localisation" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=2" parent="1" vertex="1">
+                <mxCell id="161" value="Localiser" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=2" parent="1" vertex="1">
                     <mxGeometry x="280" y="560.2499999999999" width="160" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="98" edge="1">
@@ -151,7 +151,7 @@
                 <mxCell id="182" value="&lt;font color=&quot;#99ffff&quot;&gt;maze&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-540" y="319.8199999999999" width="120" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="183" value="Mapping" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=2" parent="1" vertex="1">
+                <mxCell id="183" value="Mapper" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=2" parent="1" vertex="1">
                     <mxGeometry x="280" y="360.2499999999999" width="160" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="184" value="&lt;font&gt;HCMapper&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#B266FF;" parent="1" vertex="1">
@@ -662,13 +662,13 @@
                         <mxPoint x="32" y="-10" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="373" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;startArrow=classic;startFill=1;endArrow=none;endFill=0;" edge="1" parent="1">
+                <mxCell id="373" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="780" y="340.05999999999995" as="targetPoint"/>
                         <mxPoint x="860" y="340.05999999999995" as="sourcePoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="374" value="motion" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;labelBackgroundColor=none;" vertex="1" connectable="0" parent="373">
+                <mxCell id="374" value="motion" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;labelBackgroundColor=none;" parent="373" vertex="1" connectable="0">
                     <mxGeometry x="0.3148" relative="1" as="geometry">
                         <mxPoint x="12" y="-10" as="offset"/>
                     </mxGeometry>
