@@ -85,3 +85,7 @@ The program will crash for python versions >= 3.5 and cython versions == 0.29.
 ### Why is there a `.dll` in `controllers/Puck_You_MTRN4110_PhaseD`?
 
 Windows requires the dynamic library for cython `.c`/`.h` files to execute since cython `.c`/`.h` files are linked to python libraries. Cython `.c`/`.h` files after-all are still interpretted and cannot be made python-independent.
+
+### Why has the [`pyconfig.py` file](https://gitlab.com/puck-you/phase-d/-/blob/dev/python3.6/windows/include/pyconfig.h) been modified?
+
+See this issue: https://github.com/cython/cython/issues/3405
