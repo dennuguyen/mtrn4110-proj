@@ -1,3 +1,2 @@
-cython
 opencv-contrib-python
 numpy
