@@ -338,37 +338,39 @@ cdef public void print_hello():
     print("Hello!")
 
 
-cdef public void openImage():
+cdef public void openImage(char* path):
     '''
     Task 1 - Read in an image and display it in RGB mode
     '''
-    image = readImage(MAZE_FILE_NAME)
+    image = readImage(path)
     writeImage('output.png', image)
 
 
-cdef public void runCVLocaliser():
+cdef public void runCVLocaliser(char* path):
     '''
     Task 5 - Detect the location and heading of the robot
     '''
-    image = readImage(MAZE_FILE_NAME)
+    image = readImage(path)
     image, origin, corners = markCorners(image)
     image, transform_matrix = focus(image, origin, corners)
     image, epuck_position = markPose(image)
     image, epuck_direction = markOrientation(image, ROBOT_FILE_NAME, epuck_position, transform_matrix)
+    return epuck_position, epuck_direction
 
 
-cdef public void runCVWaypointer():
+cdef public list runCVWaypointer(char* path):
     '''
-    Task 6 - Detect the position of the true target
+    CVWaypointer detects and returns the intended destination as deliberated by the user using openCV.
     '''
-    image = readImage(MAZE_FILE_NAME)
+    image = readImage(path)
     image, origin, corners = markCorners(image)
     image, _ = focus(image, origin, corners)
-    image, _ = markLadyBug(image)
+    image, destination = markLadyBug(image)
     writeImage('output.png', image)
+    return destination
 
 
-cdef public void runCVMapper():
+cdef public char* runCVMapper():
     '''
     Task 7 - Generate a map and write it to a text file
     '''
@@ -383,4 +385,4 @@ cdef public void runCVMapper():
     # TODO: ran out of time.
     maze_map = generateSparseMap(image, epuck_position, epuck_direction, ladybug_position, wall_positions)
     maze_map = generateFullMap(maze_map)
-    print(maze_map)
+    return maze_map
