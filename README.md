@@ -66,7 +66,7 @@ pip install cython
 
 ### Why is there a python3.6 folder with header files and libs?
 
-Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation of cython files into the C++ build, we keep a copy of these for each OS.
+Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation and execution of cython files into the C++ build, we keep a copy of these for each OS.
 
 ### How do I compile the `.pyx` code with the C++ code?
 
@@ -81,3 +81,7 @@ In the Windows version of Webots in `Webots/msys64/mingw64/include/c++/10.2.0/cm
 ### Why do we use `PyImport_AppendInittab`?
 
 The program will crash for python versions >= 3.5 and cython versions == 0.29.
+
+### Why is there a `.dll` in `controllers/Puck_You_MTRN4110_PhaseD`?
+
+Windows requires the dynamic library for cython `.c`/`.h` files to execute since cython `.c`/`.h` files are linked to python libraries. Cython `.c`/`.h` files after-all are still interpretted and cannot be made python-independent.
