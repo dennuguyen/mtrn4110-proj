@@ -1,25 +1,3 @@
-# Ignore everything
-*
-
-# Except
-!.gitignore
-!.clang-format
-!README.md
-!Makefile
-!*.hpp
-!*.cpp
-!*.h
-!*.c
-!*.pdf
-!*.txt
-!*.png
-!*.wbt
-!*.wbproj
-!*.drawio
-!*.ipynb
-!*.py
-!*.pyx
-!*.sh
-
-# and in their subdirectories
-!*/
+**/build/
+**/*.exe
+**/.vscode
