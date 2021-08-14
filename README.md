@@ -1,5 +1,7 @@
 # Phase D
 
+---
+
 ## Gantt Chart
 
 ```mermaid
@@ -27,6 +29,8 @@ gantt
     Record Extra Features Milestones      :16-08-2021, 4d
     Edit Video Segments                   :20-08-2021, 1d
 ```
+
+---
 
 ## Python Setup
 
@@ -62,6 +66,8 @@ Windows:
 ```
 py -m pip install -r requirements.txt
 ```
+
+---
 
 ## Build Instructions & Dependencies
 
@@ -124,6 +130,16 @@ py -m pip install -r requirements.txt
 
 The following platforms have been tested and are recommended:
 - Webots R2021a on Windows 10 with WSL (Ubuntu 18.04).
+
+---
+
+## Run Instructions
+
+1. Any changes in file paths must be made in `config.txt`. There is no need to rebuild from modifications to this file.
+1. Select the `Puck_You_MTRN4110_PhaseD.cpp` file as the EPuck controller.
+1. Execute the program using Webots' run tool.
+
+---
 
 ## FAQ
 
