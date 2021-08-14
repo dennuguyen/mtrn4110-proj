@@ -19,7 +19,7 @@ using LinearVelocityType = std::tuple<double, double, double>;  // (x, y, z)
 using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch, yaw)
 using MotionType = char;  // F, L, R
 using PathType = std::vector<MotionType>;
-using GraphType = std::vector<std::vector<int>>;  // Graphs must be accessible using [][].
+using GraphType = std::vector<std::vector<int>>;  // Adjacency matrix of ints.
 }  // namespace defaultTypes
 
 namespace files {
