@@ -9,10 +9,10 @@ template<typename GraphType = defaultTypes::GraphType>
 class Mapper {
    public:
     // Constructor to initialise graph.
-    Mapper(int size)
-    : graph_(GraphType(static_cast<std::size_t>(size))) {}
+    Mapper()
+    : graph_() {}
 
-    virtual auto readMap(std::istream const& mapStream) -> void = 0;
+    virtual auto readMap(std::istream& inputStream) -> void = 0;
 
     virtual auto buildGraph() -> void = 0;
 

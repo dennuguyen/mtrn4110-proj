@@ -1,11 +1,11 @@
-#ifndef HC_MAPPER_HPP
-#define HC_MAPPER_HPP
+#ifndef ADJ_LIST_MAPPER_HPP
+#define ADJ_LIST_MAPPER_HPP
 
 #include <map>
+#include <queue>
 #include <utility>
 
 #include "Mapper.hpp"
-#include "Models.hpp"
 
 namespace mtrn4110 {
 // Implementation of mapper interface to create a graph represented by an adjacency matrix.
@@ -13,26 +13,26 @@ template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
          typename GraphType =
              std::map<std::pair<int, int>, std::pair<int, std::vector<std::pair<int, int>>>>>
-class HCMapper final : public Mapper<GraphType> {
+class AdjListMapper final : public Mapper<GraphType> {
    public:
-    HCMapper()
-    : Mapper<GraphType>(models::maze.nCols) {}
+    AdjListMapper()
+    : Mapper<GraphType>() {}
 
     // Reads the input stream which has the map.
-    auto readMap(std::istream const& mapStream) -> void override final {
-        if (mapStream.good() == false) {
+    auto readMap(std::istream& inputStream) -> void override final {
+        if (inputStream.good() == false) {
             throw std::runtime_error("Could not open file.");
         }
 
         auto line = std::string();
-        while (std::getline(mapStream, line)) {
+        while (std::getline(inputStream, line)) {
             map_.push_back(line);
         }
 
-        if (mapStream.good() == false) {
+        if (inputStream.good() == false) {
             throw std::runtime_error("I/O error while reading.");
         }
-        if (mapStream.eof() == false) {
+        if (inputStream.eof() == false) {
             throw std::runtime_error("Did not reach EOF.");
         }
     }
@@ -87,20 +87,20 @@ class HCMapper final : public Mapper<GraphType> {
                     // Check vertical wall to right of centre of tile.
                     if (col + 2 < maxColumn) {
                         if (map_[line][col + 2] == ' ') {
-                            graph_[{x, y}].first = unvisited;
-                            graph_[{x, y}].second.emplace_back(x + 1, y);
-                            graph_[{x + 1, y}].first = unvisited;
-                            graph_[{x + 1, y}].second.emplace_back(x, y);
+                            this->graph_[{x, y}].first = unvisited;
+                            this->graph_[{x, y}].second.emplace_back(x + 1, y);
+                            this->graph_[{x + 1, y}].first = unvisited;
+                            this->graph_[{x + 1, y}].second.emplace_back(x, y);
                         }
                     }
 
                     // Check horizontal wall below centre of tile.
                     if (line + 1 < maxLine) {
                         if (map_[line + 1][col] == ' ') {
-                            graph_[{x, y}].first = unvisited;
-                            graph_[{x, y}].second.emplace_back(x, y + 1);
-                            graph_[{x, y + 1}].first = unvisited;
-                            graph_[{x, y + 1}].second.emplace_back(x, y);
+                            this->graph_[{x, y}].first = unvisited;
+                            this->graph_[{x, y}].second.emplace_back(x, y + 1);
+                            this->graph_[{x, y + 1}].first = unvisited;
+                            this->graph_[{x, y + 1}].second.emplace_back(x, y);
                         }
                     }
                 }
@@ -110,7 +110,7 @@ class HCMapper final : public Mapper<GraphType> {
 
     // Perform a BFS on the graph to get directedness of the graph from end_ to start_.
     auto secondParse() -> void {
-        graph_.at(end_).first = 0;
+        this->graph_.at(end_).first = 0;
 
         auto pathQueue = std::queue<std::pair<int, int>>();
         pathQueue.push(end_);
@@ -124,10 +124,11 @@ class HCMapper final : public Mapper<GraphType> {
                 break;
             }
 
-            for (auto const& adjacentPosition : graph_.at(currentPosition).second) {
+            for (auto const& adjacentPosition : this->graph_.at(currentPosition).second) {
                 // Give unvisited words a distance from source.
-                if (graph_.at(adjacentPosition).first == unvisited) {
-                    graph_.at(adjacentPosition).first = graph_.at(currentPosition).first + 1;
+                if (this->graph_.at(adjacentPosition).first == unvisited) {
+                    this->graph_.at(adjacentPosition).first =
+                        this->graph_.at(currentPosition).first + 1;
                     pathQueue.push(adjacentPosition);
                 }
             }
@@ -151,4 +152,4 @@ class HCMapper final : public Mapper<GraphType> {
 };
 }  // namespace mtrn4110
 
-#endif  // HC_MAPPER_HPP
+#endif  // ADJ_LIST_MAPPER_HPP

@@ -8,6 +8,7 @@
 #include <thread>
 #include <webots/Robot.hpp>
 
+#include "AdjListMapper.hpp"
 #include "AdjMatMapper.hpp"
 #include "DeadReckoning.hpp"
 #include "DistanceSensor.hpp"
@@ -61,8 +62,10 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)localiser;
     auto deliberator = mtrn4110::HCDeliberator();
     (void)deliberator;
-    auto mapper = mtrn4110 ::AdjMatMapper();
+    auto mapper = mtrn4110::AdjMatMapper();
     (void)mapper;
+    auto mapper2 = mtrn4110::AdjListMapper();
+    (void)mapper2;
     // Enter control loop.
     while (1) {
     }
@@ -82,7 +85,6 @@ auto main(int argc, char** argv) -> int {
         throw std::runtime_error("Could not import CVPuckYou.");
     }
     print_hello();
-    openImage(MAZE_FILE_NAME);
 
     // End the Python interpretter.
     Py_Finalize();
