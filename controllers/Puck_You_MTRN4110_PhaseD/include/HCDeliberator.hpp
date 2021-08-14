@@ -2,6 +2,7 @@
 #define HC_DELIBERATOR_HPP
 
 #include <fstream>
+#include <iterator>
 #include <stdexcept>
 #include <vector>
 
@@ -13,6 +14,7 @@ namespace mtrn4110 {
 // A deliberator to operate the robot based on input motion commands from a file.
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
+         typename MotionType = defaultTypes::MotionType,
          typename DeliberateType = defaultTypes::PathType>
 class HCDeliberator final : public Deliberator<DeliberateType> {
    public:
@@ -26,7 +28,9 @@ class HCDeliberator final : public Deliberator<DeliberateType> {
         }
 
         // Get motion plan assuming it is valid.
-        inputStream >> this->delib_;
+        std::copy(std::istream_iterator<MotionType>(inputStream),
+                  std::istream_iterator<MotionType>(),
+                  std::back_inserter(this->delib_));
 
         if (inputStream.good() == false) {
             throw std::runtime_error("I/O error while reading.");
