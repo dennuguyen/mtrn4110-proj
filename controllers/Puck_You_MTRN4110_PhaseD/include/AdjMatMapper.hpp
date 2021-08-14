@@ -1,37 +1,36 @@
 #ifndef HC_MAPPER_HPP
 #define HC_MAPPER_HPP
 
+#include <limits>
+
 #include "Mapper.hpp"
 #include "Models.hpp"
 
 namespace mtrn4110 {
-// Implementation of mapper interface using a hard-coded algorithm.
+// Implementation of mapper interface to create a graph represented by an adjacency matrix.
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
          typename GraphType = defaultTypes::GraphType>
 class HCMapper final : public Mapper<GraphType> {
    public:
     HCMapper()
-    : Mapper<GraphType>(models::maze.nCols) {}  // EDIT CONSTRUCTOR PARAMETERS AS REQUIRED
+    : Mapper<GraphType>(models::maze.nCols) {}
 
-    // ADD ANY PUBLIC METHODS BELOW HERE
-
-    // Reads the map file
-    auto readMap() -> void {
-        auto mapFile = std::ifstream(files::mapPath);
-        if (mapFile.good() == false) {
+    // Reads the input stream which has the map.
+    auto readMap(std::istream const& mapStream) -> void {
+        if (mapStream.good() == false) {
             throw std::runtime_error("Could not open file.");
         }
 
         auto line = std::string();
-        while (std::getline(mapFile, line)) {
+        while (std::getline(mapStream, line)) {
             map_.push_back(line);
         }
 
-        if (mapFile.bad() == true) {
+        if (mapStream.good() == false) {
             throw std::runtime_error("I/O error while reading.");
         }
-        if (mapFile.eof() == false) {
+        if (mapStream.eof() == false) {
             throw std::runtime_error("Did not reach EOF.");
         }
     }
@@ -86,13 +85,12 @@ class HCMapper final : public Mapper<GraphType> {
                 // default values
                 graph_[row][col].row = row;
                 graph_[row][col].col = col;
-                graph_[row][col].distance = INT_MAX;
+                graph_[row][col].distance = std::numeric_limits<int>::max();
             }
         }
     }
 
    private:
-    // ADD ANY PRIVATE METHODS BELOW HERE
     auto print(std::ostream& os) const noexcept -> void override final {}
 
     // Extract information from line for horizontal walls
@@ -150,7 +148,6 @@ class HCMapper final : public Mapper<GraphType> {
         }
     }
 
-    // ADD ANY PRIVATE MEMBERS BELOW HERE
     static constexpr char north = '^';
     static constexpr char east = '>';
     static constexpr char south = 'v';
