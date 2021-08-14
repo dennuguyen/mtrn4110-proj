@@ -105,7 +105,7 @@ py -m pip install -r requirements.txt
     <tr>
         <td><code>Python.h</code>, Python underlying <code>.h</code> files, Python libraries</td>
         <td>Provided in python3.6 folder for each OS</td>
-        <td><code>Makefile</code> has been modified<br><code>windows/include/pyconfig.h</code> has been modified</td>
+        <td>Controller <code>Makefile</code> has been modified<br><code>windows/include/pyconfig.h</code> has been modified</td>
     </tr>
     <tr>
         <td><code>python36.dll</code></td>
@@ -141,8 +141,8 @@ The program will crash for python versions >= 3.5 and cython versions == 0.29.
 
 ### Why is there a `.dll` in `controllers/Puck_You_MTRN4110_PhaseD`?
 
-Windows requires the dynamic library for cython `.c`/`.h` files to execute since cython `.c`/`.h` files are linked to python libraries. Cython `.c`/`.h` files after-all are still interpretted and cannot be made python-independent.
+Windows requires the dynamic library for cython `.c`/`.h` files to execute since cython `.c`/`.h` files are linked to python libraries.
 
-### Why has the Windows [`pyconfig.h` file](https://gitlab.com/puck-you/phase-d/-/blob/dev/python3.6/windows/include/pyconfig.h) been modified?
+### Why has [`pyconfig.h`](https://gitlab.com/puck-you/phase-d/-/blob/dev/python3.6/windows/include/pyconfig.h) in `python3.6/windows/include/` been modified?
 
 See this issue: https://github.com/cython/cython/issues/3405
