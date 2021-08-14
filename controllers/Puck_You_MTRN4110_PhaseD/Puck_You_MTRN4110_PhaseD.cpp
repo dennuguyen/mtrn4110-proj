@@ -20,18 +20,6 @@
 #include "PathSequencer.hpp"
 #include "TaskControl.hpp"
 
-namespace {
-constexpr auto MAZE_FILE_NAME = "../../images/Maze_2.png";
-constexpr auto ROBOT_FILE_NAME = "../../Robot_2.png";
-constexpr auto IMAGE_LADYBUG_FILE_NAME = "../Ladybug_small.png";
-constexpr auto MAP_FILE_NAME = "../MapBuilt.txt";
-constexpr auto ORIGIN_CORNER_COLOUR = {255, 0, 255};
-constexpr auto OTHER_CORNER_COLOUR = {0, 255, 255};
-constexpr auto WALL_COLOUR = {120, 50, 255};
-constexpr auto EPUCK_COLOUR = {150, 20, 20};
-constexpr auto LADYBUG_COLOUR = {0, 255, 0};
-}  // namespace
-
 // Perform simulation steps until Webots is stopping the controller.
 static auto simulationSteps(webots::Robot& robot) -> void {
     auto const timeStep = robot.getBasicTimeStep();

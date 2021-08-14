@@ -23,12 +23,21 @@ using GraphType = std::vector<std::vector<int>>;  // Adjacency matrix of ints.
 }  // namespace defaultTypes
 
 namespace files {
-constexpr auto csvPath = "../../MotionExecution.csv";  // Path to output Phase A execution.
-constexpr auto motionPlanPath = "../../MotionPlan.txt";  // Path to read Phase A motion sequence.
-constexpr auto mapPath = "../../Map.txt";  // Path to read in map for Phase B.
-constexpr auto outputPath = "../../Output.txt";  // Path to output Phase B execution.
-constexpr auto pathPlanPath = "../../PathPlan.txt";  // Path to output Phase B motion sequence.
+constexpr auto csvOutput = "../../MotionExecution.csv";
+constexpr auto motionSequenceText = "../../MotionPlan.txt";
+constexpr auto mapText = "../../Map.txt";
+constexpr auto mazeImage = "../../images/Maze_2.png";
+constexpr auto robotImage = "../../Robot_2.png";
+constexpr auto ladybugImage = "../Ladybug_small.png";
 }  // namespace files
+
+namespace colours {
+constexpr auto cyan = {255, 0, 255};
+constexpr auto magenta = {0, 255, 255};
+constexpr auto birch = {120, 50, 255};
+constexpr auto epuck = {150, 20, 20};
+constexpr auto red = {0, 255, 0};
+}  // namespace colours
 }  // namespace mtrn4110
 
 #endif  // UTIL_HPP
