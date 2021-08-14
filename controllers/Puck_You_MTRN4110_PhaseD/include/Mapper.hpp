@@ -12,10 +12,6 @@ class Mapper {
     Mapper()
     : graph_() {}
 
-    virtual auto readMap(std::istream& inputStream) -> void = 0;
-
-    virtual auto buildGraph() -> void = 0;
-
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }
@@ -30,6 +26,12 @@ class Mapper {
     GraphType graph_;
 
    private:
+    // Read the map from the input stream.
+    virtual auto readMap(std::istream& inputStream) -> void = 0;
+
+    // Build the graph from the read-in map.
+    virtual auto buildGraph() -> void = 0;
+
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };

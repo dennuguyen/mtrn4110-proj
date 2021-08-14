@@ -19,27 +19,21 @@ class HCDeliberator final : public Deliberator<DeliberateType> {
     HCDeliberator()
     : Deliberator<DeliberateType>() {}
 
-    auto readMotionPlanFile() -> void {
+    auto readInput(std::istream& inputStream) -> void override final {
         // Read motion plan file.
-        // print("Reading in motion plan from " + files::motionPlanPath + "...");
-        auto motionPlanFile = std::fstream(files::motionPlanPath, std::fstream::in);
-        if (motionPlanFile.good() == false) {
+        if (inputStream.good() == false) {
             throw std::runtime_error("Could not open file.");
         }
 
         // Get motion plan assuming it is valid.
-        motionPlanFile >> this->delib_;
-        // print("Motion Plan: " + motionPlan_);
+        inputStream >> this->delib_;
 
-        if (motionPlanFile.good() == false) {
+        if (inputStream.good() == false) {
             throw std::runtime_error("I/O error while reading.");
         }
-        if (motionPlanFile.eof() == false) {
+        if (inputStream.eof() == false) {
             throw std::runtime_error("Did not reach EOF.");
         }
-        // print("Motion plan read in!");
-
-        // print("Executing motion plan...");
     }
 
     auto getInitialLocale() const noexcept -> std::pair<PoseType, HeadingType> {

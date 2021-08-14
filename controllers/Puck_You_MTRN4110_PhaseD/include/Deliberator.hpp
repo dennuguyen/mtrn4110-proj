@@ -30,6 +30,9 @@ class Deliberator {
     DeliberateType delib_;  // Variable to be outputted by user deliberation.
 
    private:
+    // Read the input stream.
+    virtual auto readInput(std::istream& inputStream) -> void = 0;
+
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
