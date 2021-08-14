@@ -6,8 +6,6 @@
 #include <utility>
 #include <vector>
 
-#include "Node.hpp"
-
 namespace mtrn4110 {
 
 constexpr std::array<char, 4> cardinalPoints = {'N', 'E', 'S', 'W'};
@@ -21,7 +19,7 @@ using LinearVelocityType = std::tuple<double, double, double>;  // (x, y, z)
 using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch, yaw)
 using MotionType = char;  // F, L, R
 using PathType = std::vector<MotionType>;
-using GraphType = std::vector<std::vector<Node>>;
+using GraphType = std::vector<std::vector<int>>;  // Adjacency matrix of ints.
 }  // namespace defaultTypes
 
 namespace files {

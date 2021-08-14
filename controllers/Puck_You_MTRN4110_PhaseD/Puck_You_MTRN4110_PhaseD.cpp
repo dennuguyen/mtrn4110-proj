@@ -8,6 +8,7 @@
 #include <thread>
 #include <webots/Robot.hpp>
 
+#include "AdjMatMapper.hpp"
 #include "DeadReckoning.hpp"
 #include "DistanceSensor.hpp"
 #include "EPuckMotionPlanner.hpp"
@@ -19,7 +20,7 @@
 #include "TaskControl.hpp"
 
 namespace {
-constexpr auto MAZE_FILE_NAME = "../../Maze_2.png";
+constexpr auto MAZE_FILE_NAME = "../../images/Maze_2.png";
 constexpr auto ROBOT_FILE_NAME = "../../Robot_2.png";
 constexpr auto IMAGE_LADYBUG_FILE_NAME = "../Ladybug_small.png";
 constexpr auto MAP_FILE_NAME = "../MapBuilt.txt";
@@ -43,7 +44,7 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     auto taskControl = mtrn4110::TaskControl(2, 2);
     (void)taskControl;
 
-    // Instantiate RSA elements.
+    // // Instantiate RSA elements.
     auto distanceSensor = mtrn4110::DistanceSensor(robot);
     (void)distanceSensor;
     auto lidarSensor = mtrn4110::LidarSensor(robot);
@@ -52,14 +53,16 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)motorController;
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     (void)motionPlanner;
-    auto deadReckoning = mtrn4110::DeadReckoning(' ');
-    (void)deadReckoning;
+    auto trajectoryPlanner = mtrn4110::DeadReckoning(' ');
+    (void)trajectoryPlanner;
     auto pathSequencer = mtrn4110::PathSequencer({'F', 'L', 'R'});
     (void)pathSequencer;
-    auto hcLocaliser = mtrn4110::HCLocaliser({0, 0}, 2);
-    (void)hcLocaliser;
-    auto hcDeliberator = mtrn4110::HCDeliberator();
-    (void)hcDeliberator;
+    auto localiser = mtrn4110::HCLocaliser({0, 0}, 2);
+    (void)localiser;
+    auto deliberator = mtrn4110::HCDeliberator();
+    (void)deliberator;
+    auto mapper = mtrn4110 ::AdjMatMapper();
+    (void)mapper;
     // Enter control loop.
     while (1) {
     }
@@ -78,6 +81,11 @@ auto main(int argc, char** argv) -> int {
         PyErr_Print();
         throw std::runtime_error("Could not import CVPuckYou.");
     }
+    print_hello();
+    openImage(MAZE_FILE_NAME);
+
+    // End the Python interpretter.
+    Py_Finalize();
 
     // Instantiate webots robot.
     auto robot = webots::Robot();
@@ -89,9 +97,6 @@ auto main(int argc, char** argv) -> int {
     // Wait for threads to finish.
     t1.join();
     t2.join();
-
-    // End the Python interpretter.
-    Py_Finalize();
 
     return 0;
 }

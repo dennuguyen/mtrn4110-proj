@@ -12,6 +12,10 @@ class Mapper {
     Mapper(int size)
     : graph_(GraphType(static_cast<std::size_t>(size))) {}
 
+    virtual auto readMap(std::istream const& mapStream) -> void = 0;
+
+    virtual auto buildGraph() -> void = 0;
+
     auto getGraph() const noexcept -> GraphType {
         return graph_;
     }

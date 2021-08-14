@@ -5,19 +5,20 @@
 
 #include "Mapper.hpp"
 #include "Models.hpp"
+#include "Node.hpp"
 
 namespace mtrn4110 {
 // Implementation of mapper interface to create a graph represented by an adjacency matrix.
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
-         typename GraphType = defaultTypes::GraphType>
+         typename GraphType = std::vector<std::vector<Node>>>
 class HCMapper final : public Mapper<GraphType> {
    public:
     HCMapper()
     : Mapper<GraphType>(models::maze.nCols) {}
 
     // Reads the input stream which has the map.
-    auto readMap(std::istream const& mapStream) -> void {
+    auto readMap(std::istream const& mapStream) -> void override final {
         if (mapStream.good() == false) {
             throw std::runtime_error("Could not open file.");
         }
@@ -33,10 +34,21 @@ class HCMapper final : public Mapper<GraphType> {
         if (mapStream.eof() == false) {
             throw std::runtime_error("Did not reach EOF.");
         }
+
+        extractMap();
     }
 
+    // Builds the map from read inputs
+    auto buildGraph() -> void override final {
+        firstParse();
+        secondParse();
+    }
+
+   private:
+    auto print(std::ostream& os) const noexcept -> void override final {}
+
     // Extracts information from the map
-    auto extractMap() -> void {
+    auto firstParse() -> void {
         for (int lineNumber = 0; lineNumber < maxLines; lineNumber++) {
             // Determine the row
             int row = lineNumber / 2;
@@ -49,51 +61,6 @@ class HCMapper final : public Mapper<GraphType> {
             }
         }
     }
-
-    // Builds the map from read inputs
-    auto buildMap() -> void {
-        for (int row = 0; row < models::maze.nRows; row++) {
-            for (int col = 0; col < models::maze.nCols; col++) {
-                // checking upwards connections
-                if (!horizontalWalls_[row][col]) {
-                    graph_[row][col].up = true;
-                }
-                else {
-                    graph_[row][col].up = false;
-                }
-                // checking downwards connections
-                if (!horizontalWalls_[row + 1][col]) {
-                    graph_[row][col].down = true;
-                }
-                else {
-                    graph_[row][col].down = false;
-                }
-                // checking leftwards connections
-                if (!verticalWalls_[row][col]) {
-                    graph_[row][col].left = true;
-                }
-                else {
-                    graph_[row][col].left = false;
-                }
-                // checking rightwards connections
-                if (!verticalWalls_[row][col + 1]) {
-                    graph_[row][col].right = true;
-                }
-                else {
-                    graph_[row][col].right = false;
-                }
-                // default values
-                graph_[row][col].row = row;
-                graph_[row][col].col = col;
-                graph_[row][col].distance = std::numeric_limits<int>::max();
-            }
-        }
-    }
-
-    // TODO: getter
-
-   private:
-    auto print(std::ostream& os) const noexcept -> void override final {}
 
     // Extract information from line for horizontal walls
     auto extractHorizontalLine(std::string line, int row) -> void {
@@ -146,6 +113,45 @@ class HCMapper final : public Mapper<GraphType> {
                 break;
             case target: destination_ = {row, col}; break;
             default: break;
+            }
+        }
+    }
+
+    auto secondParse() -> void {
+        for (int row = 0; row < models::maze.nRows; row++) {
+            for (int col = 0; col < models::maze.nCols; col++) {
+                // checking upwards connections
+                if (!horizontalWalls_[row][col]) {
+                    graph_[row][col].up = true;
+                }
+                else {
+                    graph_[row][col].up = false;
+                }
+                // checking downwards connections
+                if (!horizontalWalls_[row + 1][col]) {
+                    graph_[row][col].down = true;
+                }
+                else {
+                    graph_[row][col].down = false;
+                }
+                // checking leftwards connections
+                if (!verticalWalls_[row][col]) {
+                    graph_[row][col].left = true;
+                }
+                else {
+                    graph_[row][col].left = false;
+                }
+                // checking rightwards connections
+                if (!verticalWalls_[row][col + 1]) {
+                    graph_[row][col].right = true;
+                }
+                else {
+                    graph_[row][col].right = false;
+                }
+                // default values
+                graph_[row][col].row = row;
+                graph_[row][col].col = col;
+                graph_[row][col].distance = std::numeric_limits<int>::max();
             }
         }
     }
