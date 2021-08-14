@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="C91cKKwiNIsFAHS6rGZc" name="Page-1">
-        <mxGraphModel dx="2140" dy="406" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
+        <mxGraphModel dx="2008" dy="284" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -112,7 +112,7 @@
                 <mxCell id="163" value="BFSDFS" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#B266FF;" parent="1" vertex="1">
                     <mxGeometry x="660" y="140.84999999999985" width="120" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="164" value="Floodfill" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#B266FF;" parent="1" vertex="1">
+                <mxCell id="164" value="FloodFill" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#B266FF;" parent="1" vertex="1">
                     <mxGeometry x="660" y="200.50999999999985" width="120" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="174" value="CVLocaliser" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#66FF66;" parent="1" vertex="1">
