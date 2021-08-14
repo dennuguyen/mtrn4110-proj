@@ -5,7 +5,7 @@ namespace mtrn4110 {
 namespace models {
 // Struct outlining the properties of a map.
 struct MapModel {
-    MapModel(double distanceBetweenCells, int nRows, int nCols)
+    constexpr MapModel(double distanceBetweenCells, int nRows, int nCols)
     : distanceBetweenCells(distanceBetweenCells)
     , nRows(nRows)
     , nCols(nCols) {}
@@ -17,13 +17,13 @@ struct MapModel {
 
 // Struct outlining the properties of a robot.
 struct RobotModel {
-    RobotModel(double diameter,
-               double height,
-               double wheelRadius,
-               double axleLength,
-               double mass,
-               double maxSpeed,
-               double maxMotorSpeed)
+    constexpr RobotModel(double diameter,
+                         double height,
+                         double wheelRadius,
+                         double axleLength,
+                         double mass,
+                         double maxSpeed,
+                         double maxMotorSpeed)
     : diameter(diameter)
     , height(height)
     , wheelRadius(wheelRadius)
