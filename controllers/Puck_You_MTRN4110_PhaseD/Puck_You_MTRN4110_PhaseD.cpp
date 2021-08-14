@@ -54,28 +54,18 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
 }
 
 auto main(int argc, char** argv) -> int {
-    (void)argc;
-    (void)argv;
-
-    // TEST CYTHON
+    // Startup Python interpretter.
     if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
         throw std::runtime_error("Could not extend built-in modules table.");
     }
     Py_Initialize();
 
+    // Import CVPuckYou into the Python interpretter.
     auto module = std::unique_ptr<PyObject>(PyImport_ImportModule("CVPuckYou"));
     if (module == nullptr) {
         PyErr_Print();
-        Py_Finalize();
-        return -42;
+        throw std::runtime_error("Could not import CVPuckYou.");
     }
-
-    print_hello();
-    openImage();
-    // runCVWaypointer();
-    print_hello();
-
-    Py_Finalize();
 
     // Instantiate webots robot.
     auto robot = webots::Robot();
@@ -87,6 +77,9 @@ auto main(int argc, char** argv) -> int {
     // Wait for threads to finish.
     t1.join();
     t2.join();
+
+    // End the Python interpretter.
+    Py_Finalize();
 
     return 0;
 }
