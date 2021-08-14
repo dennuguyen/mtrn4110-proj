@@ -135,7 +135,7 @@ The following platforms have been tested and are recommended:
 
 ## Run Instructions
 
-1. Any changes in file paths must be made in `config.txt`. There is no need to rebuild from modifications to this file.
+1. File paths are defined in `Puck_You_MTRN4110_PhaseD.cpp`.
 1. Select the `Puck_You_MTRN4110_PhaseD.cpp` file as the EPuck controller.
 1. Execute the program using Webots' run tool.
 

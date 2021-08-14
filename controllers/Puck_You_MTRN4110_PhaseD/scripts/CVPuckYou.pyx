@@ -7,16 +7,65 @@ import cv2
 import itertools as it
 import numpy as np
 
-MAZE_FILE_NAME = '../../Maze_2.png'
-ROBOT_FILE_NAME = '../../Robot_2.png'
-IMAGE_LADYBUG_FILE_NAME = '../Ladybug_small.png'
-MAP_FILE_NAME = '../MapBuilt.txt'
 
-ORIGIN_CORNER_COLOUR = (255, 0, 255)
-OTHER_CORNER_COLOUR = (0, 255, 255)
-WALL_COLOUR = (120, 50, 255)
-EPUCK_COLOUR = (150, 20, 20)
-LADYBUG_COLOUR = (0, 255, 0)
+cdef public void print_hello():
+    '''
+    Sanity checking stdout.
+    '''
+    print("Hello!")
+
+
+cdef public void openImage(char* path):
+    '''
+    Sanity checking reading and writing images.
+    '''
+    image = readImage(path)
+    writeImage('output.png', image)
+
+
+cdef public void runCVLocaliser(char* path):
+    '''
+    CVLocaliser reads the path for a bird's eye image of the maze, and detects and returns the
+    current position and current heading of the robot.
+    '''
+    image = readImage(path)
+    image, origin, corners = markCorners(image)
+    image, transform_matrix = focus(image, origin, corners)
+    image, epuck_position = markPose(image)
+    image, epuck_direction = markOrientation(image, ROBOT_FILE_NAME, epuck_position, transform_matrix)
+    return epuck_position, epuck_direction
+
+
+cdef public list runCVWaypointer(char* path):
+    '''
+    CVWaypointer reads the path for a bird's eye image of the maze, and detects and returns the
+    intended destination as deliberated by the user using openCV.
+    '''
+    image = readImage(path)
+    image, origin, corners = markCorners(image)
+    image, _ = focus(image, origin, corners)
+    image, destination = markLadyBug(image)
+    writeImage('output.png', image)
+    return destination
+
+
+cdef public char* runCVMapper(char* path):
+    '''
+    CVMapper reads in the path for a bird's eye image of the maze and returns the map of it in
+    string format.
+    '''
+    image = readImage(path)
+    image, origin, corners = markCorners(image)
+    image, transform_matrix = focus(image, origin, corners)
+    image, wall_positions = markWalls(image)
+    image, epuck_position = markPose(image)
+    image, epuck_direction = markOrientation(image, ROBOT_FILE_NAME, epuck_position, transform_matrix)
+    image, ladybug_position = markLadyBug(image)
+    height, width, _ = image.shape
+    # TODO: ran out of time.
+    maze_map = generateSparseMap(image, epuck_position, epuck_direction, ladybug_position, wall_positions)
+    maze_map = generateFullMap(maze_map)
+    return maze_map
 
 
 def readImage(path):
@@ -329,60 +378,3 @@ def generateFullMap(text_map):
     '''
     # TODO: Populate first and last row with horizontal walls.
     # TODO: Populate first and last column with vertical walls.
-
-
-cdef public void print_hello():
-    '''
-    This is just a test.
-    '''
-    print("Hello!")
-
-
-cdef public void openImage(char* path):
-    '''
-    Task 1 - Read in an image and display it in RGB mode
-    '''
-    image = readImage(path)
-    writeImage('output.png', image)
-
-
-cdef public void runCVLocaliser(char* path):
-    '''
-    Task 5 - Detect the location and heading of the robot
-    '''
-    image = readImage(path)
-    image, origin, corners = markCorners(image)
-    image, transform_matrix = focus(image, origin, corners)
-    image, epuck_position = markPose(image)
-    image, epuck_direction = markOrientation(image, ROBOT_FILE_NAME, epuck_position, transform_matrix)
-    return epuck_position, epuck_direction
-
-
-cdef public list runCVWaypointer(char* path):
-    '''
-    CVWaypointer detects and returns the intended destination as deliberated by the user using openCV.
-    '''
-    image = readImage(path)
-    image, origin, corners = markCorners(image)
-    image, _ = focus(image, origin, corners)
-    image, destination = markLadyBug(image)
-    writeImage('output.png', image)
-    return destination
-
-
-cdef public char* runCVMapper():
-    '''
-    Task 7 - Generate a map and write it to a text file
-    '''
-    image = readImage(MAZE_FILE_NAME)
-    image, origin, corners = markCorners(image)
-    image, transform_matrix = focus(image, origin, corners)
-    image, wall_positions = markWalls(image)
-    image, epuck_position = markPose(image)
-    image, epuck_direction = markOrientation(image, ROBOT_FILE_NAME, epuck_position, transform_matrix)
-    image, ladybug_position = markLadyBug(image)
-    height, width, _ = image.shape
-    # TODO: ran out of time.
-    maze_map = generateSparseMap(image, epuck_position, epuck_direction, ladybug_position, wall_positions)
-    maze_map = generateFullMap(maze_map)
-    return maze_map
