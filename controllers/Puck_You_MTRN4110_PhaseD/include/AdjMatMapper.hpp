@@ -90,6 +90,8 @@ class HCMapper final : public Mapper<GraphType> {
         }
     }
 
+    // TODO: getter
+
    private:
     auto print(std::ostream& os) const noexcept -> void override final {}
 
