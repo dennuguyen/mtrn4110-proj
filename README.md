@@ -105,7 +105,7 @@ py -m pip install -r requirements.txt
     <tr>
         <td><code>Python.h</code>, Python underlying <code>.h</code> files, Python libraries</td>
         <td>Provided in python3.6 folder for each OS</td>
-        <td>Controller <code>Makefile</code> has been modified<br><code>windows/include/pyconfig.h</code> has been modified</td>
+        <td>Controller <code>Makefile</code> has been modified<br><code>python3.6/windows/include/pyconfig.h</code> has been modified</td>
     </tr>
     <tr>
         <td><code>python36.dll</code></td>
