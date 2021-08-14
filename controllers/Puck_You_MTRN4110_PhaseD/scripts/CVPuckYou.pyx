@@ -51,7 +51,7 @@ cdef public char* runCVMapper(char* mazeFileName):
     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
-    # IMPLEMENT THIS FUNCTION
+    # IMPLEMENT THIS FUNCTION. DO NOT RETURN THE MAP WITH THE EPUCK OR LADYBUG POSITIONS - THIS WILL BE HANDLED BY THE ABOVE TWO FUNCTIONS.
     maze_map = '42'
     return maze_map.decode('utf-8')
 
