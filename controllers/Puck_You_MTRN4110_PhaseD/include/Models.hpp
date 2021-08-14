@@ -41,11 +41,11 @@ struct RobotModel {
     double const maxMotorSpeed;  // rad/s
 };
 
-// Instantiations of above models.
 // Maze model.
-auto maze = MapModel(0.165, 5, 9);
+constexpr auto maze = MapModel(0.165, 5, 9);
+
 // EPuck model.
-auto ePuck = RobotModel(0.071, 0.05, 0.02, 0.0566, 0.16, 0.25, 6.28);
+constexpr auto ePuck = RobotModel(0.071, 0.05, 0.02, 0.0566, 0.16, 0.25, 6.28);
 
 }  // namespace models
 }  // namespace mtrn4110
