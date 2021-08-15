@@ -20,9 +20,9 @@
 #endif
 
 __PYX_EXTERN_C void print_hello(void);
-__PYX_EXTERN_C PyObject *runCVLocaliser(char *, char *);
-__PYX_EXTERN_C PyObject *runCVWaypointer(char *, char *);
-__PYX_EXTERN_C char *runCVMapper(char *);
+__PYX_EXTERN_C std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *, char const *);
+__PYX_EXTERN_C std::pair<double,double>  runCVWaypointer(char const *, char const *);
+__PYX_EXTERN_C char *runCVMapper(char const *);
 
 #endif /* !__PYX_HAVE_API__CVPuckYou */
 

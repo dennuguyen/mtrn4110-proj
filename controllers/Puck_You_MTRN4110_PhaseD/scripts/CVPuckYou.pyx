@@ -1,7 +1,9 @@
-#!python
-#cython: language_level=3
+# cython: language_level=3
+# distutils: language=c++
 
 import cython
+from libcpp.pair cimport pair
+
 from functools import wraps
 import cv2
 import itertools as it
@@ -14,47 +16,39 @@ cdef public void print_hello():
     print("Hello!")
 
 
-cdef public list runCVLocaliser(char* mazeFileName, char* robotFileName):
+cdef public pair[pair[double, double], char] runCVLocaliser(const char* mazeFileName, const char* robotFileName):
     '''
     CVLocaliser reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current position and current heading of the robot.
     '''
-    # CONSIDER IF WE NEED THE ROBOT IMAGE TO GET THE EPUCK HEADING. WE COULD GET THIS INFO FROM HC_LOCALISER
-
-    # IMPLEMENT THIS FUNCTION
-    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
+    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
     epuck_position = get_robot_coordinates(maze_transformed_hsv)
-    robot_gray = read_image_gray(robotFileName)
+    robot_gray = read_image_gray(robotFileName.decode('utf-8'))
     epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
     return epuck_position, epuck_direction
 
 
-cdef public list runCVWaypointer(char* mazeFileName, char* destinationFileName):
+cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const char* destinationFileName):
     '''
     CVWaypointer reads the maze file name for a bird's eye image of the maze, and detects and
     returns the intended destination as deliberated by the user using openCV.
     '''
-    # CONSIDER IF WE NEED THE LADYBUG IMAGE TO GET THE DESTINATION.
-    
-    # IMPLEMENT THIS FUNCTION
-    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
-    bug_gray = read_image_gray(destinationFileName)
+    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+    bug_gray = read_image_gray(destinationFileName.decode('utf-8'))
     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
     return destination
 
 
-cdef public char* runCVMapper(char* mazeFileName):
+cdef public char* runCVMapper(const char* mazeFileName):
     '''
     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
-    # IMPLEMENT THIS FUNCTION. DO NOT RETURN THE MAP WITH THE EPUCK OR LADYBUG POSITIONS - THIS WILL BE HANDLED BY THE ABOVE TWO FUNCTIONS.
-    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
+    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
     walls = get_walls(maze_transformed_hsv)
     maze_map = get_map_string(walls)
-    return maze_map.decode('utf-8')
+    return maze_map
 
-### ADD FUNCTIONS BELOW HERE
 
 BGR_B = (255, 0, 0)
 BGR_G = (0, 255, 0)
@@ -75,14 +69,21 @@ LINE_THICKNESS = 4
 
 def read_image_rgb(path):
     image_bgr = cv2.imread(path) 
+    if image_bgr is None:
+        raise FileNotFoundError('Could not read in: ' + path)
     return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
 
 def read_image_hsv(path):
-    image_bgr = cv2.imread(path) 
-    return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
+    image_hsv = cv2.imread(path)
+    if image_hsv is None:
+        raise FileNotFoundError('Could not read in: ' + path)
+    return cv2.cvtColor(image_hsv, cv2.COLOR_BGR2HSV)
 
 def read_image_gray(path):
-    return cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+    image_gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+    if image_gray is None:
+        raise FileNotFoundError('Could not read in: ' + path)
+    return image_gray
 
 # TASK 3.2
 
@@ -93,7 +94,7 @@ def get_cornerstone_contours(maze_hsv):
     magenta_mask = cv2.inRange(maze_hsv, magenta_lower, magenta_upper)
     magenta_masked = cv2.bitwise_and(maze_hsv, maze_hsv, mask=magenta_mask)
     magenta_edges = cv2.Canny(magenta_masked, threshold1=150, threshold2=200, apertureSize=5)
-    _, magenta_contours, _ = cv2.findContours(magenta_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    magenta_contours, _ = cv2.findContours(magenta_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     magenta_contours = sorted(magenta_contours, reverse=True, key=lambda x : cv2.contourArea(x))
     magenta_contours = magenta_contours[:3]
 
@@ -103,7 +104,7 @@ def get_cornerstone_contours(maze_hsv):
     cyan_mask = cv2.inRange(maze_hsv, cyan_lower, cyan_upper)
     cyan_masked = cv2.bitwise_and(maze_hsv, maze_hsv, mask=cyan_mask)
     cyan_edges = cv2.Canny(cyan_masked, threshold1=150, threshold2=200, apertureSize=5)
-    _, cyan_contours, _ = cv2.findContours(cyan_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cyan_contours, _ = cv2.findContours(cyan_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cyan_contours = sorted(cyan_contours, reverse=True, key=lambda x : cv2.contourArea(x))
     cyan_contour = cyan_contours[0]
     
@@ -305,7 +306,7 @@ def get_robot_coordinates(maze_hsv):
     robot_mask = cv2.inRange(maze_hsv, robot_lower, robot_upper)
     robot_masked = cv2.bitwise_and(maze_hsv, maze_hsv, mask=robot_mask)
     robot_edges = cv2.Canny(robot_masked, threshold1=150, threshold2=175, apertureSize=5)
-    _, robot_contours, _ = cv2.findContours(robot_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    robot_contours, _ = cv2.findContours(robot_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     sum_m00 = 0 # area
     sum_m10 = 0 # area * x
