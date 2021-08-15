@@ -1,6 +1,8 @@
 #ifndef GRAPHER_HPP
 #define GRAPHER_HPP
 
+#include <map>
+
 #include "Util.hpp"
 
 namespace mtrn4110 {
@@ -15,7 +17,7 @@ class Grapher {
 
     // Constructor to initialise graph.
     Grapher()
-    : graph_() {}
+    : map_() {}
 
     // Read the map from the input stream.
     auto readMap(std::istream& inputStream) -> void {
@@ -57,23 +59,23 @@ class Grapher {
                     // Check start and end position.
                     switch (map_[line][col]) {
                     case ' ': break;
-                    case 'x': end_ = {x, y}; break;
-                    case '^':
-                        initialHeading_ = 0;
-                        start_ = {x, y};
-                        break;
-                    case '>':
-                        initialHeading_ = 1;
-                        start_ = {x, y};
-                        break;
-                    case 'v':
-                        initialHeading_ = 2;
-                        start_ = {x, y};
-                        break;
-                    case '<':
-                        initialHeading_ = 3;
-                        start_ = {x, y};
-                        break;
+                    // case 'x': end_ = {x, y}; break;
+                    // case '^':
+                    //     initialHeading_ = 0;
+                    //     start_ = {x, y};
+                    //     break;
+                    // case '>':
+                    //     initialHeading_ = 1;
+                    //     start_ = {x, y};
+                    //     break;
+                    // case 'v':
+                    //     initialHeading_ = 2;
+                    //     start_ = {x, y};
+                    //     break;
+                    // case '<':
+                    //     initialHeading_ = 3;
+                    //     start_ = {x, y};
+                    //     break;
                     default: throw std::runtime_error("Invalid map character");
                     }
 

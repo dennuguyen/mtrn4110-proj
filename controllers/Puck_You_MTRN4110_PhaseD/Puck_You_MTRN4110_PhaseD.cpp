@@ -4,16 +4,18 @@
 
 #include "CVPuckYou.h"
 
+#include <iostream>
 #include <stdlib.h>
 #include <thread>
 
 #include <webots/Robot.hpp>
 
-#include "AdjListMapper.hpp"
-#include "AdjMatMapper.hpp"
+#include "Util.hpp"
+
 #include "DeadReckoning.hpp"
 #include "DistanceSensor.hpp"
 #include "EPuckMotionPlanner.hpp"
+#include "Grapher.hpp"
 // #include "FloodFill.hpp"
 #include "HCDeliberator.hpp"
 #include "HCLocaliser.hpp"
@@ -38,8 +40,8 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     // // Instantiate RSA elements.
     auto distanceSensor = mtrn4110::DistanceSensor(robot);
     (void)distanceSensor;
-    auto lidarSensor = mtrn4110::LidarSensor(robot);
-    (void)lidarSensor;
+    // auto lidarSensor = mtrn4110::LidarSensor(robot);
+    // (void)lidarSensor;
     auto motorController = mtrn4110::MotorController(robot);
     (void)motorController;
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
@@ -52,10 +54,8 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)localiser;
     auto deliberator = mtrn4110::HCDeliberator();
     (void)deliberator;
-    auto grapher = mtrn4110::AdjMatMapper();
+    auto grapher = mtrn4110::Grapher();
     (void)grapher;
-    auto grapher1 = mtrn4110::AdjListMapper();
-    (void)grapher1;
     // auto floodFill = mtrn4110::FloodFill();
     // (void)floodfill;
     // Enter control loop.
@@ -76,21 +76,23 @@ auto main(int argc, char** argv) -> int {
         PyErr_Print();
         throw std::runtime_error("Could not import CVPuckYou.");
     }
-    print_hello();
+    auto p = runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+    std::cout << p.first << " " << p.second << std::endl;
+    // runCVWaypointer(files::mazeImage);
 
     // End the Python interpretter.
     Py_Finalize();
 
     // Instantiate webots robot.
-    auto robot = webots::Robot();
+    // auto robot = webots::Robot();
 
-    // Spin threads.
-    auto t1 = std::thread(simulationSteps, std::ref(robot));
-    auto t2 = std::thread(realtimeSteps, std::ref(robot));
+    // // Spin threads.
+    // auto t1 = std::thread(simulationSteps, std::ref(robot));
+    // auto t2 = std::thread(realtimeSteps, std::ref(robot));
 
-    // Wait for threads to finish.
-    t1.join();
-    t2.join();
+    // // Wait for threads to finish.
+    // t1.join();
+    // t2.join();
 
     return 0;
 }
