@@ -147,7 +147,7 @@ The following platforms have been tested and are recommended:
 
 Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation and execution of cython files into the C++ build, we keep a copy of these for each OS.
 
-### Why is there a `#define _hypot hypot` at the top of main file?
+### Why is there a `#define _hypot hypot` at the top of main file or a `-D_hypot=hypot` in the `Makefile`?
 
 In the Windows version of Webots in `Webots/msys64/mingw64/include/c++/10.2.0/cmath`, line 1124: `using ::hypot;`. `hypot` has been incorrectly defined and should be `_hypot`.
 
