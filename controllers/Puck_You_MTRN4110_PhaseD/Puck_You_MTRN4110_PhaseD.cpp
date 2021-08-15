@@ -1,11 +1,8 @@
-#define _hypot hypot  // Somewhere deep in Webots incorrectly defines this.
-
 #include <Python.h>
 
 #include "CVPuckYou.h"
 
 #include <iostream>
-#include <stdlib.h>
 #include <thread>
 
 #include <webots/Robot.hpp>

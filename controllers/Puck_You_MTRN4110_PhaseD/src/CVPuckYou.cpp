@@ -286,19 +286,33 @@
   #endif
 #endif
 
+#ifndef __cplusplus
+  #error "Cython files generated with the C++ option must be compiled with a C++ compiler."
+#endif
 #ifndef CYTHON_INLINE
   #if defined(__clang__)
     #define CYTHON_INLINE __inline__ __attribute__ ((__unused__))
-  #elif defined(__GNUC__)
-    #define CYTHON_INLINE __inline__
-  #elif defined(_MSC_VER)
-    #define CYTHON_INLINE __inline
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-    #define CYTHON_INLINE inline
   #else
-    #define CYTHON_INLINE
+    #define CYTHON_INLINE inline
   #endif
 #endif
+template<typename T>
+void __Pyx_call_destructor(T& x) {
+    x.~T();
+}
+template<typename T>
+class __Pyx_FakeReference {
+  public:
+    __Pyx_FakeReference() : ptr(NULL) { }
+    __Pyx_FakeReference(const T& ref) : ptr(const_cast<T*>(&ref)) { }
+    T *operator->() { return ptr; }
+    T *operator&() { return ptr; }
+    operator T&() { return *ptr; }
+    template<typename U> bool operator ==(U other) { return *ptr == other; }
+    template<typename U> bool operator !=(U other) { return *ptr != other; }
+  private:
+    T *ptr;
+};
 
 #if CYTHON_COMPILING_IN_PYPY && PY_VERSION_HEX < 0x02070600 && !defined(Py_OptimizeFlag)
   #define Py_OptimizeFlag 0
@@ -643,11 +657,11 @@ typedef struct {PyObject **p; const char *s; const Py_ssize_t n; const char* enc
                 const char is_unicode; const char is_str; const char intern; } __Pyx_StringTabEntry;
 
 #define __PYX_DEFAULT_STRING_ENCODING_IS_ASCII 0
-#define __PYX_DEFAULT_STRING_ENCODING_IS_UTF8 0
+#define __PYX_DEFAULT_STRING_ENCODING_IS_UTF8 1
 #define __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT (PY_MAJOR_VERSION >= 3 && __PYX_DEFAULT_STRING_ENCODING_IS_UTF8)
-#define __PYX_DEFAULT_STRING_ENCODING ""
-#define __Pyx_PyObject_FromString __Pyx_PyBytes_FromString
-#define __Pyx_PyObject_FromStringAndSize __Pyx_PyBytes_FromStringAndSize
+#define __PYX_DEFAULT_STRING_ENCODING "utf8"
+#define __Pyx_PyObject_FromString __Pyx_PyUnicode_FromString
+#define __Pyx_PyObject_FromStringAndSize __Pyx_PyUnicode_FromStringAndSize
 #define __Pyx_uchar_cast(c) ((unsigned char)c)
 #define __Pyx_long_cast(x) ((long)x)
 #define __Pyx_fits_Py_ssize_t(v, type, is_signed)  (\
@@ -1014,29 +1028,6 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
-/* IncludeStringH.proto */
-#include <string.h>
-
-/* decode_c_string_utf16.proto */
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 0;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = -1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-
-/* decode_c_string.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
-         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
-
 /* PyCFunctionFastCall.proto */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
@@ -1273,6 +1264,9 @@ static PyObject* __Pyx_PyInt_TrueDivideObjC(PyObject *op1, PyObject *op2, long i
     (inplace ? PyNumber_InPlaceTrueDivide(op1, op2) : PyNumber_TrueDivide(op1, op2))
 #endif
 
+/* IncludeStringH.proto */
+#include <string.h>
+
 /* BytesEquals.proto */
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals);
 
@@ -1358,7 +1352,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 __PYX_EXTERN_C void print_hello(void); /*proto*/
 __PYX_EXTERN_C std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *, char const *); /*proto*/
 __PYX_EXTERN_C std::pair<double,double>  runCVWaypointer(char const *, char const *); /*proto*/
-__PYX_EXTERN_C char *runCVMapper(char const *); /*proto*/
+__PYX_EXTERN_C void runCVMapper(char const *); /*proto*/
 static std::pair<double,double>  __pyx_convert_pair_from_py_double__and_double(PyObject *); /*proto*/
 static std::pair<std::pair<double,double> ,char>  __pyx_convert_pair_from_py_std_3a__3a_pair_3c_double_2c_double_3e_____and_char(PyObject *); /*proto*/
 #define __Pyx_MODULE_NAME "CVPuckYou"
@@ -2090,13 +2084,13 @@ std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *__pyx_v_ma
   /* "CVPuckYou.pyx":24
  *     the current position and current heading of the robot.
  *     '''
- *     maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))             # <<<<<<<<<<<<<<
+ *     maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)             # <<<<<<<<<<<<<<
  *     epuck_position = get_robot_coordinates(maze_transformed_hsv)
- *     robot_gray = read_image_gray(robotFileName.decode('utf-8'))
+ *     robot_gray = read_image_gray(robotFileName)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_get_transformed_maze_hsv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_mazeFileName, 0, strlen(__pyx_v_mazeFileName), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyUnicode_FromString(__pyx_v_mazeFileName); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2167,9 +2161,9 @@ std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *__pyx_v_ma
 
   /* "CVPuckYou.pyx":25
  *     '''
- *     maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+ *     maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
  *     epuck_position = get_robot_coordinates(maze_transformed_hsv)             # <<<<<<<<<<<<<<
- *     robot_gray = read_image_gray(robotFileName.decode('utf-8'))
+ *     robot_gray = read_image_gray(robotFileName)
  *     epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_robot_coordinates); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
@@ -2193,15 +2187,15 @@ std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *__pyx_v_ma
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":26
- *     maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+ *     maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
  *     epuck_position = get_robot_coordinates(maze_transformed_hsv)
- *     robot_gray = read_image_gray(robotFileName.decode('utf-8'))             # <<<<<<<<<<<<<<
+ *     robot_gray = read_image_gray(robotFileName)             # <<<<<<<<<<<<<<
  *     epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
  *     return epuck_position, epuck_direction
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_read_image_gray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_robotFileName, 0, strlen(__pyx_v_robotFileName), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_FromString(__pyx_v_robotFileName); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -2224,7 +2218,7 @@ std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *__pyx_v_ma
 
   /* "CVPuckYou.pyx":27
  *     epuck_position = get_robot_coordinates(maze_transformed_hsv)
- *     robot_gray = read_image_gray(robotFileName.decode('utf-8'))
+ *     robot_gray = read_image_gray(robotFileName)
  *     epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >             # <<<<<<<<<<<<<<
  *     return epuck_position, epuck_direction
  * 
@@ -2280,7 +2274,7 @@ std::pair<std::pair<double,double> ,char>  runCVLocaliser(char const *__pyx_v_ma
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":28
- *     robot_gray = read_image_gray(robotFileName.decode('utf-8'))
+ *     robot_gray = read_image_gray(robotFileName)
  *     epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
  *     return epuck_position, epuck_direction             # <<<<<<<<<<<<<<
  * 
@@ -2355,13 +2349,13 @@ std::pair<double,double>  runCVWaypointer(char const *__pyx_v_mazeFileName, char
   /* "CVPuckYou.pyx":36
  *     returns the intended destination as deliberated by the user using openCV.
  *     '''
- *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))             # <<<<<<<<<<<<<<
- *     bug_gray = read_image_gray(destinationFileName.decode('utf-8'))
+ *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)             # <<<<<<<<<<<<<<
+ *     bug_gray = read_image_gray(destinationFileName)
  *     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_get_transformed_maze_hsv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_mazeFileName, 0, strlen(__pyx_v_mazeFileName), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyUnicode_FromString(__pyx_v_mazeFileName); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2432,14 +2426,14 @@ std::pair<double,double>  runCVWaypointer(char const *__pyx_v_mazeFileName, char
 
   /* "CVPuckYou.pyx":37
  *     '''
- *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
- *     bug_gray = read_image_gray(destinationFileName.decode('utf-8'))             # <<<<<<<<<<<<<<
+ *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
+ *     bug_gray = read_image_gray(destinationFileName)             # <<<<<<<<<<<<<<
  *     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
  *     return destination
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_read_image_gray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_destinationFileName, 0, strlen(__pyx_v_destinationFileName), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_FromString(__pyx_v_destinationFileName); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -2461,8 +2455,8 @@ std::pair<double,double>  runCVWaypointer(char const *__pyx_v_mazeFileName, char
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":38
- *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
- *     bug_gray = read_image_gray(destinationFileName.decode('utf-8'))
+ *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
+ *     bug_gray = read_image_gray(destinationFileName)
  *     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)             # <<<<<<<<<<<<<<
  *     return destination
  * 
@@ -2518,7 +2512,7 @@ std::pair<double,double>  runCVWaypointer(char const *__pyx_v_mazeFileName, char
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":39
- *     bug_gray = read_image_gray(destinationFileName.decode('utf-8'))
+ *     bug_gray = read_image_gray(destinationFileName)
  *     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
  *     return destination             # <<<<<<<<<<<<<<
  * 
@@ -2556,24 +2550,22 @@ std::pair<double,double>  runCVWaypointer(char const *__pyx_v_mazeFileName, char
 /* "CVPuckYou.pyx":42
  * 
  * 
- * cdef public char* runCVMapper(const char* mazeFileName):             # <<<<<<<<<<<<<<
+ * cdef public void runCVMapper(const char* mazeFileName):             # <<<<<<<<<<<<<<
  *     '''
  *     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
  */
 
-char *runCVMapper(char const *__pyx_v_mazeFileName) {
+void runCVMapper(char const *__pyx_v_mazeFileName) {
   PyObject *__pyx_v_maze_transformed_hsv = NULL;
   CYTHON_UNUSED PyObject *__pyx_v__ = NULL;
   PyObject *__pyx_v_walls = NULL;
-  PyObject *__pyx_v_maze_map = NULL;
-  char *__pyx_r;
+  CYTHON_UNUSED PyObject *__pyx_v_maze_map = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
-  char *__pyx_t_6;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2582,13 +2574,13 @@ char *runCVMapper(char const *__pyx_v_mazeFileName) {
   /* "CVPuckYou.pyx":47
  *     it in string format.
  *     '''
- *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))             # <<<<<<<<<<<<<<
+ *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)             # <<<<<<<<<<<<<<
  *     walls = get_walls(maze_transformed_hsv)
  *     maze_map = get_map_string(walls)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_get_transformed_maze_hsv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_mazeFileName, 0, strlen(__pyx_v_mazeFileName), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyUnicode_FromString(__pyx_v_mazeFileName); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2659,10 +2651,10 @@ char *runCVMapper(char const *__pyx_v_mazeFileName) {
 
   /* "CVPuckYou.pyx":48
  *     '''
- *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+ *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
  *     walls = get_walls(maze_transformed_hsv)             # <<<<<<<<<<<<<<
  *     maze_map = get_map_string(walls)
- *     return maze_map
+ *     # return <const char*>maze_map
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_walls); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -2685,10 +2677,10 @@ char *runCVMapper(char const *__pyx_v_mazeFileName) {
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":49
- *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+ *     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
  *     walls = get_walls(maze_transformed_hsv)
  *     maze_map = get_map_string(walls)             # <<<<<<<<<<<<<<
- *     return maze_map
+ *     # return <const char*>maze_map
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_map_string); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
@@ -2711,40 +2703,28 @@ char *runCVMapper(char const *__pyx_v_mazeFileName) {
   __pyx_v_maze_map = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "CVPuckYou.pyx":50
- *     walls = get_walls(maze_transformed_hsv)
- *     maze_map = get_map_string(walls)
- *     return maze_map             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_t_6 = __Pyx_PyObject_AsWritableString(__pyx_v_maze_map); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
-  __pyx_r = __pyx_t_6;
-  goto __pyx_L0;
-
   /* "CVPuckYou.pyx":42
  * 
  * 
- * cdef public char* runCVMapper(const char* mazeFileName):             # <<<<<<<<<<<<<<
+ * cdef public void runCVMapper(const char* mazeFileName):             # <<<<<<<<<<<<<<
  *     '''
  *     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
  */
 
   /* function exit code */
+  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_WriteUnraisable("CVPuckYou.runCVMapper", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_maze_transformed_hsv);
   __Pyx_XDECREF(__pyx_v__);
   __Pyx_XDECREF(__pyx_v_walls);
   __Pyx_XDECREF(__pyx_v_maze_map);
   __Pyx_RefNannyFinishContext();
-  return __pyx_r;
 }
 
 /* "CVPuckYou.pyx":59
@@ -15804,7 +15784,7 @@ if (!__Pyx_RefNanny) {
 
   /* "CVPuckYou.pyx":1
  * # cython: language_level=3             # <<<<<<<<<<<<<<
- * # distutils: language=c++
+ * # cython: c_string_type=unicode, c_string_encoding=utf8
  * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -16036,39 +16016,6 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     PyErr_Clear();
 #endif
     return __Pyx_GetBuiltinName(name);
-}
-
-/* decode_c_string */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
-         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    Py_ssize_t length;
-    if (unlikely((start < 0) | (stop < 0))) {
-        size_t slen = strlen(cstring);
-        if (unlikely(slen > (size_t) PY_SSIZE_T_MAX)) {
-            PyErr_SetString(PyExc_OverflowError,
-                            "c-string too long to convert to Python");
-            return NULL;
-        }
-        length = (Py_ssize_t) slen;
-        if (start < 0) {
-            start += length;
-            if (start < 0)
-                start = 0;
-        }
-        if (stop < 0)
-            stop += length;
-    }
-    if (unlikely(stop <= start))
-        return __Pyx_NewRef(__pyx_empty_unicode);
-    length = stop - start;
-    cstring += start;
-    if (decode_func) {
-        return decode_func(cstring, length, errors);
-    } else {
-        return PyUnicode_Decode(cstring, length, encoding, errors);
-    }
 }
 
 /* PyCFunctionFastCall */

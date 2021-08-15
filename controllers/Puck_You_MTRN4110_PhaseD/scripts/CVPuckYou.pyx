@@ -1,5 +1,5 @@
 # cython: language_level=3
-# distutils: language=c++
+# cython: c_string_type=unicode, c_string_encoding=utf8
 
 import cython
 from libcpp.pair cimport pair
@@ -21,9 +21,9 @@ cdef public pair[pair[double, double], char] runCVLocaliser(const char* mazeFile
     CVLocaliser reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current position and current heading of the robot.
     '''
-    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
     epuck_position = get_robot_coordinates(maze_transformed_hsv)
-    robot_gray = read_image_gray(robotFileName.decode('utf-8'))
+    robot_gray = read_image_gray(robotFileName)
     epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
     return epuck_position, epuck_direction
 
@@ -33,21 +33,21 @@ cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const
     CVWaypointer reads the maze file name for a bird's eye image of the maze, and detects and
     returns the intended destination as deliberated by the user using openCV.
     '''
-    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
-    bug_gray = read_image_gray(destinationFileName.decode('utf-8'))
+    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
+    bug_gray = read_image_gray(destinationFileName)
     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
     return destination
 
 
-cdef public char* runCVMapper(const char* mazeFileName):
+cdef public void runCVMapper(const char* mazeFileName):
     '''
     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
-    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName.decode('utf-8'))
+    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
     walls = get_walls(maze_transformed_hsv)
     maze_map = get_map_string(walls)
-    return maze_map
+    # return <const char*>maze_map
 
 
 BGR_B = (255, 0, 0)

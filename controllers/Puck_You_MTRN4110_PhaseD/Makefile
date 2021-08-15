@@ -47,15 +47,15 @@ endif
 ###
 ### ---- C Sources ----
 ### if your program uses several C source files:
-C_SOURCES = src/CVPuckYou.c
+### C_SOURCES = src/CVPuckYou.c
 ###
 ### ---- C++ Sources ----
 ### if your program uses several C++ source files:
-CXX_SOURCES = $(wildcard src/*.cpp) Puck_You_MTRN4110_PhaseD.cpp
+CXX_SOURCES = Puck_You_MTRN4110_PhaseD.cpp $(wildcard src/*.cpp)
 ###
 ### ---- Compilation options ----
 ### if special compilation flags are necessary:
-CFLAGS = -std=c++20 -Wall -Wuninitialized # -Wfloat-equal -Werror
+CFLAGS = -std=c++20 -Wall -Wuninitialized -D_hypot=hypot # -Wfloat-equal -Werror
 ###
 ### ---- Linked libraries ----
 ### if your program needs additional libraries:
