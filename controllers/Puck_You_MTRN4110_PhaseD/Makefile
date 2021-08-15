@@ -60,7 +60,7 @@ CFLAGS = -std=c++20 -Wall -Wuninitialized -D_hypot=hypot # -Wfloat-equal -Werror
 ### ---- Linked libraries ----
 ### if your program needs additional libraries:
 INCLUDE = -I./include -I../../python3.6/$(DETECTED_OS)/include
-LIBRARIES = -L../../python3.6/$(DETECTED_OS)/libs -lpython36
+LIBRARIES = -L../../python3.6/$(DETECTED_OS)/lib -lpython36
 ###
 ### ---- Linking options ----
 ### if special linking flags are needed:
