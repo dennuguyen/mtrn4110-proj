@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <thread>
+
 #include <webots/Robot.hpp>
 
 #include "AdjListMapper.hpp"
@@ -13,6 +14,7 @@
 #include "DeadReckoning.hpp"
 #include "DistanceSensor.hpp"
 #include "EPuckMotionPlanner.hpp"
+// #include "FloodFill.hpp"
 #include "HCDeliberator.hpp"
 #include "HCLocaliser.hpp"
 #include "LidarSensor.hpp"
@@ -50,10 +52,12 @@ static auto realtimeSteps(webots::Robot& robot) -> void {
     (void)localiser;
     auto deliberator = mtrn4110::HCDeliberator();
     (void)deliberator;
-    auto mapper = mtrn4110::AdjMatMapper();
-    (void)mapper;
-    auto mapper2 = mtrn4110::AdjListMapper();
-    (void)mapper2;
+    auto grapher = mtrn4110::AdjMatMapper();
+    (void)grapher;
+    auto grapher1 = mtrn4110::AdjListMapper();
+    (void)grapher1;
+    // auto floodFill = mtrn4110::FloodFill();
+    // (void)floodfill;
     // Enter control loop.
     while (1) {
     }

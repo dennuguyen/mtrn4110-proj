@@ -103,10 +103,6 @@ class Grapher {
         return graph;
     }
 
-    auto getGraph() const noexcept -> GraphType {
-        return graph_;
-    }
-
     // Operator overload for <<.
     friend auto operator<<(std::ostream& os, Grapher const& grapher) noexcept -> std::ostream& {
         grapher.print(os);

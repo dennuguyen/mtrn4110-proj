@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="C91cKKwiNIsFAHS6rGZc" name="Page-1">
-        <mxGraphModel dx="2606" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
+        <mxGraphModel dx="3258" dy="711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -119,19 +119,13 @@
                     <mxGeometry x="300" y="629.5399999999998" width="120" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="175" value="TrajectoryPlanner" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=2" parent="1" vertex="1">
-                    <mxGeometry x="640" y="439.56999999999994" width="160" height="130" as="geometry"/>
+                    <mxGeometry x="640" y="439.57" width="160" height="80.43" as="geometry"/>
                 </mxCell>
                 <mxCell id="176" value="DeadReckoning" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#99FFFF;" parent="1" vertex="1">
                     <mxGeometry x="660" y="459.56999999999994" width="120" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="177" value="BangBang" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontColor=#ffffff;" parent="1" vertex="1">
-                    <mxGeometry x="660" y="509.56999999999994" width="120" height="40" as="geometry"/>
-                </mxCell>
                 <mxCell id="178" value="MotionTeleoperation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontColor=#ffffff;" parent="1" vertex="1">
                     <mxGeometry x="300" y="239.81999999999982" width="120" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="179" value="ObstacleAvoider" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontColor=#ffffff;" parent="1" vertex="1">
-                    <mxGeometry x="1040" y="569.8599999999997" width="120" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="197" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;" parent="1" edge="1">
                     <mxGeometry relative="1" as="geometry">
@@ -272,17 +266,6 @@
                 <mxCell id="226" value="angle&lt;br&gt;distance&lt;br&gt;linearVelocity&lt;br&gt;angularVelocity" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;labelBackgroundColor=none;" parent="221" vertex="1" connectable="0">
                     <mxGeometry x="0.328" y="3" relative="1" as="geometry">
                         <mxPoint x="-13" y="-30" as="offset"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="222" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="960" y="589.5699999999997" as="targetPoint"/>
-                        <mxPoint x="1040" y="589.5699999999997" as="sourcePoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="232" value="pose&lt;br&gt;velocity&lt;br&gt;&lt;font color=&quot;#ffff00&quot;&gt;cameraData&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;labelBackgroundColor=none;" parent="222" vertex="1" connectable="0">
-                    <mxGeometry x="0.1955" relative="1" as="geometry">
-                        <mxPoint x="-2" y="-20" as="offset"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="223" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;" parent="1" edge="1">

@@ -51,14 +51,20 @@ class PathPlanner {
 
    protected:
     GraphType graph_;
-    PoseType destination_;
     PoseType currentPose_;
+    PoseType destination_;
     HeadingType currentHeading_;
     MotionType motion_;
 
    private:
-   // Automate any simple and periodic behaviours.
-    virtual auto tick() -> void = 0;
+    // Destination changes requires most current pose and current heading to update the path plan.
+    virtual auto
+    updateDestination(PoseType destination, PoseType currentPose, HeadingType currentHeading)
+        -> void = 0;
+
+    // World changes requires its graph representation, most current pose, and current heading to
+    // update the path plan.
+    virtual auto updateGraph(GraphType graph) -> void = 0;
 
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
