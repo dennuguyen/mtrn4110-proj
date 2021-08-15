@@ -7,13 +7,6 @@ import cv2
 import itertools as it
 import numpy as np
 
-ORIGIN_CORNER_COLOUR = (255, 0, 255)
-OTHER_CORNER_COLOUR = (0, 255, 255)
-WALL_COLOUR = (120, 50, 255)
-EPUCK_COLOUR = (150, 20, 20)
-LADYBUG_COLOUR = (0, 255, 0)
-
-
 cdef public void print_hello():
     '''
     Sanity checking stdout.
@@ -29,10 +22,10 @@ cdef public list runCVLocaliser(char* mazeFileName, char* robotFileName):
     # CONSIDER IF WE NEED THE ROBOT IMAGE TO GET THE EPUCK HEADING. WE COULD GET THIS INFO FROM HC_LOCALISER
 
     # IMPLEMENT THIS FUNCTION
-    maze_transformed_hsv = get_transformed_maze(mazeFileName)
+    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
     epuck_position = get_robot_coordinates(maze_transformed_hsv)
     robot_gray = read_image_gray(robotFileName)
-    epuck_direction = get_robot_heading(robot_gray) # TODO: currently returns as a char - ^ v < >
+    epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
     return epuck_position, epuck_direction
 
 
@@ -44,7 +37,7 @@ cdef public list runCVWaypointer(char* mazeFileName, char* destinationFileName):
     # CONSIDER IF WE NEED THE LADYBUG IMAGE TO GET THE DESTINATION.
     
     # IMPLEMENT THIS FUNCTION
-    maze_transformed_hsv = get_transformed_maze(mazeFileName)
+    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
     bug_gray = read_image_gray(destinationFileName)
     destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
     return destination
@@ -56,17 +49,23 @@ cdef public char* runCVMapper(char* mazeFileName):
     it in string format.
     '''
     # IMPLEMENT THIS FUNCTION. DO NOT RETURN THE MAP WITH THE EPUCK OR LADYBUG POSITIONS - THIS WILL BE HANDLED BY THE ABOVE TWO FUNCTIONS.
-    maze_transformed_hsv = get_transformed_maze(mazeFileName)
+    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
     walls = get_walls(maze_transformed_hsv)
     maze_map = get_map_string(walls)
     return maze_map.decode('utf-8')
 
 ### ADD FUNCTIONS BELOW HERE
 
+BGR_B = (255, 0, 0)
+BGR_G = (0, 255, 0)
+BGR_R = (0, 0, 255)
+BGR_CYAN = (248, 242, 123)
+BGR_MAGENTA = (246, 27, 242)
+
 def get_transformed_maze_hsv(path):
     maze_hsv = read_image_hsv(path)
-    magenta_contours, cyan_contour = get_cornerstone_locations(maze_hsv)
-    return perspective_transform(maze_hsv, cyan_corner, magenta_corners)
+    magenta_contours, cyan_contour = get_cornerstone_contours(maze_hsv)
+    return perspective_transform(maze_hsv, magenta_contours, cyan_contour)
 
 BGR_CYAN = (248, 242, 123)
 BGR_MAGENTA = (246, 27, 242)
@@ -87,7 +86,7 @@ def read_image_gray(path):
 
 # TASK 3.2
 
-def get_cornerstone_locations(maze_hsv):
+def get_cornerstone_contours(maze_hsv):
     # magenta
     magenta_lower = np.array([148, 175, 200])
     magenta_upper = np.array([152, 255, 255])
@@ -110,11 +109,11 @@ def get_cornerstone_locations(maze_hsv):
     
     return magenta_contours, cyan_contour
 
-def draw_cornerstones(maze_bgr, cyan_corner, magenta_corners):
+def draw_cornerstones(maze_bgr, magenta_contours, cyan_contour):
     # draw magenta corners
-    cv2.drawContours(maze_bgr, magenta_corners, -1, BGR_CYAN, LINE_THICKNESS)
+    cv2.drawContours(maze_bgr, magenta_contours, -1, BGR_CYAN, LINE_THICKNESS)
     # draw cyan corners
-    cv2.drawContours(maze_bgr, cyan_corner, 0, BGR_MAGENTA, LINE_THICKNESS)
+    cv2.drawContours(maze_bgr, cyan_contour, 0, BGR_MAGENTA, LINE_THICKNESS)
 
     return maze_bgr
 
@@ -136,11 +135,11 @@ BR = [900, 500]
 TALL_RES = 500
 WIDE_RES = 900
 
-def perspective_transform(maze_img, cyan_corner, magenta_corners):
+def perspective_transform(maze_img, magenta_contours, cyan_contour):
     magenta_corners = {}
     cyan_corners = []
 
-    for cont in magenta_corners:
+    for cont in magenta_contour:
         corner = create_corner(cont, 'magenta')
         magenta_corners[str(corner.get('id'))] = corner
 
@@ -152,7 +151,7 @@ def perspective_transform(maze_img, cyan_corner, magenta_corners):
     H = cv2.getPerspectiveTransform(point_original, point_transformed)
     cv2.warpPerspective(maze_img, H, (WIDE_RES, TALL_RES))
 
-    return maze_img
+    return maze_img, H
 
 def create_corner(contour, colour):
     m = cv2.moments(contour)
@@ -222,7 +221,7 @@ MID_BUFF = 45
 END_BUFF = 95
 WALL_THRESHOLD = 75
 
-def get_walls(maze_hsv_transformed):
+def get_walls(maze_hsv):
     # masking
     wall_lower = np.array([16, 85, 215])
     wall_upper = np.array([20, 115, 245])
@@ -323,7 +322,7 @@ def get_robot_coordinates(maze_hsv):
 
     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
 
-def get_robot_heading(robot_img):
+def get_robot_heading(robot_img, H):
     dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
     parameters = cv2.aruco.DetectorParameters_create()
     marker_corners, marker_ids, rejected = cv2.aruco.detectMarkers(robot_img, dictionary, parameters=parameters)
@@ -368,7 +367,7 @@ def draw_robot(maze_bgr, robot_coordinates, robot_heading):
     elif robot_heading == 'v':
         location = (cx - 8, cy + 8)
 
-    cv2.putText(maze_bgr, heading, location, cv2.FONT_HERSHEY_SIMPLEX, 1, BGR_R, 2, cv2.LINE_AA)
+    cv2.putText(maze_bgr, robot_heading, location, cv2.FONT_HERSHEY_SIMPLEX, 1, BGR_R, 2, cv2.LINE_AA)
     return maze_bgr
 
 def line_angle_4th_quadrant(head, tail):
