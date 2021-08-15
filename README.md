@@ -89,7 +89,7 @@ py -m pip install -r requirements.txt
         <td rowspan="3">Run <code>cython-build-script.sh</code><br>Ensure <code>CVPuckYou.h</code> and <code>CVPuckYou.c</code> are in their respective <code>include/</code> and <code>src/</code> folders</td>
         <td>cython</td>
         <td><code>pip install cython</code></td>
-        <td></td>
+        <td>Add <code>-D_hypot=hypot</code> to <code>Makefile</code></td>
     </tr>
     <tr>
         <td>Ubuntu 18.04</td>
