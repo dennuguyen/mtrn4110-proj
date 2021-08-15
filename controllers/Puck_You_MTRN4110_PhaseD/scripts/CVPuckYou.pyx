@@ -139,7 +139,7 @@ def perspective_transform(maze_img, magenta_contours, cyan_contour):
     magenta_corners = {}
     cyan_corners = []
 
-    for cont in magenta_contour:
+    for cont in magenta_contours:
         corner = create_corner(cont, 'magenta')
         magenta_corners[str(corner.get('id'))] = corner
 
