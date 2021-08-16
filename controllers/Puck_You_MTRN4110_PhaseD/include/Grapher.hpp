@@ -2,6 +2,7 @@
 #define GRAPHER_HPP
 
 #include <map>
+#include <regex>
 
 #include "Util.hpp"
 
@@ -19,23 +20,12 @@ class Grapher {
     Grapher()
     : map_() {}
 
-    // Read the map from the input stream.
-    auto readMap(std::istream& inputStream) -> void {
-        if (inputStream.good() == false) {
-            throw std::runtime_error("Could not open file.");
-        }
-
-        auto line = std::string();
-        while (std::getline(inputStream, line)) {
-            map_.push_back(line);
-        }
-
-        if (inputStream.good() == false) {
-            throw std::runtime_error("I/O error while reading.");
-        }
-        if (inputStream.eof() == false) {
-            throw std::runtime_error("Did not reach EOF.");
-        }
+    // Read the map from file name.
+    auto readMap(std::string const& map) -> void {
+        auto const delimiter = std::regex("\n");
+        map_ = std::vector<std::string>(
+            std::sregex_token_iterator(map.begin(), map.end(), delimiter, -1),
+            std::sregex_token_iterator());
     }
 
     // Build the graph from the read-in map.
