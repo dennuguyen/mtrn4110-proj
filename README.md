@@ -151,7 +151,7 @@ It will call cython on all `.pyx` files in the `scripts/` folder then move gener
 
 Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation and execution of cython files into the C++ build, we keep a copy of these for each OS.
 
-### Why is there a `#define _hypot hypot` at the top of main file or a `-D_hypot=hypot` in the `Makefile`?
+### Why am I getis there a `#define _hypot hypot` at the top of main file or a `-D_hypot=hypot` in the `Makefile`?
 
 In the Windows version of Webots in `Webots/msys64/mingw64/include/c++/10.2.0/cmath`, line 1124: `using ::hypot;`. `hypot` has been incorrectly defined and should be `_hypot`.
 
@@ -159,9 +159,14 @@ In the Windows version of Webots in `Webots/msys64/mingw64/include/c++/10.2.0/cm
 
 The program will crash for python versions >= 3.5 and cython versions == 0.29.
 
-### Why is there a `.dll` in `controllers/Puck_You_MTRN4110_PhaseD`?
+### Why am I getting a missing `python37.dll` error on Windows?
 
-Windows requires the dynamic library for cython `.c`/`.h` files to execute since cython `.c`/`.h` files are linked to python libraries.
+If you are getting this error:
+```
+The code execution cannot proceed because python37.dll was not found. Reinstalling the program may fix this problem.
+```
+
+Ensure there exists a `python37.dll` file with the Windows executable that Webots is targetting. Windows requires the dynamic library to execute since `Python.h` is linked to python libraries.
 
 ### I am getting a division by zero error when I compile in Webots, how do I fix this?
 
