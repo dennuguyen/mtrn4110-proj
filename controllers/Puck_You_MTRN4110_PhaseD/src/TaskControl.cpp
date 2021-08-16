@@ -7,9 +7,11 @@
 
 namespace mtrn4110 {
 
-TaskControl::TaskControl(int numLocks, int numTimers)
+TaskControl::TaskControl(webots::Robot& robot, int numLocks, int numTimers)
 : numLocks_(numLocks)
-, numTimers_(numTimers) {}
+, numTimers_(numTimers)
+, locks_(std::vector<bool>(static_cast<std::size_t>(numLocks), false))
+, timers_(std::vector<Timer>(static_cast<std::size_t>(numTimers), Timer(robot))) {}
 
 auto TaskControl::acquireLock(int lock) -> void {
     if (lock < 0 || numLocks_ < lock) {

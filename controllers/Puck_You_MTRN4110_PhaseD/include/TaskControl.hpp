@@ -3,12 +3,14 @@
 
 #include <vector>
 
+#include <webots/Robot.hpp>
+
 #include "Timer.hpp"
 
 namespace mtrn4110 {
 class TaskControl {
    public:
-    TaskControl(int numLocks, int numTimers);
+    TaskControl(webots::Robot& robot, int numLocks, int numTimers);
     TaskControl(TaskControl const& taskControl) = delete;
     TaskControl(TaskControl&& taskControl) noexcept = delete;
     ~TaskControl() = default;
@@ -28,7 +30,7 @@ class TaskControl {
     unsigned int step_ = 0;
     int numLocks_;
     int numTimers_;
-    std::vector<bool> locks_ = {false};
+    std::vector<bool> locks_;
     std::vector<Timer> timers_;
 };
 
