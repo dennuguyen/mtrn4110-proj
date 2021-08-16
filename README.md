@@ -173,7 +173,7 @@ The code execution cannot proceed because python37.dll was not found. Reinstalli
 
 Ensure there exists a `python37.dll` file with the Windows executable that Webots is targetting. Windows requires the dynamic library to execute since `Python.h` is linked to python libraries.
 
-### I am getting a division by zero error when I compile in Webots, how do I fix this?
+### Why am I getting a division by zero error during Webots compilation?
 
 If you are getting these errors:
 ```
@@ -200,3 +200,5 @@ The following lines must be added to the top of `python3.7/windows/include/pycon
 ```
 
 See this issue: https://github.com/cython/cython/issues/3405
+
+Also check your code to safe-guard against dividing by zero cases.
