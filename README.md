@@ -40,7 +40,7 @@ Note that only the pip package manager is required to install Python library req
 
 Linux:
 ```
-sudo apt-get install python3.6
+sudo apt-get install python3.7
 sudo apt-get install pip
 ```
 
@@ -86,7 +86,7 @@ py -m pip install -r requirements.txt
     </tr>
     <tr>
         <td rowspan="3">Compiling <code>.pyx</code> files</td>
-        <td rowspan="3">Run <code>cython-build-script.sh</code><br>Ensure <code>CVPuckYou.h</code> and <code>CVPuckYou.c</code> are in their respective <code>include/</code> and <code>src/</code> folders</td>
+        <td rowspan="3"><code>python3 setup.py build_ext</code><br>Ensure <code>CVPuckYou.h</code> and <code>CVPuckYou.c</code> are in their respective <code>include/</code> and <code>src/</code> folders</td>
         <td>cython</td>
         <td><code>pip install cython</code></td>
         <td>Add <code>-D_hypot=hypot</code> to <code>Makefile</code></td>
