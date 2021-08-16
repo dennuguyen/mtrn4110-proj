@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="C91cKKwiNIsFAHS6rGZc" name="Page-1">
-        <mxGraphModel dx="3258" dy="711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
+        <mxGraphModel dx="2916" dy="680" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -663,6 +663,97 @@
                     <mxGeometry x="0.2914" relative="1" as="geometry">
                         <mxPoint x="11" y="-10" as="offset"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="377" value="DistanceSensor" style="rounded=0;html=1;whiteSpace=wrap;fontColor=#99FFFF;" parent="1" vertex="1">
+                    <mxGeometry x="-1160" y="640.4199999999998" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="378" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-1100.34" y="760.42" as="targetPoint"/>
+                        <mxPoint x="-1100.34" y="680.42" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="379" value="distanceData" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;labelBackgroundColor=none;fontColor=#FFFF00;" parent="378" vertex="1" connectable="0">
+                    <mxGeometry x="0.1955" relative="1" as="geometry">
+                        <mxPoint x="-40" y="-28" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="380" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-1020" y="599.1999999999999" as="targetPoint"/>
+                        <mxPoint x="-1100" y="599.1999999999999" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="381" value="obstacles" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;labelBackgroundColor=none;" parent="380" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2817" y="-2" relative="1" as="geometry">
+                        <mxPoint x="11" y="-11" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="386" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="382" target="383">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="382" value="Get Image of Map" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-1142" y="1194" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="406" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="383" target="385">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="383" value="Convert Map to String" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-992" y="1194" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="394" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="385" target="391">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="385" value="Convert String to Graph" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-842" y="1194" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="393" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="389" target="391">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="389" value="Get destination" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-992" y="1314" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="392" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="390" target="391">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="390" value="Get locale" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-842" y="1434" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="396" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="391" target="395">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="391" value="Compute path" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-842" y="1314" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="398" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="395" target="397">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="395" value="Sequence path" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-682" y="1314" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="400" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="397" target="399">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="397" value="Compute trajectory" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-522" y="1314" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="402" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="399" target="401">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="399" value="Compute motor setpoints" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-362" y="1314" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="404" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="401" target="403">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="401" value="Begin motion" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-202" y="1314" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="405" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="403" target="395">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="403" value="End motion" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-202" y="1194" width="120" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
