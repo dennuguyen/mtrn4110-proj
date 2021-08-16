@@ -75,7 +75,7 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 
 //         // Trajectory plan.
 //         trajectoryPlanner.updateMotion(motion);
-//         trajectoryPlanner.computeKinematics();
+//         trajectoryPlanner.computeTrajectory();
 
 //         // Motion Planner.
 //         auto const angle = trajectoryPlanner.getAngle();
@@ -103,7 +103,7 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // teleoperated.
 static auto mouse(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot, 2, 2);
+    auto taskControl = mtrn4110::TaskControl(robot, 1, 0);
 
     // Instantiate RSA elements.
     auto teleoperation = mtrn4110::SimpleTeleoperation(robot);
@@ -115,11 +115,12 @@ static auto mouse(webots::Robot& robot) -> void {
     while (1) {
         // Get teleoperation motion command.
         teleoperation.readInput();
-        // std::cout << teleoperation;
+        std::cout << teleoperation;
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(teleoperation.getDeliberatedValue());
-        trajectoryPlanner.computeKinematics();
+        trajectoryPlanner.computeTrajectory();
+        std::cout << trajectoryPlanner;
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
@@ -127,16 +128,17 @@ static auto mouse(webots::Robot& robot) -> void {
         auto const linearVelocity = trajectoryPlanner.getLinearVelocity();
         auto const angularVelocity = trajectoryPlanner.getAngularVelocity();
         motionPlanner.computeMotorSetpoints(angle, distance, linearVelocity, angularVelocity);
+        std::cout << motionPlanner;
 
         // Feed motor setpoints to motor controller.
         motorController.setPosition(motionPlanner.getMotorPositions());
         motorController.setVelocity(motionPlanner.getMotorVelocities());
-        taskControl.acquireLock(1);
+        taskControl.acquireLock(0);
 
         // Acquire lock.
-        while (taskControl.isLockBusy(1) == true) {
+        while (taskControl.isLockBusy(0) == true) {
             if (motorController.isAtPosition() == true) {
-                taskControl.releaseLock(1);
+                taskControl.releaseLock(0);
             }
         }
     }

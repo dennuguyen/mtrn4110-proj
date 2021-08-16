@@ -67,7 +67,7 @@ class TrajectoryPlanner {
    private:
     // Compute the distance and velocities from the next and previous motions. It is up to the user
     // to update the motion if required.
-    virtual auto computeKinematics() -> void = 0;
+    virtual auto computeTrajectory() -> void = 0;
 
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
