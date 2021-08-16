@@ -34,9 +34,9 @@ gantt
 
 ## Python Setup
 
-### Python 3.7 Installation
+Python setup is required for all build steps.
 
-Note that only the pip package manager is required to install Python library requirements. This will allow Cython to link dependencies to Python libraries.
+### Python 3.7 Installation
 
 Linux:
 ```
@@ -46,9 +46,7 @@ sudo apt-get install pip
 
 Windows:
 
-[Download link](https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe)
-
-Make sure pip will be installed in the wizard.
+[Get latest available Python 3.7 version](https://www.python.org/downloads/windows/)
 
 ### Python Library Requirements
 
@@ -79,48 +77,35 @@ py -m pip install -r requirements.txt
         <th>Dependency</th>
         <th>Dependency Setup</th>
         <th>Modifications Made</th>
+        <th>Tested On</th>
     </tr>
 </thead>
 <tbody>
     <tr>
     </tr>
     <tr>
-        <td rowspan="3">Compiling <code>.pyx</code> files</td>
-        <td rowspan="3"><code>python3 setup.py build_ext</code><br>Ensure <code>CVPuckYou.h</code> and <code>CVPuckYou.c</code> are in their respective <code>include/</code> and <code>src/</code> folders</td>
+        <td rowspan="1">Compiling <code>.pyx</code> files</td>
+        <td rowspan="1"><code>python3 setup.py build_ext</code><br>Ensure <code>CVPuckYou.h</code> and <code>CVPuckYou.c</code> are in their respective <code>include/</code> and <code>src/</code> folders</td>
         <td>cython</td>
         <td><code>pip install cython</code></td>
-        <td>Add <code>-D_hypot=hypot</code> to <code>Makefile</code></td>
+        <td>Ubuntu 18.04 WSL, </td>
     </tr>
     <tr>
-        <td>Ubuntu 18.04</td>
-        <td><a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">WSL install instructions</a></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Other Python imports</td>
-        <td><code>pip install opencv-contrib-python</code><br><code>pip install numpy</code></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td rowspan="4">Compiling <code>.hpp/.cpp/.h/.c</code> files</td>
-        <td rowspan="4">Use Webots build tool</td>
+        <td rowspan="3">Compiling <code>.hpp/.cpp/.h/.c</code> files</td>
+        <td rowspan="3">Use Webots build tool</td>
         <td>Webots R2021a</td>
         <td><a href="https://cyberbotics.com/doc/guide/installation-procedure"> Webots install instructions</a></td>
+        <td>Add <code>-D_hypot=hypot</code> to <code>Makefile</code></td>
         <td></td>
     </tr>
     <tr>
         <td><code>Python.h</code>, Python underlying <code>.h</code> files, Python libraries</td>
-        <td>Provided in python3.6 folder for each OS</td>
-        <td>Controller <code>Makefile</code> has been modified<br><code>python3.6/windows/include/pyconfig.h</code> has been modified</td>
+        <td>Provided in python3.7 folder for each OS</td>
+        <td><code>Makefile</code> has been modified to find <code>python3.7/</code><br><code>python3.7/windows/include/pyconfig.h</code> has been modified</td>
     </tr>
     <tr>
         <td><code>python36.dll</code></td>
         <td>Provided for Windows</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>`Python3.7`</td>
-        <td>[Get latest available version here](https://www.python.org/downloads/windows/)<br><code>sudo apt-get install python3.7</code></td>
         <td></td>
     </tr>
 </tbody>
@@ -143,11 +128,7 @@ The following platforms have been tested and are recommended:
 
 ## FAQ
 
-### What does `cython-build-script.sh` do?
-
-It will call cython on all `.pyx` files in the `scripts/` folder then move generated `.h` files to your `include/` folder and generated `.cpp` files to your `src/` folder. The generated files will have the same name as the original `.pyx` file.
-
-### Why is there a python3.6 folder with header files and libs?
+### Why is there a python3.7 folder with header files and libs?
 
 Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation and execution of cython files into the C++ build, we keep a copy of these for each OS.
 
