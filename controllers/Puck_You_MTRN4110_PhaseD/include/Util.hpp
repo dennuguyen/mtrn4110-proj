@@ -29,14 +29,6 @@ constexpr auto mazeImage = "../../images/Maze_2.png";
 constexpr auto robotImage = "../../images/Robot_2.png";
 constexpr auto ladybugImage = "../../images/Ladybug_small.png";
 }  // namespace files
-
-namespace colours {
-constexpr auto cyan = {255, 0, 255};
-constexpr auto magenta = {0, 255, 255};
-constexpr auto birch = {120, 50, 255};
-constexpr auto epuck = {150, 20, 20};
-constexpr auto red = {0, 255, 0};
-}  // namespace colours
 }  // namespace mtrn4110
 
 #endif  // UTIL_HPP
