@@ -34,7 +34,7 @@ gantt
 
 ## Python Setup
 
-### Python 3.6 Installation
+### Python 3.7 Installation
 
 Note that only the pip package manager is required to install Python library requirements. This will allow Cython to link dependencies to Python libraries.
 
@@ -119,8 +119,8 @@ py -m pip install -r requirements.txt
         <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
+        <td>`Python3.7`</td>
+        <td>[Get latest available version here](https://www.python.org/downloads/windows/)<br><code>sudo apt-get install python3.7</code></td>
         <td></td>
     </tr>
 </tbody>
