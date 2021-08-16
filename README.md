@@ -163,9 +163,24 @@ The program will crash for python versions >= 3.5 and cython versions == 0.29.
 
 Windows requires the dynamic library for cython `.c`/`.h` files to execute since cython `.c`/`.h` files are linked to python libraries.
 
-### Why has [`pyconfig.h`](https://gitlab.com/puck-you/phase-d/-/blob/dev/python3.6/windows/include/pyconfig.h) in `python3.6/windows/include/` been modified?
+### I am getting a division by zero error when I compile in Webots, how do I fix this?
 
-The following lines have been added:
+If you are getting these errors:
+```
+src/your_file.cpp:203:41: warning: division by zero [-Wdiv-by-zero]
+  203 |     enum { __pyx_check_sizeof_voidp = 1 / (int)(SIZEOF_VOID_P == sizeof(void*)) };
+      |                                       ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/your_file.cpp:203:79: error: division by zero is not a constant expression
+  203 |     enum { __pyx_check_sizeof_voidp = 1 / (int)(SIZEOF_VOID_P == sizeof(void*)) };
+      |                                                                               ^
+src/your_file.cpp:203:41: error: '(1 / 0)' is not a constant expression
+  203 |     enum { __pyx_check_sizeof_voidp = 1 / (int)(SIZEOF_VOID_P == sizeof(void*)) };
+      |                                       ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/your_file.cpp:203:79: error: enumerator value for '__pyx_check_sizeof_voidp' is not an integer constant
+  203 |     enum { __pyx_check_sizeof_voidp = 1 / (int)(SIZEOF_VOID_P == sizeof(void*)) };
+```
+
+The following lines must be added to the top of `python3.7/windows/include/pyconfig.h`:
 ```
 #ifdef __MINGW32__
     #ifdef _WIN64
