@@ -1258,10 +1258,10 @@ static PyObject* __Pyx_PyInt_RemainderObjC(PyObject *op1, PyObject *op2, long in
 
 /* PyIntBinop.proto */
 #if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_TrueDivideObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
+static PyObject* __Pyx_PyInt_FloorDivideObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
 #else
-#define __Pyx_PyInt_TrueDivideObjC(op1, op2, intval, inplace, zerodivision_check)\
-    (inplace ? PyNumber_InPlaceTrueDivide(op1, op2) : PyNumber_TrueDivide(op1, op2))
+#define __Pyx_PyInt_FloorDivideObjC(op1, op2, intval, inplace, zerodivision_check)\
+    (inplace ? PyNumber_InPlaceFloorDivide(op1, op2) : PyNumber_FloorDivide(op1, op2))
 #endif
 
 /* IncludeStringH.proto */
@@ -5490,7 +5490,7 @@ static PyObject *__pyx_pf_9CVPuckYou_12perspective_transform(CYTHON_UNUSED PyObj
  * 
  * def create_corner(contour, colour):             # <<<<<<<<<<<<<<
  *     m = cv2.moments(contour)
- *     cx = int(m['m10']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
  */
 
 /* Python wrapper */
@@ -5567,8 +5567,9 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5578,8 +5579,8 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
  * 
  * def create_corner(contour, colour):
  *     m = cv2.moments(contour)             # <<<<<<<<<<<<<<
- *     cx = int(m['m10']/m['m00'])
- *     cy = int(m['m01']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
+ *     cy = m['m01'] // (m['m00'] or 0.00000001)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_cv2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -5607,48 +5608,70 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
   /* "CVPuckYou.pyx":159
  * def create_corner(contour, colour):
  *     m = cv2.moments(contour)
- *     cx = int(m['m10']/m['m00'])             # <<<<<<<<<<<<<<
- *     cy = int(m['m01']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)             # <<<<<<<<<<<<<<
+ *     cy = m['m01'] // (m['m00'] or 0.00000001)
  *     return {
  */
   __pyx_t_1 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m00); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m00); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (!__pyx_t_4) {
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  } else {
+    __Pyx_INCREF(__pyx_t_2);
+    __pyx_t_3 = __pyx_t_2;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    goto __pyx_L3_bool_binop_done;
+  }
+  __pyx_t_2 = PyFloat_FromDouble(0.00000001); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  __pyx_L3_bool_binop_done:;
+  __pyx_t_2 = PyNumber_FloorDivide(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_cx = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_v_cx = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":160
  *     m = cv2.moments(contour)
- *     cx = int(m['m10']/m['m00'])
- *     cy = int(m['m01']/m['m00'])             # <<<<<<<<<<<<<<
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
+ *     cy = m['m01'] // (m['m00'] or 0.00000001)             # <<<<<<<<<<<<<<
  *     return {
  *         'colour': colour,
  */
-  __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m01); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m00); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m01); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Dict_GetItem(__pyx_v_m, __pyx_n_u_m00); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 160, __pyx_L1_error)
+  if (!__pyx_t_4) {
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  } else {
+    __Pyx_INCREF(__pyx_t_1);
+    __pyx_t_3 = __pyx_t_1;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    goto __pyx_L5_bool_binop_done;
+  }
+  __pyx_t_1 = PyFloat_FromDouble(0.00000001); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __pyx_t_1;
+  __pyx_t_1 = 0;
+  __pyx_L5_bool_binop_done:;
+  __pyx_t_1 = PyNumber_FloorDivide(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_cy = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_cy = __pyx_t_1;
+  __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":161
- *     cx = int(m['m10']/m['m00'])
- *     cy = int(m['m01']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
+ *     cy = m['m01'] // (m['m00'] or 0.00000001)
  *     return {             # <<<<<<<<<<<<<<
  *         'colour': colour,
  *         'x' : cx,
@@ -5656,15 +5679,15 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
   __Pyx_XDECREF(__pyx_r);
 
   /* "CVPuckYou.pyx":162
- *     cy = int(m['m01']/m['m00'])
+ *     cy = m['m01'] // (m['m00'] or 0.00000001)
  *     return {
  *         'colour': colour,             # <<<<<<<<<<<<<<
  *         'x' : cx,
  *         'y' : cy,
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_colour, __pyx_v_colour) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_colour, __pyx_v_colour) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
 
   /* "CVPuckYou.pyx":163
  *     return {
@@ -5673,7 +5696,7 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
  *         'y' : cy,
  *         'id' : left_or_right(cx) + top_or_bottom(cy),
  */
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_x, __pyx_v_cx) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_x, __pyx_v_cx) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
 
   /* "CVPuckYou.pyx":164
  *         'colour': colour,
@@ -5682,7 +5705,7 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
  *         'id' : left_or_right(cx) + top_or_bottom(cy),
  *     }
  */
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_y, __pyx_v_cy) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_y, __pyx_v_cy) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
 
   /* "CVPuckYou.pyx":165
  *         'x' : cx,
@@ -5691,48 +5714,48 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
  *     }
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_left_or_right); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_cx) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_cx);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_top_or_bottom); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_left_or_right); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
     }
   }
-  __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_v_cy) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_cy);
+  __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_v_cx) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_cx);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_top_or_bottom); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_v_cy) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_cy);
+  __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_u_id, __pyx_t_4) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_id, __pyx_t_5) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "CVPuckYou.pyx":157
@@ -5740,7 +5763,7 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
  * 
  * def create_corner(contour, colour):             # <<<<<<<<<<<<<<
  *     m = cv2.moments(contour)
- *     cx = int(m['m10']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
  */
 
   /* function exit code */
@@ -5748,8 +5771,8 @@ static PyObject *__pyx_pf_9CVPuckYou_14create_corner(CYTHON_UNUSED PyObject *__p
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_AddTraceback("CVPuckYou.create_corner", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -9319,6 +9342,7 @@ static PyObject *__pyx_pf_9CVPuckYou_26get_robot_coordinates(CYTHON_UNUSED PyObj
   PyObject *(*__pyx_t_8)(PyObject *);
   Py_ssize_t __pyx_t_9;
   PyObject *(*__pyx_t_10)(PyObject *);
+  int __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -9801,7 +9825,7 @@ static PyObject *__pyx_pf_9CVPuckYou_26get_robot_coordinates(CYTHON_UNUSED PyObj
  *         sum_m10 += M['m10']
  *         sum_m01 += M['m01']             # <<<<<<<<<<<<<<
  * 
- *     robot_x = int(sum_m10 / sum_m00)
+ *     robot_x = sum_m10 // (sum_m00 or 0.00000001)
  */
     __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_v_M, __pyx_n_u_m01); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 319, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
@@ -9824,13 +9848,23 @@ static PyObject *__pyx_pf_9CVPuckYou_26get_robot_coordinates(CYTHON_UNUSED PyObj
   /* "CVPuckYou.pyx":321
  *         sum_m01 += M['m01']
  * 
- *     robot_x = int(sum_m10 / sum_m00)             # <<<<<<<<<<<<<<
- *     robot_y = int(sum_m01 / sum_m00)
+ *     robot_x = sum_m10 // (sum_m00 or 0.00000001)             # <<<<<<<<<<<<<<
+ *     robot_y = sum_m01 // (sum_m00 or 0.00000001)
  * 
  */
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_sum_m10, __pyx_v_sum_m00); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 321, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_sum_m00); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 321, __pyx_L1_error)
+  if (!__pyx_t_11) {
+  } else {
+    __Pyx_INCREF(__pyx_v_sum_m00);
+    __pyx_t_3 = __pyx_v_sum_m00;
+    goto __pyx_L7_bool_binop_done;
+  }
+  __pyx_t_6 = PyFloat_FromDouble(0.00000001); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_3 = __pyx_t_6;
+  __pyx_t_6 = 0;
+  __pyx_L7_bool_binop_done:;
+  __pyx_t_6 = PyNumber_FloorDivide(__pyx_v_sum_m10, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_robot_x = __pyx_t_6;
@@ -9838,53 +9872,57 @@ static PyObject *__pyx_pf_9CVPuckYou_26get_robot_coordinates(CYTHON_UNUSED PyObj
 
   /* "CVPuckYou.pyx":322
  * 
- *     robot_x = int(sum_m10 / sum_m00)
- *     robot_y = int(sum_m01 / sum_m00)             # <<<<<<<<<<<<<<
+ *     robot_x = sum_m10 // (sum_m00 or 0.00000001)
+ *     robot_y = sum_m01 // (sum_m00 or 0.00000001)             # <<<<<<<<<<<<<<
  * 
- *     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
+ *     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
  */
-  __pyx_t_6 = __Pyx_PyNumber_Divide(__pyx_v_sum_m01, __pyx_v_sum_m00); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 322, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_sum_m00); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 322, __pyx_L1_error)
+  if (!__pyx_t_11) {
+  } else {
+    __Pyx_INCREF(__pyx_v_sum_m00);
+    __pyx_t_6 = __pyx_v_sum_m00;
+    goto __pyx_L9_bool_binop_done;
+  }
+  __pyx_t_3 = PyFloat_FromDouble(0.00000001); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_6 = __pyx_t_3;
+  __pyx_t_3 = 0;
+  __pyx_L9_bool_binop_done:;
+  __pyx_t_3 = PyNumber_FloorDivide(__pyx_v_sum_m01, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 322, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_robot_y = __pyx_t_3;
   __pyx_t_3 = 0;
 
   /* "CVPuckYou.pyx":324
- *     robot_y = int(sum_m01 / sum_m00)
+ *     robot_y = sum_m01 // (sum_m00 or 0.00000001)
  * 
- *     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))             # <<<<<<<<<<<<<<
+ *     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS             # <<<<<<<<<<<<<<
  * 
  * def get_robot_heading(robot_img, H):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyNumber_Divide(__pyx_v_robot_y, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_FloorDivide(__pyx_v_robot_y, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyNumber_Divide(__pyx_v_robot_x, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_FloorDivide(__pyx_v_robot_x, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyNumber_Int(__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_3);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_6);
-  __pyx_t_3 = 0;
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_7);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_7);
   __pyx_t_6 = 0;
-  __pyx_r = __pyx_t_7;
   __pyx_t_7 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
   goto __pyx_L0;
 
   /* "CVPuckYou.pyx":302
@@ -9926,7 +9964,7 @@ static PyObject *__pyx_pf_9CVPuckYou_26get_robot_coordinates(CYTHON_UNUSED PyObj
 }
 
 /* "CVPuckYou.pyx":326
- *     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
+ *     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
  * 
  * def get_robot_heading(robot_img, H):             # <<<<<<<<<<<<<<
  *     dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
@@ -10736,7 +10774,7 @@ static PyObject *__pyx_pf_9CVPuckYou_28get_robot_heading(CYTHON_UNUSED PyObject 
   goto __pyx_L0;
 
   /* "CVPuckYou.pyx":326
- *     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
+ *     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
  * 
  * def get_robot_heading(robot_img, H):             # <<<<<<<<<<<<<<
  *     dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
@@ -10778,8 +10816,8 @@ static PyObject *__pyx_pf_9CVPuckYou_28get_robot_heading(CYTHON_UNUSED PyObject 
  *     return heading
  * 
  * def draw_robot(maze_bgr, robot_coordinates, robot_heading):             # <<<<<<<<<<<<<<
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
 
 /* Python wrapper */
@@ -10882,9 +10920,9 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
   /* "CVPuckYou.pyx":356
  * 
  * def draw_robot(maze_bgr, robot_coordinates, robot_heading):
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))             # <<<<<<<<<<<<<<
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     radius = int(GRID_PIXELS / 4)
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)             # <<<<<<<<<<<<<<
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     radius = GRID_PIXELS // 4
  */
   __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_robot_coordinates, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -10896,87 +10934,78 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_cx = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_cx = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":357
  * def draw_robot(maze_bgr, robot_coordinates, robot_heading):
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))             # <<<<<<<<<<<<<<
- *     radius = int(GRID_PIXELS / 4)
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)             # <<<<<<<<<<<<<<
+ *     radius = GRID_PIXELS // 4
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_R, LINE_THICKNESS)
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_robot_coordinates, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_robot_coordinates, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_cy = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":358
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     radius = int(GRID_PIXELS / 4)             # <<<<<<<<<<<<<<
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     radius = GRID_PIXELS // 4             # <<<<<<<<<<<<<<
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_R, LINE_THICKNESS)
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_1, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 358, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_radius = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_radius = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":359
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     radius = int(GRID_PIXELS / 4)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     radius = GRID_PIXELS // 4
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_R, LINE_THICKNESS)             # <<<<<<<<<<<<<<
  * 
  *     location = (cx, cy)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_cv2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_circle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_circle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_cx);
   __Pyx_GIVEREF(__pyx_v_cx);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_cx);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_cx);
   __Pyx_INCREF(__pyx_v_cy);
   __Pyx_GIVEREF(__pyx_v_cy);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_cy);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_cy);
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_BGR_R); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_LINE_THICKNESS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 359, __pyx_L1_error)
@@ -10995,22 +11024,22 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_2, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
+    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_1, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_2, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
+    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_1, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else
@@ -11024,8 +11053,8 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
     __Pyx_INCREF(__pyx_v_maze_bgr);
     __Pyx_GIVEREF(__pyx_v_maze_bgr);
     PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_maze_bgr);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_1);
     __Pyx_INCREF(__pyx_v_radius);
     __Pyx_GIVEREF(__pyx_v_radius);
     PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_v_radius);
@@ -11033,15 +11062,15 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
     PyTuple_SET_ITEM(__pyx_t_8, 3+__pyx_t_7, __pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_8, 4+__pyx_t_7, __pyx_t_5);
-    __pyx_t_2 = 0;
+    __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":361
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_R, LINE_THICKNESS)
@@ -11050,16 +11079,16 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
  *     if robot_heading == '>':
  *         location = (cx - 10, cy + 10)
  */
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 361, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_cx);
   __Pyx_GIVEREF(__pyx_v_cx);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_cx);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_cx);
   __Pyx_INCREF(__pyx_v_cy);
   __Pyx_GIVEREF(__pyx_v_cy);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_cy);
-  __pyx_v_location = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_cy);
+  __pyx_v_location = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":362
  * 
@@ -11078,17 +11107,17 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
  *     elif robot_heading == '^':
  *         location = (cx - 11, cy + 9)
  */
-    __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_cx, __pyx_int_10, 10, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyInt_SubtractObjC(__pyx_v_cx, __pyx_int_10, 10, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 363, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_cy, __pyx_int_10, 10, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 363, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 363, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_3);
-    __pyx_t_1 = 0;
+    __pyx_t_2 = 0;
     __pyx_t_3 = 0;
     __Pyx_DECREF_SET(__pyx_v_location, ((PyObject*)__pyx_t_8));
     __pyx_t_8 = 0;
@@ -11124,16 +11153,16 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_cy, __pyx_int_9, 9, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 365, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 365, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_8);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
+    PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_3);
     __pyx_t_8 = 0;
     __pyx_t_3 = 0;
-    __Pyx_DECREF_SET(__pyx_v_location, ((PyObject*)__pyx_t_1));
-    __pyx_t_1 = 0;
+    __Pyx_DECREF_SET(__pyx_v_location, ((PyObject*)__pyx_t_2));
+    __pyx_t_2 = 0;
 
     /* "CVPuckYou.pyx":364
  *     if robot_heading == '>':
@@ -11162,17 +11191,17 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
  *     elif robot_heading == 'v':
  *         location = (cx - 8, cy + 8)
  */
-    __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_cx, __pyx_int_15, 15, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyInt_SubtractObjC(__pyx_v_cx, __pyx_int_15, 15, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_cy, __pyx_int_10, 10, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 367, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 367, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_3);
-    __pyx_t_1 = 0;
+    __pyx_t_2 = 0;
     __pyx_t_3 = 0;
     __Pyx_DECREF_SET(__pyx_v_location, ((PyObject*)__pyx_t_8));
     __pyx_t_8 = 0;
@@ -11208,16 +11237,16 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_cy, __pyx_int_8, 8, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 369, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 369, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 369, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_8);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
+    PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_3);
     __pyx_t_8 = 0;
     __pyx_t_3 = 0;
-    __Pyx_DECREF_SET(__pyx_v_location, ((PyObject*)__pyx_t_1));
-    __pyx_t_1 = 0;
+    __Pyx_DECREF_SET(__pyx_v_location, ((PyObject*)__pyx_t_2));
+    __pyx_t_2 = 0;
 
     /* "CVPuckYou.pyx":368
  *     elif robot_heading == '<':
@@ -11250,8 +11279,8 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_cv2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_LINE_AA); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_LINE_AA); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
   __pyx_t_7 = 0;
@@ -11267,24 +11296,24 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_8)) {
-    PyObject *__pyx_temp[9] = {__pyx_t_4, __pyx_v_maze_bgr, __pyx_v_robot_heading, __pyx_v_location, __pyx_t_5, __pyx_int_1, __pyx_t_3, __pyx_int_2, __pyx_t_2};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 8+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
+    PyObject *__pyx_temp[9] = {__pyx_t_4, __pyx_v_maze_bgr, __pyx_v_robot_heading, __pyx_v_location, __pyx_t_5, __pyx_int_1, __pyx_t_3, __pyx_int_2, __pyx_t_1};
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 8+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
-    PyObject *__pyx_temp[9] = {__pyx_t_4, __pyx_v_maze_bgr, __pyx_v_robot_heading, __pyx_v_location, __pyx_t_5, __pyx_int_1, __pyx_t_3, __pyx_int_2, __pyx_t_2};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 8+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
+    PyObject *__pyx_temp[9] = {__pyx_t_4, __pyx_v_maze_bgr, __pyx_v_robot_heading, __pyx_v_location, __pyx_t_5, __pyx_int_1, __pyx_t_3, __pyx_int_2, __pyx_t_1};
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 8+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   {
@@ -11312,17 +11341,17 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
     __Pyx_INCREF(__pyx_int_2);
     __Pyx_GIVEREF(__pyx_int_2);
     PyTuple_SET_ITEM(__pyx_t_6, 6+__pyx_t_7, __pyx_int_2);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_6, 7+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_6, 7+__pyx_t_7, __pyx_t_1);
     __pyx_t_5 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":372
  * 
@@ -11340,8 +11369,8 @@ static PyObject *__pyx_pf_9CVPuckYou_30draw_robot(CYTHON_UNUSED PyObject *__pyx_
  *     return heading
  * 
  * def draw_robot(maze_bgr, robot_coordinates, robot_heading):             # <<<<<<<<<<<<<<
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
 
   /* function exit code */
@@ -12350,7 +12379,7 @@ static PyObject *__pyx_pf_9CVPuckYou_34get_target_coordinates(CYTHON_UNUSED PyOb
  *     for match in matches:
  *         if match.distance < match_threshold:             # <<<<<<<<<<<<<<
  *             x, y = kp_maze[match.queryIdx].pt
- *             count[int(y / GRID_PIXELS)][int(x / GRID_PIXELS)] += 1
+ *             count[y // GRID_PIXELS][x // GRID_PIXELS] += 1
  */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_match, __pyx_n_s_distance); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 395, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -12364,7 +12393,7 @@ static PyObject *__pyx_pf_9CVPuckYou_34get_target_coordinates(CYTHON_UNUSED PyOb
  *     for match in matches:
  *         if match.distance < match_threshold:
  *             x, y = kp_maze[match.queryIdx].pt             # <<<<<<<<<<<<<<
- *             count[int(y / GRID_PIXELS)][int(x / GRID_PIXELS)] += 1
+ *             count[y // GRID_PIXELS][x // GRID_PIXELS] += 1
  * 
  */
       __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_match, __pyx_n_s_queryIdx); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 396, __pyx_L1_error)
@@ -12429,45 +12458,39 @@ static PyObject *__pyx_pf_9CVPuckYou_34get_target_coordinates(CYTHON_UNUSED PyOb
       /* "CVPuckYou.pyx":397
  *         if match.distance < match_threshold:
  *             x, y = kp_maze[match.queryIdx].pt
- *             count[int(y / GRID_PIXELS)][int(x / GRID_PIXELS)] += 1             # <<<<<<<<<<<<<<
+ *             count[y // GRID_PIXELS][x // GRID_PIXELS] += 1             # <<<<<<<<<<<<<<
  * 
  *     return np.unravel_index(np.argmax(count, axis=None), count.shape)
  */
       __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 397, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_y, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_3 = PyNumber_FloorDivide(__pyx_v_y, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 397, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_count, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 397, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_v_count, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 397, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 397, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_v_x, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_1 = PyNumber_FloorDivide(__pyx_v_x, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyNumber_Int(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 397, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_3, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 397, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(PyObject_SetItem(__pyx_t_3, __pyx_t_4, __pyx_t_2) < 0)) __PYX_ERR(0, 397, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (unlikely(PyObject_SetItem(__pyx_t_4, __pyx_t_1, __pyx_t_2) < 0)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
       /* "CVPuckYou.pyx":395
  * 
  *     for match in matches:
  *         if match.distance < match_threshold:             # <<<<<<<<<<<<<<
  *             x, y = kp_maze[match.queryIdx].pt
- *             count[int(y / GRID_PIXELS)][int(x / GRID_PIXELS)] += 1
+ *             count[y // GRID_PIXELS][x // GRID_PIXELS] += 1
  */
     }
 
@@ -12482,87 +12505,87 @@ static PyObject *__pyx_pf_9CVPuckYou_34get_target_coordinates(CYTHON_UNUSED PyOb
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "CVPuckYou.pyx":399
- *             count[int(y / GRID_PIXELS)][int(x / GRID_PIXELS)] += 1
+ *             count[y // GRID_PIXELS][x // GRID_PIXELS] += 1
  * 
  *     return np.unravel_index(np.argmax(count, axis=None), count.shape)             # <<<<<<<<<<<<<<
  * 
  * # draw destination
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 399, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_unravel_index); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 399, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 399, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_argmax); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_unravel_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_argmax); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 399, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 399, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_count);
   __Pyx_GIVEREF(__pyx_v_count);
-  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_count);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 399, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_axis, Py_None) < 0) __PYX_ERR(0, 399, __pyx_L1_error)
-  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 399, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_count);
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_axis, Py_None) < 0) __PYX_ERR(0, 399, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 399, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_count, __pyx_n_s_shape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 399, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = NULL;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_count, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
   __pyx_t_7 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_3);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
       __pyx_t_7 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_4)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_11, __pyx_t_1};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyFunction_Check(__pyx_t_1)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_11, __pyx_t_3};
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_11, __pyx_t_1};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_11, __pyx_t_3};
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
     __pyx_t_2 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (__pyx_t_3) {
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    if (__pyx_t_4) {
+      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4); __pyx_t_4 = NULL;
     }
     __Pyx_GIVEREF(__pyx_t_11);
     PyTuple_SET_ITEM(__pyx_t_2, 0+__pyx_t_7, __pyx_t_11);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_7, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_7, __pyx_t_3);
     __pyx_t_11 = 0;
-    __pyx_t_1 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
+    __pyx_t_3 = 0;
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
@@ -12609,8 +12632,8 @@ static PyObject *__pyx_pf_9CVPuckYou_34get_target_coordinates(CYTHON_UNUSED PyOb
  * # draw destination
  * 
  * def draw_target(maze_bgr, target_coordinates):             # <<<<<<<<<<<<<<
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
 
 /* Python wrapper */
@@ -12705,9 +12728,9 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   /* "CVPuckYou.pyx":404
  * 
  * def draw_target(maze_bgr, target_coordinates):
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))             # <<<<<<<<<<<<<<
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     radius = int(GRID_PIXELS / 4)
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)             # <<<<<<<<<<<<<<
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     radius = GRID_PIXELS // 4
  */
   __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_target_coordinates, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -12719,87 +12742,78 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_cx = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_cx = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":405
  * def draw_target(maze_bgr, target_coordinates):
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))             # <<<<<<<<<<<<<<
- *     radius = int(GRID_PIXELS / 4)
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)             # <<<<<<<<<<<<<<
+ *     radius = GRID_PIXELS // 4
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_G, LINE_THICKNESS)
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_target_coordinates, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_target_coordinates, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 405, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 405, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 405, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_cy = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "CVPuckYou.pyx":406
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     radius = int(GRID_PIXELS / 4)             # <<<<<<<<<<<<<<
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     radius = GRID_PIXELS // 4             # <<<<<<<<<<<<<<
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_G, LINE_THICKNESS)
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_GRID_PIXELS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_1, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 406, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 406, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_radius = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_radius = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":407
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     radius = int(GRID_PIXELS / 4)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     radius = GRID_PIXELS // 4
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_G, LINE_THICKNESS)             # <<<<<<<<<<<<<<
  * 
  *     x1 = cx - int(radius * 0.5 * np.cos(45))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_cv2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_circle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_circle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_cx);
   __Pyx_GIVEREF(__pyx_v_cx);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_cx);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_cx);
   __Pyx_INCREF(__pyx_v_cy);
   __Pyx_GIVEREF(__pyx_v_cy);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_cy);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_cy);
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_BGR_G); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_LINE_THICKNESS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 407, __pyx_L1_error)
@@ -12818,22 +12832,22 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_2, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
+    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_1, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_2, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
+    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_1, __pyx_v_radius, __pyx_t_4, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else
@@ -12847,8 +12861,8 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
     __Pyx_INCREF(__pyx_v_maze_bgr);
     __Pyx_GIVEREF(__pyx_v_maze_bgr);
     PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_maze_bgr);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_1);
     __Pyx_INCREF(__pyx_v_radius);
     __Pyx_GIVEREF(__pyx_v_radius);
     PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_v_radius);
@@ -12856,15 +12870,15 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
     PyTuple_SET_ITEM(__pyx_t_8, 3+__pyx_t_7, __pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_8, 4+__pyx_t_7, __pyx_t_5);
-    __pyx_t_2 = 0;
+    __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":409
  *     cv2.circle(maze_bgr, (cx, cy), radius, BGR_G, LINE_THICKNESS)
@@ -12873,8 +12887,8 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
  *     x2 = cx + int(radius * 0.5 * np.cos(45))
  *     y1 = cy - int(radius * 0.5 * np.sin(45))
  */
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_radius, __pyx_float_0_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 409, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyNumber_Multiply(__pyx_v_radius, __pyx_float_0_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_cos); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 409, __pyx_L1_error)
@@ -12895,9 +12909,9 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -12917,23 +12931,23 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_t_5 = PyNumber_Multiply(__pyx_v_radius, __pyx_float_0_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 410, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 410, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_cos); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 410, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 410, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cos); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 410, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = NULL;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_8);
-    if (likely(__pyx_t_1)) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_2)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
-      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_8, function);
     }
   }
-  __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_1, __pyx_int_45) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_int_45);
-  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_2, __pyx_int_45) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_int_45);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 410, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -12961,36 +12975,36 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 411, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_sin); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_sin); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
     }
   }
-  __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_5, __pyx_int_45) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_int_45);
+  __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_int_45) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_int_45);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 411, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_8, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_8, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 411, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Subtract(__pyx_v_cy, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_cy, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_y1 = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_y1 = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":412
  *     x2 = cx + int(radius * 0.5 * np.cos(45))
@@ -12999,8 +13013,8 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
  *     cv2.line(maze_bgr, (x1, y1), (x2, y2), BGR_G, LINE_THICKNESS)
  *     cv2.line(maze_bgr, (x1, y2), (x2, y1), BGR_G, LINE_THICKNESS)
  */
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_radius, __pyx_float_0_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyNumber_Multiply(__pyx_v_radius, __pyx_float_0_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 412, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_sin); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 412, __pyx_L1_error)
@@ -13021,9 +13035,9 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 412, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 412, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 412, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -13043,8 +13057,8 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_cv2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_line); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 413, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_line); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -13064,42 +13078,42 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_v_y2);
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_BGR_G); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_LINE_THICKNESS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 413, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_LINE_THICKNESS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6 = NULL;
   __pyx_t_7 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_1);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_6);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
       __pyx_t_7 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_3, __pyx_t_8, __pyx_t_4, __pyx_t_2};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 413, __pyx_L1_error)
+  if (PyFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_3, __pyx_t_8, __pyx_t_4, __pyx_t_1};
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 413, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_3, __pyx_t_8, __pyx_t_4, __pyx_t_2};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 413, __pyx_L1_error)
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_maze_bgr, __pyx_t_3, __pyx_t_8, __pyx_t_4, __pyx_t_1};
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 413, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   {
@@ -13117,17 +13131,17 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
     PyTuple_SET_ITEM(__pyx_t_9, 2+__pyx_t_7, __pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_9, 3+__pyx_t_7, __pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_9, 4+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_9, 4+__pyx_t_7, __pyx_t_1);
     __pyx_t_3 = 0;
     __pyx_t_8 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_2 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 413, __pyx_L1_error)
+    __pyx_t_1 = 0;
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 413, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "CVPuckYou.pyx":414
@@ -13137,27 +13151,27 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
  * 
  *     return maze_bgr
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_line); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_cv2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_line); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_v_x1);
-  __Pyx_GIVEREF(__pyx_v_x1);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_x1);
-  __Pyx_INCREF(__pyx_v_y2);
-  __Pyx_GIVEREF(__pyx_v_y2);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_y2);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_v_x1);
+  __Pyx_GIVEREF(__pyx_v_x1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_x1);
+  __Pyx_INCREF(__pyx_v_y2);
+  __Pyx_GIVEREF(__pyx_v_y2);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_y2);
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_x2);
   __Pyx_GIVEREF(__pyx_v_x2);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_x2);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_x2);
   __Pyx_INCREF(__pyx_v_y1);
   __Pyx_GIVEREF(__pyx_v_y1);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_y1);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_y1);
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_BGR_G); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_LINE_THICKNESS); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 414, __pyx_L1_error)
@@ -13176,24 +13190,24 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_9)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_3, __pyx_v_maze_bgr, __pyx_t_1, __pyx_t_2, __pyx_t_4, __pyx_t_8};
+    PyObject *__pyx_temp[6] = {__pyx_t_3, __pyx_v_maze_bgr, __pyx_t_2, __pyx_t_1, __pyx_t_4, __pyx_t_8};
     __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 414, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_9)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_3, __pyx_v_maze_bgr, __pyx_t_1, __pyx_t_2, __pyx_t_4, __pyx_t_8};
+    PyObject *__pyx_temp[6] = {__pyx_t_3, __pyx_v_maze_bgr, __pyx_t_2, __pyx_t_1, __pyx_t_4, __pyx_t_8};
     __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_7, 5+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 414, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else
@@ -13207,16 +13221,16 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
     __Pyx_INCREF(__pyx_v_maze_bgr);
     __Pyx_GIVEREF(__pyx_v_maze_bgr);
     PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_7, __pyx_v_maze_bgr);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_7, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_7, __pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_7, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_6, 3+__pyx_t_7, __pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_6, 4+__pyx_t_7, __pyx_t_8);
-    __pyx_t_1 = 0;
     __pyx_t_2 = 0;
+    __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_8 = 0;
     __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 414, __pyx_L1_error)
@@ -13242,8 +13256,8 @@ static PyObject *__pyx_pf_9CVPuckYou_36draw_target(CYTHON_UNUSED PyObject *__pyx
  * # draw destination
  * 
  * def draw_target(maze_bgr, target_coordinates):             # <<<<<<<<<<<<<<
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
 
   /* function exit code */
@@ -14696,7 +14710,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * def create_corner(contour, colour):             # <<<<<<<<<<<<<<
  *     m = cv2.moments(contour)
- *     cx = int(m['m10']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
  */
   __pyx_tuple__32 = PyTuple_Pack(5, __pyx_n_s_contour, __pyx_n_s_colour, __pyx_n_s_m, __pyx_n_s_cx, __pyx_n_s_cy); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__32);
@@ -14776,7 +14790,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(1, 0, 15, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_scripts_CVPuckYou_pyx, __pyx_n_s_get_robot_coordinates, 302, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 302, __pyx_L1_error)
 
   /* "CVPuckYou.pyx":326
- *     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
+ *     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
  * 
  * def get_robot_heading(robot_img, H):             # <<<<<<<<<<<<<<
  *     dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
@@ -14791,8 +14805,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     return heading
  * 
  * def draw_robot(maze_bgr, robot_coordinates, robot_heading):             # <<<<<<<<<<<<<<
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
   __pyx_tuple__48 = PyTuple_Pack(7, __pyx_n_s_maze_bgr, __pyx_n_s_robot_coordinates, __pyx_n_s_robot_heading, __pyx_n_s_cx, __pyx_n_s_cy, __pyx_n_s_radius, __pyx_n_s_location); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__48);
@@ -14827,8 +14841,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * # draw destination
  * 
  * def draw_target(maze_bgr, target_coordinates):             # <<<<<<<<<<<<<<
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
   __pyx_tuple__54 = PyTuple_Pack(9, __pyx_n_s_maze_bgr, __pyx_n_s_target_coordinates, __pyx_n_s_cx, __pyx_n_s_cy, __pyx_n_s_radius, __pyx_n_s_x1, __pyx_n_s_x2, __pyx_n_s_y1, __pyx_n_s_y2); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 403, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__54);
@@ -15559,7 +15573,7 @@ if (!__Pyx_RefNanny) {
  * 
  * def create_corner(contour, colour):             # <<<<<<<<<<<<<<
  *     m = cv2.moments(contour)
- *     cx = int(m['m10']/m['m00'])
+ *     cx = m['m10'] // (m['m00'] or 0.00000001)
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_9CVPuckYou_15create_corner, NULL, __pyx_n_s_CVPuckYou); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -15702,7 +15716,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "CVPuckYou.pyx":326
- *     return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
+ *     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
  * 
  * def get_robot_heading(robot_img, H):             # <<<<<<<<<<<<<<
  *     dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
@@ -15717,8 +15731,8 @@ if (!__Pyx_RefNanny) {
  *     return heading
  * 
  * def draw_robot(maze_bgr, robot_coordinates, robot_heading):             # <<<<<<<<<<<<<<
- *     cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_9CVPuckYou_31draw_robot, NULL, __pyx_n_s_CVPuckYou); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -15753,8 +15767,8 @@ if (!__Pyx_RefNanny) {
  * # draw destination
  * 
  * def draw_target(maze_bgr, target_coordinates):             # <<<<<<<<<<<<<<
- *     cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
- *     cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
+ *     cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+ *     cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_9CVPuckYou_37draw_target, NULL, __pyx_n_s_CVPuckYou); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 403, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -17969,30 +17983,41 @@ static PyObject* __Pyx_PyInt_RemainderObjC(PyObject *op1, PyObject *op2, CYTHON_
 /* PyIntBinop */
 #if !CYTHON_COMPILING_IN_PYPY
 #if PY_MAJOR_VERSION < 3 || CYTHON_USE_PYLONG_INTERNALS
-#define __Pyx_PyInt_TrueDivideObjC_ZeroDivisionError(operand)\
+#define __Pyx_PyInt_FloorDivideObjC_ZeroDivisionError(operand)\
     if (unlikely(zerodivision_check && ((operand) == 0))) {\
         PyErr_SetString(PyExc_ZeroDivisionError, "integer division by zero");\
         return NULL;\
     }
 #endif
-static PyObject* __Pyx_PyInt_TrueDivideObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
+static PyObject* __Pyx_PyInt_FloorDivideObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
     (void)inplace;
     (void)zerodivision_check;
     #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_CheckExact(op1))) {
         const long b = intval;
+        long x;
         long a = PyInt_AS_LONG(op1);
-            __Pyx_PyInt_TrueDivideObjC_ZeroDivisionError(b)
-            if (8 * sizeof(long) <= 53 || likely(labs(a) <= ((PY_LONG_LONG)1 << 53))) {
-                return PyFloat_FromDouble((double)a / (double)b);
+            __Pyx_PyInt_FloorDivideObjC_ZeroDivisionError(b)
+            if (unlikely(b == -1 && ((unsigned long)a) == 0-(unsigned long)a))
+                return PyInt_Type.tp_as_number->nb_floor_divide(op1, op2);
+            else {
+                long q, r;
+                q = a / b;
+                r = a - q*b;
+                q -= ((r != 0) & ((r ^ b) < 0));
+                x = q;
             }
-            return PyInt_Type.tp_as_number->nb_true_divide(op1, op2);
+            return PyInt_FromLong(x);
     }
     #endif
     #if CYTHON_USE_PYLONG_INTERNALS
     if (likely(PyLong_CheckExact(op1))) {
         const long b = intval;
         long a, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+#endif
         const digit* digits = ((PyLongObject*)op1)->ob_digit;
         const Py_ssize_t size = Py_SIZE(op1);
         if (likely(__Pyx_sst_abs(size) <= 1)) {
@@ -18001,68 +18026,99 @@ static PyObject* __Pyx_PyInt_TrueDivideObjC(PyObject *op1, PyObject *op2, CYTHON
         } else {
             switch (size) {
                 case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT && 1 * PyLong_SHIFT < 53) {
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
                         a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
                         break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
                     }
                     CYTHON_FALLTHROUGH;
                 case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT && 1 * PyLong_SHIFT < 53) {
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
                         a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
                         break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
                     }
                     CYTHON_FALLTHROUGH;
                 case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT && 2 * PyLong_SHIFT < 53) {
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
                         a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
                         break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
                     }
                     CYTHON_FALLTHROUGH;
                 case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT && 2 * PyLong_SHIFT < 53) {
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
                         a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
                         break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
                     }
                     CYTHON_FALLTHROUGH;
                 case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT && 3 * PyLong_SHIFT < 53) {
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
                         a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
                         break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
                     }
                     CYTHON_FALLTHROUGH;
                 case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT && 3 * PyLong_SHIFT < 53) {
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
                         a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
                         break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
                     }
                     CYTHON_FALLTHROUGH;
-                default: return PyLong_Type.tp_as_number->nb_true_divide(op1, op2);
+                default: return PyLong_Type.tp_as_number->nb_floor_divide(op1, op2);
             }
         }
-                __Pyx_PyInt_TrueDivideObjC_ZeroDivisionError(b)
-                if ((8 * sizeof(long) <= 53 || likely(labs(a) <= ((PY_LONG_LONG)1 << 53)))
-                        || __Pyx_sst_abs(size) <= 52 / PyLong_SHIFT) {
-                    return PyFloat_FromDouble((double)a / (double)b);
+                __Pyx_PyInt_FloorDivideObjC_ZeroDivisionError(b)
+                {
+                    long q, r;
+                    q = a / b;
+                    r = a - q*b;
+                    q -= ((r != 0) & ((r ^ b) < 0));
+                    x = q;
                 }
-                return PyLong_Type.tp_as_number->nb_true_divide(op1, op2);
             return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                {
+                    PY_LONG_LONG q, r;
+                    q = lla / llb;
+                    r = lla - q*llb;
+                    q -= ((r != 0) & ((r ^ llb) < 0));
+                    llx = q;
+                }
+            return PyLong_FromLongLong(llx);
+#endif
+        
         
     }
     #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-            double result;
-            if (unlikely(zerodivision_check && b == 0)) {
-                PyErr_SetString(PyExc_ZeroDivisionError, "float division by zero");
-                return NULL;
-            }
-            PyFPE_START_PROTECT("divide", return NULL)
-            result = ((double)a) / (double)b;
-            PyFPE_END_PROTECT(result)
-            return PyFloat_FromDouble(result);
-    }
-    return (inplace ? PyNumber_InPlaceTrueDivide : PyNumber_TrueDivide)(op1, op2);
+    return (inplace ? PyNumber_InPlaceFloorDivide : PyNumber_FloorDivide)(op1, op2);
 }
 #endif
 

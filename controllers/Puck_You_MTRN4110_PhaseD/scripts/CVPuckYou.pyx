@@ -156,8 +156,8 @@ def perspective_transform(maze_img, magenta_contours, cyan_contour):
 
 def create_corner(contour, colour):
     m = cv2.moments(contour)
-    cx = int(m['m10']/m['m00'])
-    cy = int(m['m01']/m['m00'])
+    cx = m['m10'] // (m['m00'] or 0.00000001)
+    cy = m['m01'] // (m['m00'] or 0.00000001)
     return {
         'colour': colour,
         'x' : cx,
@@ -318,10 +318,10 @@ def get_robot_coordinates(maze_hsv):
         sum_m10 += M['m10']
         sum_m01 += M['m01']
 
-    robot_x = int(sum_m10 / sum_m00)
-    robot_y = int(sum_m01 / sum_m00)
+    robot_x = sum_m10 // (sum_m00 or 0.00000001)
+    robot_y = sum_m01 // (sum_m00 or 0.00000001)
 
-    return (int(robot_y / GRID_PIXELS), int(robot_x / GRID_PIXELS))
+    return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
 
 def get_robot_heading(robot_img, H):
     dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
@@ -353,9 +353,9 @@ def get_robot_heading(robot_img, H):
     return heading
 
 def draw_robot(maze_bgr, robot_coordinates, robot_heading):
-    cx = int(robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
-    cy = int(robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
-    radius = int(GRID_PIXELS / 4)
+    cx = robot_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+    cy = robot_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+    radius = GRID_PIXELS // 4
     cv2.circle(maze_bgr, (cx, cy), radius, BGR_R, LINE_THICKNESS)
 
     location = (cx, cy)
@@ -394,16 +394,16 @@ def get_target_coordinates(maze_hsv, bug_gray):
     for match in matches:
         if match.distance < match_threshold:
             x, y = kp_maze[match.queryIdx].pt
-            count[int(y / GRID_PIXELS)][int(x / GRID_PIXELS)] += 1
+            count[y // GRID_PIXELS][x // GRID_PIXELS] += 1
 
     return np.unravel_index(np.argmax(count, axis=None), count.shape)
 
 # draw destination
 
 def draw_target(maze_bgr, target_coordinates):
-    cx = int(target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS / 2))
-    cy = int(target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS / 2))
-    radius = int(GRID_PIXELS / 4)
+    cx = target_coordinates[1] * GRID_PIXELS + (GRID_PIXELS // 2)
+    cy = target_coordinates[0] * GRID_PIXELS + (GRID_PIXELS // 2)
+    radius = GRID_PIXELS // 4
     cv2.circle(maze_bgr, (cx, cy), radius, BGR_G, LINE_THICKNESS)
 
     x1 = cx - int(radius * 0.5 * np.cos(45))
