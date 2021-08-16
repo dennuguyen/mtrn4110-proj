@@ -1,8 +1,8 @@
-#ifndef STATUS_INDICATOR_HPP
-#    define STATUS_INDICATOR_HPP
+#ifndef TEE_HPP
+    #define TEE_HPP
 
 namespace mtrn4110 {
-class StatusIndicator {
+class Tee {
    public:
     template<class object>
     auto print(std::set<std::ostream&> os, object const& obj) -> std::set<std::ostream&> {
@@ -14,7 +14,7 @@ class StatusIndicator {
 };
 }  // namespace mtrn4110
 
-#endif  // STATUS_INDICATOR_HPP
+#endif  // TEE_HPP
 
 /*
 
