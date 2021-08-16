@@ -25,10 +25,10 @@ class SimpleTeleoperation final : public Deliberator<DeliberateType> {
 
     auto readInput() -> void {
         switch (keyboard_->getKey()) {
-        case 'W': this->delib_ = 'F';
-        case 'Q': this->delib_ = 'L';
-        case 'E': this->delib_ = 'R';
-        default: break;
+        case 'W': this->delib_ = 'F'; break;
+        case 'Q': this->delib_ = 'L'; break;
+        case 'E': this->delib_ = 'R'; break;
+        default: this->delib_ = '\0'; break;
         }
     }
 
