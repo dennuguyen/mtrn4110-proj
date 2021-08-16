@@ -151,9 +151,14 @@ It will call cython on all `.pyx` files in the `scripts/` folder then move gener
 
 Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation and execution of cython files into the C++ build, we keep a copy of these for each OS.
 
-### Why am I getis there a `#define _hypot hypot` at the top of main file or a `-D_hypot=hypot` in the `Makefile`?
+### Why am I getting an undefined `hypot` during Webots compilation?
 
-In the Windows version of Webots in `Webots/msys64/mingw64/include/c++/10.2.0/cmath`, line 1124: `using ::hypot;`. `hypot` has been incorrectly defined and should be `_hypot`.
+If you are getting the following error:
+```
+C:/Program\ Files/Webots/msys64/mingw64/include/c++/10.2.0/cmath:1124:11: error: '::hypot' has not been declared...
+```
+
+This is a `mingw64` problem where `hypot` has been incorrectly defined/used. To fix this, add a `#define _hypot hypot` before all `#include` at the top of the main file or add the `-D_hypot=hypot` compiler flag in the `Makefile`?
 
 ### Why do we use `PyImport_AppendInittab`?
 
