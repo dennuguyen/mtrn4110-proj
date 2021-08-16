@@ -1,3 +1,3 @@
-cython scripts/CVPuckYou.pyx --cplus
-mv scripts/CVPuckYou.cpp src/
-mv scripts/CVPuckYou.h include/
+cython scripts/*.pyx --cplus
+mv scripts/*.cpp src/
+mv scripts/*.h include/
