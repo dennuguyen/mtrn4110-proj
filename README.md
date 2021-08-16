@@ -143,6 +143,10 @@ The following platforms have been tested and are recommended:
 
 ## FAQ
 
+### What does `cython-build-script.sh` do?
+
+It will call cython on all `.pyx` files in the `scripts/` folder then move generated `.h` files to your `include/` folder and generated `.cpp` files to your `src/` folder. The generated files will have the same name as the original `.pyx` file.
+
 ### Why is there a python3.6 folder with header files and libs?
 
 Python installations do not guarantee the location of these files on either Linux or Windows. Therefore to ensure successful compilation and execution of cython files into the C++ build, we keep a copy of these for each OS.
