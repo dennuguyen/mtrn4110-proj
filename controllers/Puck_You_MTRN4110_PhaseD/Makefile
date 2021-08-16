@@ -14,10 +14,12 @@
 
 ifeq ($(OS),Windows_NT)
     DETECTED_OS := windows
+    LIB := python37.lib
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
         DETECTED_OS := linux
+        LIB := libpython3.7m.so
     endif
     ifeq ($(UNAME_S),Darwin)
         DETECTED_OS := -D macos
@@ -60,7 +62,7 @@ CFLAGS = -std=c++20 -Wall -Wuninitialized -D_hypot=hypot # -Wfloat-equal -Werror
 ### ---- Linked libraries ----
 ### if your program needs additional libraries:
 INCLUDE = -I./include -I../../python3.7/$(DETECTED_OS)/include
-LIBRARIES = -L../../python3.7/$(DETECTED_OS)/lib -lpython37
+LIBRARIES = -L../../python3.7/$(DETECTED_OS)/lib -l:$(LIB)
 ###
 ### ---- Linking options ----
 ### if special linking flags are needed:
