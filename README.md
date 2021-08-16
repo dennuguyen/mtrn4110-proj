@@ -38,7 +38,7 @@ Python setup is required for all build steps.
 
 ### Python 3.7 Installation
 
-Linux:
+Bash:
 ```
 sudo apt-get install python3.7
 sudo apt-get install pip
@@ -55,7 +55,7 @@ The following packages are required and listed in `requirements.txt`:
 - `opencv-contrib-python`
 - `numpy`
 
-Linux:
+Bash:
 ```
 pip install -r requirements.txt
 ```
@@ -74,10 +74,10 @@ py -m pip install -r requirements.txt
     <tr>
         <th>Build Step</th>
         <th>Build Instruction</th>
+        <th>Tested On</th>
         <th>Dependency</th>
         <th>Dependency Setup</th>
         <th>Modifications Made</th>
-        <th>Tested On</th>
     </tr>
 </thead>
 <tbody>
@@ -85,18 +85,19 @@ py -m pip install -r requirements.txt
     </tr>
     <tr>
         <td rowspan="1">Compiling <code>.pyx</code> files</td>
-        <td rowspan="1"><code>python3 setup.py build_ext</code><br>Ensure <code>CVPuckYou.h</code> and <code>CVPuckYou.c</code> are in their respective <code>include/</code> and <code>src/</code> folders</td>
+        <td rowspan="1">Bash: <code>python3 setup.py build_ext</code><br>Windows: <code>py setup.py build_ext</code></td>
+        <td rowspan="1">Ubuntu 18.04 WSL, </td>
         <td>cython</td>
         <td><code>pip install cython</code></td>
-        <td>Ubuntu 18.04 WSL, </td>
+        <td></td>
     </tr>
     <tr>
         <td rowspan="3">Compiling <code>.hpp/.cpp/.h/.c</code> files</td>
         <td rowspan="3">Use Webots build tool</td>
+        <td rowspan="3">Windows 10</td>
         <td>Webots R2021a</td>
         <td><a href="https://cyberbotics.com/doc/guide/installation-procedure"> Webots install instructions</a></td>
         <td>Add <code>-D_hypot=hypot</code> to <code>Makefile</code></td>
-        <td></td>
     </tr>
     <tr>
         <td><code>Python.h</code>, Python underlying <code>.h</code> files, Python libraries</td>
