@@ -161,4 +161,13 @@ Windows requires the dynamic library for cython `.c`/`.h` files to execute since
 
 ### Why has [`pyconfig.h`](https://gitlab.com/puck-you/phase-d/-/blob/dev/python3.6/windows/include/pyconfig.h) in `python3.6/windows/include/` been modified?
 
+The following lines have been added:
+```
+#ifdef __MINGW32__
+    #ifdef _WIN64
+        #define MS_WIN64
+    #endif
+#endif
+```
+
 See this issue: https://github.com/cython/cython/issues/3405
