@@ -139,7 +139,26 @@ This is a `mingw64` problem where `hypot` has been incorrectly defined/used. To 
 
 ### Why do we use `PyImport_AppendInittab`?
 
-The program will crash for python versions >= 3.5 and cython versions == 0.29.
+The program will crash for python versions >= 3.5 and cython versions == 0.29. Use the following structure to ensure this does not happen:
+```
+// Startup Python interpretter.
+if (PyImport_AppendInittab("example", PyInit_example) == -1) {
+    throw std::runtime_error("Could not extend built-in modules table.");
+}
+Py_Initialize();
+
+// Import our example module into the Python interpretter.
+auto module = PyImport_ImportModule("example");
+if (module == nullptr) {
+    PyErr_Print();
+    throw std::runtime_error("Could not import example.");
+}
+
+// Execute functions from Cython.
+
+// End the Python interpretter.
+Py_Finalize();
+```
 
 ### Why am I getting a missing `python37.dll` error on Windows?
 
@@ -179,3 +198,20 @@ The following lines must be added to the top of `python3.7/windows/include/pycon
 See this issue: https://github.com/cython/cython/issues/3405
 
 Also check your code to safe-guard against dividing by zero cases.
+
+### Why should I have these comments at the top of my `.pyx` file?
+
+This is for Cython to determine what Python language is being used.
+```
+# cython: language_level=3
+```
+
+This is to allow implicit conversion of C/C++ strings to Python.
+```
+# cython: c_string_type=unicode, c_string_encoding=utf8
+```
+
+This is to force Cython to compile using C++ standard libraries.
+```
+# distutils: language=c++
+```
