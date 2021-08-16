@@ -68,28 +68,27 @@ auto main(int argc, char** argv) -> int {
     Py_Initialize();
 
     // Import CVPuckYou into the Python interpretter.
-    auto module = std::unique_ptr<PyObject>(PyImport_ImportModule("CVPuckYou"));
+    auto module = PyImport_ImportModule("CVPuckYou");
     if (module == nullptr) {
         PyErr_Print();
         throw std::runtime_error("Could not import CVPuckYou.");
     }
     auto p = runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
     std::cout << p.first << " " << p.second << std::endl;
-    // runCVWaypointer(files::mazeImage);
 
     // End the Python interpretter.
     Py_Finalize();
 
     // Instantiate webots robot.
-    // auto robot = webots::Robot();
+    auto robot = webots::Robot();
 
-    // // Spin threads.
-    // auto t1 = std::thread(simulationSteps, std::ref(robot));
-    // auto t2 = std::thread(realtimeSteps, std::ref(robot));
+    // Spin threads.
+    auto t1 = std::thread(simulationSteps, std::ref(robot));
+    auto t2 = std::thread(realtimeSteps, std::ref(robot));
 
-    // // Wait for threads to finish.
-    // t1.join();
-    // t2.join();
+    // Wait for threads to finish.
+    t1.join();
+    t2.join();
 
     return 0;
 }
