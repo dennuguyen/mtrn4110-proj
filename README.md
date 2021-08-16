@@ -88,7 +88,7 @@ py -m pip install -r requirements.txt
         <td rowspan="1">Bash: <code>python3 setup.py build_ext</code><br>Windows: <code>py setup.py build_ext</code></td>
         <td rowspan="1">Ubuntu 18.04 WSL, </td>
         <td>cython</td>
-        <td><code>pip install cython</code></td>
+        <td>Bash: <code>pip install cython</code><br>Windows: <code>py -m pip install cython</code></td>
         <td></td>
     </tr>
     <tr>
@@ -102,7 +102,7 @@ py -m pip install -r requirements.txt
     <tr>
         <td><code>Python.h</code>, Python underlying <code>.h</code> files, Python libraries</td>
         <td>Provided in python3.7 folder for each OS</td>
-        <td><code>Makefile</code> has been modified to find <code>python3.7/</code><br><code>python3.7/windows/include/pyconfig.h</code> has been modified</td>
+        <td><code>Makefile</code> has been modified to find <code>python3.7/</code><br><code>python3.7/windows/include/pyconfig.h</code> has been modified (see FAQ)</td>
     </tr>
     <tr>
         <td><code>python36.dll</code></td>
@@ -111,11 +111,6 @@ py -m pip install -r requirements.txt
     </tr>
 </tbody>
 </table>
-
-### Tested Builds
-
-The following platforms have been tested and are recommended:
-- Webots R2021a on Windows 10 with WSL (Ubuntu 18.04).
 
 ---
 
