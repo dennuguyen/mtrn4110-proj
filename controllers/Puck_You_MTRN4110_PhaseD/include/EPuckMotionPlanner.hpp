@@ -6,10 +6,10 @@
 #include "MotionPlanner.hpp"
 
 namespace mtrn4110 {
-template<typename AngleType = double,
-         typename DistanceType = double,
-         typename LinearVelocityType = double,
-         typename AngularVelocityType = double>
+template<typename AngleType = defaultTypes::AngleType,
+         typename DistanceType = defaultTypes::DistanceType,
+         typename LinearVelocityType = defaultTypes::LinearVelocityType,
+         typename AngularVelocityType = defaultTypes::AngularVelocityType>
 class EPuckMotionPlanner final
 : public MotionPlanner<AngleType, DistanceType, LinearVelocityType, AngularVelocityType> {
    public:
@@ -25,7 +25,7 @@ class EPuckMotionPlanner final
                                LinearVelocityType linearVelocity,
                                AngularVelocityType angularVelocity) -> void override final {
         motorPositions_ = contribution(angle, distance);
-        motorVelocities_ = contribution(linearVelocity, angularVelocity);
+        motorVelocities_ = contribution(std::get<0>(linearVelocity), std::get<2>(angularVelocity));
     }
 
     auto getMotorPositions() const noexcept -> std::pair<double, double> {

@@ -47,7 +47,11 @@ class MotorController {
                                    std::get<2>(rightMotorPID));
     }
 
-    auto setPosition(double const leftMotorPosition, double const rightMotorPosition) noexcept
+    auto setPosition(std::pair<double, double> const& motorPositions) noexcept -> void {
+        setPosition(motorPositions.first, motorPositions.second);
+    }
+
+    auto setPosition(double const& leftMotorPosition, double const& rightMotorPosition) noexcept
         -> void {
         auto const leftInitial = leftPositionSensor_->getValue();
         auto const rightInitial = rightPositionSensor_->getValue();
@@ -55,7 +59,11 @@ class MotorController {
         rightMotor_->setPosition(rightInitial + rightMotorPosition);
     }
 
-    auto setVelocity(double const leftMotorVelocity, double const rightMotorVelocity) noexcept
+    auto setVelocity(std::pair<double, double> const& motorVelocities) noexcept -> void {
+        setVelocity(motorVelocities.first, motorVelocities.second);
+    }
+
+    auto setVelocity(double const& leftMotorVelocity, double const& rightMotorVelocity) noexcept
         -> void {
         leftMotor_->setVelocity(leftMotorVelocity);
         rightMotor_->setVelocity(rightMotorVelocity);
@@ -68,6 +76,6 @@ class MotorController {
     std::unique_ptr<webots::PositionSensor> leftPositionSensor_;
     std::unique_ptr<webots::PositionSensor> rightPositionSensor_;
 };
-}
+}  // namespace mtrn4110
 
 #endif  // MOTOR_CONTROLLER_HPP
