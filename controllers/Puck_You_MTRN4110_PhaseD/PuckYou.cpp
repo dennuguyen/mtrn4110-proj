@@ -20,12 +20,58 @@ static auto simulationSteps(webots::Robot& robot) -> void {
     }
 }
 
+
+/*
+ // // Instantiate RSA elements.
+    auto distanceSensor = mtrn4110::DistanceSensor(robot);
+    // auto lidarSensor = mtrn4110::LidarSensor(robot);
+    // (void)lidarSensor;
+    auto motorController = mtrn4110::MotorController(robot);
+    auto motionPlanner = mtrn4110::EPuckMotionPlanner();
+    auto trajectoryPlanner = mtrn4110::DeadReckoning(' ');
+    auto pathSequencer = mtrn4110::PathSequencer({'F', 'L', 'R'});
+    auto localiser = mtrn4110::HCLocaliser({0, 0}, 2);
+    auto deliberator = mtrn4110::HCDeliberator();
+    auto grapher = mtrn4110::Grapher();
+
+    // Enter control loop.
+    while (1) {
+        // Get image of map.
+        // camera.snap(mtrn4110::files::mazeImage);
+
+        // Map the image.
+        auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
+
+        // Graph map.
+        grapher.readMap(map);
+        grapher.buildGraph();
+
+        // Deliberate.
+        auto const destination = runCVWaypointer(mtrn4110::files::mazeImage);
+
+        // Localise.
+        auto const [pose, heading] =
+            runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+
+        // Path plan.
+        // if ()
+        // pathPlanner.updateDestination();
+
+        // Path sequencer.
+        auto const motion = pathSequencer.nextMotion();
+        taskControl.acquireLock(1);
+
+    }
+*/
+
 // Perform real-time steps.
-// This function contains the control loop logic for the EPuck playing as the mouse. It is
-// teleoperated.
+// This function contains the control loop logic for the EPuck. It supports both autonomous control
+// and teleoperation.
 static auto mouse(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot, 1, 0);
+    auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
+    using modeLock = 0;
+    using motionLock = 1;
 
     // Instantiate RSA elements.
     auto teleoperation = mtrn4110::SimpleTeleoperation(robot);
@@ -38,6 +84,13 @@ static auto mouse(webots::Robot& robot) -> void {
         // Get teleoperation motion command.
         teleoperation.readInput();
         std::cout << teleoperation;
+
+        // Check mode.
+        if (teleoperation.getDeliberatedValue() == ' ') {
+            std::cout << "Teloperating!" << std::cout;
+        } else {
+            std::cout << "Teloperating!" << std::cout;
+        }
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(teleoperation.getDeliberatedValue());
@@ -55,12 +108,12 @@ static auto mouse(webots::Robot& robot) -> void {
         // Feed motor setpoints to motor controller.
         motorController.setPosition(motionPlanner.getMotorPositions());
         motorController.setVelocity(motionPlanner.getMotorVelocities());
-        taskControl.acquireLock(0);
+        taskControl.acquireLock(motionLock);
 
         // Acquire lock.
-        while (taskControl.isLockBusy(0) == true) {
+        while (taskControl.isLockBusy(motionLock) == true) {
             if (motorController.isAtPosition() == true) {
-                taskControl.releaseLock(0);
+                taskControl.releaseLock(motionLock);
             }
         }
     }
