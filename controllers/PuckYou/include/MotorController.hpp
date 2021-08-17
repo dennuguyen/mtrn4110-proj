@@ -71,7 +71,7 @@ class MotorController {
     }
 
    private:
-    static constexpr auto atPositionSensitivity = 0.0035;
+    static auto constexpr atPositionSensitivity = 0.0035;
     std::unique_ptr<webots::Motor> leftMotor_;
     std::unique_ptr<webots::Motor> rightMotor_;
     std::unique_ptr<webots::PositionSensor> leftPositionSensor_;

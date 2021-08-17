@@ -49,7 +49,7 @@ class DistanceSensor {
         (void)os;
     }
 
-    static constexpr auto wallDistanceThreshold = 575;
+    static auto constexpr wallDistanceThreshold = 575;
     std::vector<std::pair<std::unique_ptr<webots::DistanceSensor>, double>> sensors_;
 };
 }  // namespace mtrn4110

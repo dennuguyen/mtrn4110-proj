@@ -45,10 +45,10 @@ struct RobotModel {
 };
 
 // Maze model.
-constexpr auto maze = MapModel(0.165, 5, 9);
+auto constexpr maze = MapModel(0.165, 5, 9);
 
 // EPuck model.
-constexpr auto ePuck = RobotModel(0.071, 0.05, 0.02, 0.0566, 0.16, 0.1256, 4.438, 6.28);
+auto constexpr ePuck = RobotModel(0.071, 0.05, 0.02, 0.0566, 0.16, 0.1256, 4.438, 6.28);
 
 }  // namespace models
 }  // namespace mtrn4110

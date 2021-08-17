@@ -96,10 +96,10 @@ class LidarSensor {
         (void)os;
     }
 
-    static constexpr auto wallDistance = 0.085;  // Distance from centre of cell to wall.
-    static constexpr auto sectorWidth = 20.0;  // Width of sector in degrees.
-    static constexpr auto startAngle = static_cast<double>(90.0 - 0.75 * sectorWidth);
-    static constexpr auto sensitivity = 0.9;  // Point detection sensitivity within [0, 1]
+    static auto constexpr wallDistance = 0.085;  // Distance from centre of cell to wall.
+    static auto constexpr sectorWidth = 20.0;  // Width of sector in degrees.
+    static auto constexpr startAngle = static_cast<double>(90.0 - 0.75 * sectorWidth);
+    static auto constexpr sensitivity = 0.9;  // Point detection sensitivity within [0, 1]
 
     std::unique_ptr<webots::Lidar> lidar_;  // 360 lidar.
     std::array<char, 3> walls_;
