@@ -53,7 +53,7 @@ endif
 ###
 ### ---- C++ Sources ----
 ### if your program uses several C++ source files:
-CXX_SOURCES = Puck_You_MTRN4110_PhaseD.cpp $(wildcard src/*.cpp)
+CXX_SOURCES = Cat.cpp Mouse.cpp $(wildcard src/*.cpp)
 ###
 ### ---- Compilation options ----
 ### if special compilation flags are necessary:
