@@ -119,7 +119,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(teleoperation.getDeliberatedValue());
-        trajectoryPlanner.computeTrajectory();
+        trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 1});
         std::cout << trajectoryPlanner;
 
         // Calculate the motor setpoints for current trajectory.

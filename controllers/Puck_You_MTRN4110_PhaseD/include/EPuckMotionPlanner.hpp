@@ -1,6 +1,7 @@
 #ifndef EPUCK_MOTION_PLANNER_HPP
 #define EPUCK_MOTION_PLANNER_HPP
 
+#include <cmath>
 #include <utility>
 
 #include "MotionPlanner.hpp"
@@ -24,7 +25,7 @@ class EPuckMotionPlanner final
                                DistanceType distance,
                                LinearVelocityType linearVelocity,
                                AngularVelocityType angularVelocity) -> void override final {
-        motorPositions_ = contribution(angle, distance);
+        motorPositions_ = contribution(distance, angle);
         motorVelocities_ = contribution(std::get<0>(linearVelocity), std::get<2>(angularVelocity));
     }
 
@@ -39,14 +40,19 @@ class EPuckMotionPlanner final
    private:
     // Write any required data to an output stream.
     auto print(std::ostream& os) const noexcept -> void override final {
-        (void)os;
+        os << "Motor Positions: (" << motorPositions_.first << ", " << motorPositions_.second
+           << ")\t";
+        os << "Motor Velocities: (" << motorVelocities_.first << ", " << motorVelocities_.second
+           << ")";
+        os << std::endl;
     }
 
     // Helper function to compute a common equation for motor positions and velocities. Assumes the
     // wheel radius will never be zero.
     auto contribution(double const a, double const b) noexcept -> std::pair<double, double> {
-        auto const c = static_cast<double>(models::ePuck.axleLength * b);
-        return {(a - c) / models::ePuck.wheelRadius, (a + c) / models::ePuck.wheelRadius};
+        auto const lhs = a / models::ePuck.wheelRadius;
+        auto const rhs = b * models::ePuck.axleLength / models::ePuck.wheelRadius / 2;
+        return {lhs - rhs, lhs + rhs};
     }
 
     std::pair<double, double> motorPositions_;

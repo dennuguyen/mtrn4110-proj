@@ -5,6 +5,7 @@
 #include <webots/PositionSensor.hpp>
 #include <webots/Robot.hpp>
 
+#include <cmath>
 #include <memory>
 #include <tuple>
 
@@ -65,8 +66,8 @@ class MotorController {
 
     auto setVelocity(double const& leftMotorVelocity, double const& rightMotorVelocity) noexcept
         -> void {
-        leftMotor_->setVelocity(leftMotorVelocity);
-        rightMotor_->setVelocity(rightMotorVelocity);
+        leftMotor_->setVelocity(std::abs(leftMotorVelocity));
+        rightMotor_->setVelocity(std::abs(rightMotorVelocity));
     }
 
    private:

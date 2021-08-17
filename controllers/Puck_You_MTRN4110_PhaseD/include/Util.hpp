@@ -25,9 +25,9 @@ using GraphType = std::vector<std::vector<int>>;  // Adjacency matrix of ints.
 
 namespace files {
 constexpr auto csvOutput = "../../MotionExecution.csv";
-constexpr auto mazeImage = "../../images/Maze_2.png";
-constexpr auto robotImage = "../../images/Robot_2.png";
-constexpr auto ladybugImage = "../../images/Ladybug_small.png";
+constexpr auto mazeImage = "Maze.png";
+// constexpr auto robotImage = "../../images/Robot_2.png";
+// constexpr auto ladybugImage = "../../images/Ladybug_small.png";
 }  // namespace files
 }  // namespace mtrn4110
 

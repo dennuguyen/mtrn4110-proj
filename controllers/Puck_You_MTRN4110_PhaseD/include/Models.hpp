@@ -22,14 +22,16 @@ struct RobotModel {
                          double wheelRadius,
                          double axleLength,
                          double mass,
-                         double maxSpeed,
+                         double maxLinearSpeed,
+                         double maxAngularSpeed,
                          double maxMotorSpeed)
     : diameter(diameter)
     , height(height)
     , wheelRadius(wheelRadius)
     , axleLength(axleLength)
     , mass(mass)
-    , maxSpeed(maxSpeed)
+    , maxLinearSpeed(maxLinearSpeed)
+    , maxAngularSpeed(maxAngularSpeed)
     , maxMotorSpeed(maxMotorSpeed) {}
 
     double const diameter;  // m
@@ -37,7 +39,8 @@ struct RobotModel {
     double const wheelRadius;  // m
     double const axleLength;  // m
     double const mass;  // kg
-    double const maxSpeed;  // m/s
+    double const maxLinearSpeed;  // m/s
+    double const maxAngularSpeed;  // rad/s
     double const maxMotorSpeed;  // rad/s
 };
 
@@ -45,7 +48,7 @@ struct RobotModel {
 constexpr auto maze = MapModel(0.165, 5, 9);
 
 // EPuck model.
-constexpr auto ePuck = RobotModel(0.071, 0.05, 0.02, 0.0566, 0.16, 0.25, 6.28);
+constexpr auto ePuck = RobotModel(0.071, 0.05, 0.02, 0.0566, 0.16, 0.1256, 4.438, 6.28);
 
 }  // namespace models
 }  // namespace mtrn4110

@@ -1,6 +1,7 @@
 #ifndef DEAD_RECKONING_HPP
 #define DEAD_RECKONING_HPP
 
+#include <numbers>
 #include <utility>
 
 #include "Models.hpp"
@@ -24,24 +25,34 @@ class DeadReckoning final
         {0, 0, 0},
         {0, 0, 0}) {}
 
-    auto computeTrajectory() -> void override final {
+    auto computeTrajectory(LinearVelocityType const& linearSpeed,
+                           AngularVelocityType const& angularSpeed) -> void override final {
+        // Extract values.
+        double linear = std::get<0>(linearSpeed);
+        double angular = std::get<2>(angularSpeed);
+
+        // Ceil given speed values.
+        linear = linear < models::ePuck.maxLinearSpeed ? linear : models::ePuck.maxLinearSpeed;
+        angular = angular < models::ePuck.maxAngularSpeed ? angular : models::ePuck.maxAngularSpeed;
+
+        // Check motion type.
         switch (this->motion_) {
         case 'L':
             this->distance_ = 0;
             this->linearVelocity_ = {0, 0, 0};
-            this->angle_ = 90;
-            this->angularVelocity_ = {0, 0, models::ePuck.maxSpeed};
+            this->angle_ = std::numbers::pi / 2;
+            this->angularVelocity_ = {0, 0, angular};
             break;
         case 'R':
             this->distance_ = 0;
             this->linearVelocity_ = {0, 0, 0};
-            this->angle_ = -90;
-            this->angularVelocity_ = {0, 0, models::ePuck.maxSpeed};
+            this->angle_ = -std::numbers::pi / 2;
+            this->angularVelocity_ = {0, 0, angular};
             break;
         case 'F':
             this->distance_ = models::maze.distanceBetweenCells;
-            this->linearVelocity_ = {models::ePuck.maxSpeed, 0, 0};
-            this->angle_ = -90;
+            this->linearVelocity_ = {linear, 0, 0};
+            this->angle_ = 0;
             this->angularVelocity_ = {0, 0, 0};
             break;
         case '\0':
@@ -56,14 +67,14 @@ class DeadReckoning final
 
    private:
     auto print(std::ostream& os) const noexcept -> void override final {
-        os << "Angle: " << this->angle_;
-        os << "\tDistance: " << this->distance_;
-        os << "\tLinear Velocity: (" << std::get<0>(this->linearVelocity_) << ", "
+        os << "Angle: " << this->angle_ << "\t";
+        os << "Distance: " << this->distance_ << "\t";
+        os << "Linear Velocity: (" << std::get<0>(this->linearVelocity_) << ", "
            << std::get<1>(this->linearVelocity_) << ", " << std::get<2>(this->linearVelocity_)
-           << ") ";
-        os << "\tAngular Velocity: (" << std::get<0>(this->angularVelocity_) << ", "
+           << ")\t";
+        os << "Angular Velocity: (" << std::get<0>(this->angularVelocity_) << ", "
            << std::get<1>(this->angularVelocity_) << ", " << std::get<2>(this->angularVelocity_)
-           << ") ";
+           << ")";
         os << std::endl;
     }
 };
