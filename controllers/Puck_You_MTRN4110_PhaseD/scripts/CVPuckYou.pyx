@@ -40,7 +40,7 @@ cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const
     return destination
 
 
-cdef public void runCVMapper(const char* mazeFileName):
+cdef public char* runCVMapper(const char* mazeFileName):
     '''
     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
@@ -48,7 +48,7 @@ cdef public void runCVMapper(const char* mazeFileName):
     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
     walls = get_walls(maze_transformed_hsv)
     maze_map = get_map_string(walls)
-    # return <const char*>maze_map
+    return <char*>maze_map
 
 
 BGR_B = (255, 0, 0)
@@ -95,7 +95,7 @@ def get_cornerstone_contours(maze_hsv):
     magenta_mask = cv2.inRange(maze_hsv, magenta_lower, magenta_upper)
     magenta_masked = cv2.bitwise_and(maze_hsv, maze_hsv, mask=magenta_mask)
     magenta_edges = cv2.Canny(magenta_masked, threshold1=150, threshold2=200, apertureSize=5)
-    magenta_contours, _ = cv2.findContours(magenta_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _, magenta_contours, _ = cv2.findContours(magenta_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     magenta_contours = sorted(magenta_contours, reverse=True, key=lambda x : cv2.contourArea(x))
     magenta_contours = magenta_contours[:3]
 
@@ -105,7 +105,7 @@ def get_cornerstone_contours(maze_hsv):
     cyan_mask = cv2.inRange(maze_hsv, cyan_lower, cyan_upper)
     cyan_masked = cv2.bitwise_and(maze_hsv, maze_hsv, mask=cyan_mask)
     cyan_edges = cv2.Canny(cyan_masked, threshold1=150, threshold2=200, apertureSize=5)
-    cyan_contours, _ = cv2.findContours(cyan_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _, cyan_contours, _ = cv2.findContours(cyan_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cyan_contours = sorted(cyan_contours, reverse=True, key=lambda x : cv2.contourArea(x))
     cyan_contour = cyan_contours[0]
     
@@ -307,7 +307,7 @@ def get_robot_coordinates(maze_hsv):
     robot_mask = cv2.inRange(maze_hsv, robot_lower, robot_upper)
     robot_masked = cv2.bitwise_and(maze_hsv, maze_hsv, mask=robot_mask)
     robot_edges = cv2.Canny(robot_masked, threshold1=150, threshold2=175, apertureSize=5)
-    robot_contours, _ = cv2.findContours(robot_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _, robot_contours, _ = cv2.findContours(robot_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     sum_m00 = 0 # area
     sum_m10 = 0 # area * x
@@ -395,7 +395,7 @@ def get_target_coordinates(maze_hsv, bug_gray):
     for match in matches:
         if match.distance < match_threshold:
             x, y = kp_maze[match.queryIdx].pt
-            count[y // GRID_PIXELS][x // GRID_PIXELS] += 1
+            count[int(y // GRID_PIXELS)][int(x // GRID_PIXELS)] += 1
 
     return np.unravel_index(np.argmax(count, axis=None), count.shape)
 
