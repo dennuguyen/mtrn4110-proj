@@ -8,7 +8,8 @@
 
 namespace mtrn4110 {
 
-constexpr std::array<char, 4> cardinalPoints = {'N', 'E', 'S', 'W'};
+auto constexpr cardinalPoints = {'N', 'E', 'S', 'W'};
+auto constexpr unvisited = -1;
 
 namespace defaultTypes {
 using HeadingType = int;  // N, E, S, W
@@ -20,7 +21,8 @@ using AngularVelocityType = std::tuple<double, double, double>;  // (roll, pitch
 using MotionType = char;  // F, L, R
 using PathType = std::vector<MotionType>;
 using MapType = std::vector<std::string>;
-using GraphType = std::vector<std::vector<int>>;  // Adjacency matrix of ints.
+using GraphType =
+    std::map<std::pair<int, int>, std::pair<int, std::vector<std::pair<int, int>>>>;  // DWG
 }  // namespace defaultTypes
 
 namespace files {
