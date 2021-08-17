@@ -8,7 +8,7 @@
 
 namespace mtrn4110 {
 
-auto constexpr cardinalPoints = {'N', 'E', 'S', 'W'};
+auto constexpr cardinalPoints = std::array<char, 4>({'N', 'E', 'S', 'W'});
 auto constexpr unvisited = -1;
 
 namespace defaultTypes {
@@ -26,10 +26,9 @@ using GraphType =
 }  // namespace defaultTypes
 
 namespace files {
-constexpr auto csvOutput = "../../MotionExecution.csv";
 constexpr auto mazeImage = "Maze.png";
-// constexpr auto robotImage = "../../images/Robot_2.png";
-// constexpr auto ladybugImage = "../../images/Ladybug_small.png";
+constexpr auto robotImage = "Robot_2.png";
+constexpr auto ladybugImage = "Ladybug_small.png";
 }  // namespace files
 }  // namespace mtrn4110
 
