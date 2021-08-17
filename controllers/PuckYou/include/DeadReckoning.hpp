@@ -17,6 +17,10 @@ template<typename MotionType = defaultTypes::MotionType,
 class DeadReckoning final
 : public TrajectoryPlanner<MotionType, AngleType, DistanceType, LinearVelocityType, AngularVelocityType> {
    public:
+    // Default constructor.
+    DeadReckoning() = default;
+
+    // Constructor with initial motion.
     DeadReckoning(MotionType initialMotion)
     : TrajectoryPlanner<MotionType, AngleType, DistanceType, LinearVelocityType, AngularVelocityType>(
         initialMotion,
