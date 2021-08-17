@@ -23,13 +23,17 @@ class SimpleTeleoperation final : public Deliberator<DeliberateType> {
         keyboard_->enable(robot.getBasicTimeStep());
     }
 
-    auto readInput() -> void {
-        switch (keyboard_->getKey()) {
+    // Reads the keyboard. Updates the deliberated value if key is valid for teleoperation.
+    auto readInput() -> char {
+        auto const key = keyboard_->getKey();
+        switch (key) {
         case 'W': this->delib_ = 'F'; break;
         case 'Q': this->delib_ = 'L'; break;
         case 'E': this->delib_ = 'R'; break;
+        case ' ': this->delib_ = ' '; break;
         default: this->delib_ = '\0'; break;
         }
+        return key;
     }
 
    private:
