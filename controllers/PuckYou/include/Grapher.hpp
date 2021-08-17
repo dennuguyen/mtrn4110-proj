@@ -83,9 +83,9 @@ class Grapher {
 
    private:
     // Write any required data to an output stream.
-    auto print(std::ostream& os) const noexcept -> void {}
-
-    static auto constexpr unvisited = -1;
+    auto print(std::ostream& os) const noexcept -> void {
+        std::for_each (map_.begin(), map_.end(), [&os](auto const& i) { os << i << std::endl; });
+    }
 };
 }  // namespace mtrn4110
 
