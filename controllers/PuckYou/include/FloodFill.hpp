@@ -107,8 +107,8 @@ class FloodFill final : public PathPlanner<PoseType, HeadingType, MotionType, Gr
         std::vector<Path> completePaths;
         std::vector<Path> incompletePaths;
 
-        int startRow = currentPose_.first;
-        int startCol = currentPose_.second;
+        int startRow = initialPose_.first;
+        int startCol = initialPose_.second;
         Node* start = &graph_[startRow][startCol];
 
         Path path;
@@ -117,7 +117,7 @@ class FloodFill final : public PathPlanner<PoseType, HeadingType, MotionType, Gr
 
         // determine the starting direction
         Direction inDirection = NIL;
-        switch (currentHeading_) {
+        switch (initialHeading_) {
         case NORTH:  // TODO: fix according to direction
             inDirection = DOWN;
             path.pathString += "N";
