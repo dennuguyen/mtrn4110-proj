@@ -12,6 +12,9 @@ template<typename MotionType = defaultTypes::MotionType,
          typename AngularVelocityType = defaultTypes::AngularVelocityType>
 class TrajectoryPlanner {
    public:
+    // Default constructor.
+    TrajectoryPlanner() = default;
+
     // Initialise the trajectory planner with initial motion, distance, linear velocity, and angular
     // velocity.
     TrajectoryPlanner(MotionType motion,
