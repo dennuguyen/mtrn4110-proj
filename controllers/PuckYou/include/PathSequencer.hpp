@@ -10,10 +10,19 @@ namespace mtrn4110 {
 template<typename MotionType = defaultTypes::MotionType, typename PathType = defaultTypes::PathType>
 class PathSequencer {
    public:
+    // Default constructor.
+    PathSequencer() = default;
+
     // Constructor for path sequencer to initialise the path.
     PathSequencer(PathType path)
     : path_(path)
     , pathIndex_(0) {}
+
+    // Renew the motion sequence.
+    auto updatePath(PathType const& path) noexcept -> void {
+        path_ = path;
+        pathIndex_ = 0;
+    }
 
     // Gets the next motion of the motion sequence.
     auto nextMotion() -> MotionType {
