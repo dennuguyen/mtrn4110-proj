@@ -18,10 +18,10 @@ template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
          typename PathType = defaultTypes::PathType,
          typename GraphType = defaultTypes::GraphType>
-class BFSDFS final : public PathPlanner<PoseType, HeadingType, GraphType> {
+class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphType> {
    public:
     BFSDFS()
-    : PathPlanner<PoseType, HeadingType, GraphType>()
+    : PathPlanner<PoseType, HeadingType, PathType, GraphType>()
     , paths_()
     , leastTurnsPath_() {}
 
@@ -141,6 +141,7 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, GraphType> {
                 return std::count_if(a.second.begin(), a.second.end(), checkTurn)
                        < std::count_if(b.second.begin(), b.second.end(), checkTurn);
             });
+        this->path_ = PathType(leastTurnsPath_->second.begin(), leastTurnsPath_->second.end());
     }
 
     // Gets the heading when moving from point a to point b.
