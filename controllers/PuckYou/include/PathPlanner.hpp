@@ -11,16 +11,24 @@ namespace mtrn4110 {
 // An interface for a generic path planner.
 template<typename PoseType = defaultTypes::PoseType,
          typename HeadingType = defaultTypes::HeadingType,
-         typename MotionType = defaultTypes::MotionType,
+         typename PathType = defaultTypes::PathType,
          typename GraphType = defaultTypes::GraphType>
 class PathPlanner {
    public:
+    // Default constructor.
+    PathPlanner() = default;
+
     // Constructor to initialise required members.
-    PathPlanner(GraphType graph, PoseType destination, PoseType initialPose, HeadingType initialHeading)
+    PathPlanner(GraphType graph,
+                PoseType destination,
+                PoseType initialPose,
+                HeadingType initialHeading,
+                PathType path)
     : graph_(graph)
     , destination_(destination)
-    , currentPose_(initialPose)
-    , currentHeading_(initialHeading) {}
+    , initialPose_(initialPose)
+    , initialHeading_(initialHeading)
+    , path_(path) {}
 
     auto getGraph() const noexcept -> GraphType {
         return graph_;
@@ -30,16 +38,16 @@ class PathPlanner {
         return destination_;
     }
 
-    auto getCurrentPose() const noexcept -> PoseType {
-        return currentPose_;
+    auto getInitialPose() const noexcept -> PoseType {
+        return initialPose_;
     }
 
-    auto getCurrentHeading() const noexcept -> HeadingType {
-        return currentHeading_;
+    auto getInitialHeading() const noexcept -> HeadingType {
+        return initialHeading_;
     }
 
-    auto getMotion() const noexcept -> MotionType {
-        return motion_;
+    auto getPath() const noexcept -> PathType {
+        return path_;
     }
 
     // Operator overload for <<.
@@ -51,20 +59,14 @@ class PathPlanner {
 
    protected:
     GraphType graph_;
-    PoseType currentPose_;
     PoseType destination_;
-    HeadingType currentHeading_;
-    MotionType motion_;
+    PoseType initialPose_;
+    HeadingType initialHeading_;
+    PathType path_;
 
    private:
-    // Destination changes requires most current pose and current heading to update the path plan.
-    virtual auto
-    updateDestination(PoseType destination, PoseType currentPose, HeadingType currentHeading)
-        -> void = 0;
-
-    // World changes requires its graph representation, most current pose, and current heading to
-    // update the path plan.
-    virtual auto updateGraph(GraphType graph) -> void = 0;
+    // Update the path plan.
+    virtual auto update() -> void = 0;
 
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
