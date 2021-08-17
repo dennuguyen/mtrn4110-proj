@@ -6,6 +6,7 @@
 #include <webots/Robot.hpp>
 
 // Used exclusively in autonomous control.
+#include "BFSDFS.hpp"
 #include "CVPuckYou.h"
 #include "DistanceSensor.hpp"
 #include "Grapher.hpp"
@@ -35,12 +36,14 @@ static auto mouse(webots::Robot& robot) -> void {
     auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
     auto constexpr motionLock = 1;  // true = in motion, false = not in motion
+    auto constexpr pathLock = 0;  // true = sequencing path, false = not sequencing path
 
     // These RSA elements are exclusive to autonomous control.
     auto distanceSensor = mtrn4110::DistanceSensor(robot);
     // auto lidarSensor = mtrn4110::LidarSensor(robot);
     auto grapher = mtrn4110::Grapher();
-    auto pathSequencer = mtrn4110::PathSequencer({});
+    auto pathPlanner = mtrn4110::BFSDFS();
+    auto pathSequencer = mtrn4110::PathSequencer();
 
     // These RSA elements are used in both teleoperation and autonomous control.
     auto teleoperation = mtrn4110::SimpleTeleoperation(robot);
@@ -70,31 +73,43 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // In autonomous mode so perform autonomous operations.
         if (taskControl.isLockBusy(modeLock) == false) {
-            // TODO: EVERYTHING IN THIS IF STATEMENT
+            // Not sequencing path plan. Check for new path plan.
+            if (taskControl.isLockBusy(pathLock) == false) {
+                // Get image of map.
+                // camera.snap(mtrn4110::files::mazeImage);
 
-            // Get image of map.
-            // camera.snap(mtrn4110::files::mazeImage);
+                // Map the image.
+                auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
 
-            // Map the image.
-            // auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
+                // Graph map.
+                grapher.readMap(map);
+                auto const graph = grapher.buildGraph();
 
-            // // Graph map.
-            // grapher.readMap(map);
-            // grapher.buildGraph();
+                // Deliberate.
+                auto const destination =
+                    runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
 
-            // // Deliberate.
-            // auto const destination = runCVWaypointer(mtrn4110::files::mazeImage);
+                // Localise.
+                auto const [pose, heading] =
+                    runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
 
-            // // Localise.
-            // auto const [pose, heading] =
-            //     runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                // Path plan.
+                pathPlanner.update(graph, destination, pose, heading);
 
-            // // Path plan.
-            // // if ()
-            // // pathPlanner.updateDestination();
+                // Path sequencer.
+                pathSequencer.updatePath(pathPlanner.getPath());
 
-            // // Path sequencer.
-            // motion = pathSequencer.nextMotion();
+                // Sequencing path plan.
+                taskControl.acquireLock(pathLock);
+            }
+
+            // Get next motion in path plan.
+            motion = pathSequencer.nextMotion();
+
+            // Reached end of path plan.
+            if (motion == '\0') {
+                taskControl.releaseLock(pathLock);
+            }
         }
         else {
             motion = teleoperation.getDeliberatedValue();
