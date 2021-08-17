@@ -33,14 +33,12 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 static auto mouse(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
     auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
-    using modeLock = 0;  // true = teleoperation, false = autonomous
-    using motionLock = 1;
+    auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
+    auto constexpr motionLock = 1;  // true = in motion, false = not in motion
 
     // These RSA elements are exclusive to autonomous control.
     auto distanceSensor = mtrn4110::DistanceSensor(robot);
     // auto lidarSensor = mtrn4110::LidarSensor(robot);
-    auto deliberator = mtrn4110::HCDeliberator();
-    auto localiser = mtrn4110::HCLocaliser({0, 0}, 2);
     auto grapher = mtrn4110::Grapher();
     auto pathSequencer = mtrn4110::PathSequencer({});
 
@@ -59,7 +57,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Toggle operation modes.
         if (key == ' ') {
-            if (taskControl.isLockBusy(modeLock) == true) {
+            if (taskControl.isLockBusy(modeLock) == false) {
                 std::cout << "Teloperating!" << std::endl;
                 taskControl.acquireLock(modeLock);
             }
@@ -67,6 +65,7 @@ static auto mouse(webots::Robot& robot) -> void {
                 std::cout << "Autonomous!" << std::endl;
                 taskControl.releaseLock(modeLock);
             }
+            continue;  // Invalidate the deliberated value.
         }
 
         // In autonomous mode so perform autonomous operations.
@@ -104,7 +103,7 @@ static auto mouse(webots::Robot& robot) -> void {
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
         trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 1});
-        std::cout << trajectoryPlanner;
+        // std::cout << trajectoryPlanner;
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
@@ -112,7 +111,7 @@ static auto mouse(webots::Robot& robot) -> void {
         auto const linearVelocity = trajectoryPlanner.getLinearVelocity();
         auto const angularVelocity = trajectoryPlanner.getAngularVelocity();
         motionPlanner.computeMotorSetpoints(angle, distance, linearVelocity, angularVelocity);
-        std::cout << motionPlanner;
+        // std::cout << motionPlanner;
 
         // Feed motor setpoints to motor controller.
         motorController.setPosition(motionPlanner.getMotorPositions());
