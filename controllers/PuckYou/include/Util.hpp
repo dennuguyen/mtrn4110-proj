@@ -26,9 +26,9 @@ using GraphType =
 }  // namespace defaultTypes
 
 namespace files {
-auto constexpr mazeImage = "Maze.png";
-auto constexpr robotImage = "Robot_2.png";
-auto constexpr ladybugImage = "Ladybug_small.png";
+auto constexpr mazeImage = "../../images/Maze_2.png";
+auto constexpr robotImage = "../../images/Robot_2.png";
+auto constexpr ladybugImage = "../../images/Ladybug_small.png";
 }  // namespace files
 }  // namespace mtrn4110
 
