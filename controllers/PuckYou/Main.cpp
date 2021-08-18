@@ -82,6 +82,8 @@ static auto mouse(webots::Robot& robot) -> void {
         std::cout << i;
     std::cout << std::endl;
 
+    Py_Finalize();
+
     // Enter control loop.
     while (1) {
         auto motion = '\0';
