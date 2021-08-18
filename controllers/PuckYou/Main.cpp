@@ -8,7 +8,7 @@
 // Used exclusively in autonomous control.
 #include "BFSDFS.hpp"
 #include "CVProcessor.hpp"
-// #include "Camera.hpp"
+#include "Camera.hpp"
 #include "Grapher.hpp"
 #include "PathSequencer.hpp"
 
@@ -43,7 +43,7 @@ static auto mouse(webots::Robot& robot) -> void {
     auto constexpr motionTimer = 0;
 
     // These RSA elements are exclusive to autonomous control.
-    // auto camera = mtrn4110::Camera(robot);
+    auto camera = mtrn4110::Camera(robot);
     auto cvProcessor = mtrn4110::CVProcessor();
     auto grapher = mtrn4110::Grapher();
     auto pathPlanner = mtrn4110::BFSDFS();
@@ -80,12 +80,12 @@ static auto mouse(webots::Robot& robot) -> void {
             // Not sequencing path plan. Check for new path plan.
             if (taskControl.isLockBusy(pathLock) == false) {
                 // Get image of map.
-                // camera.snap("output.png", 100);
+                camera.snap("output.png", 100);
 
                 // Map the image.
-                cvProcessor.localise(mtrn4110::files::mazeImage, mtrn4110::files::robotImage);
-                cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-                cvProcessor.map(mtrn4110::files::mazeImage);
+                cvProcessor.localise("output.png", mtrn4110::files::robotImage);
+                cvProcessor.waypoint("output.png", mtrn4110::files::ladybugImage);
+                cvProcessor.map("output.png");
 
                 // Create a graph from the map.
                 auto const graph = grapher.buildGraph(cvProcessor.getMap());
@@ -117,7 +117,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.005, 0, 0}, {0, 0, 0.4});
+        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.4});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
