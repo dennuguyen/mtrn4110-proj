@@ -12,13 +12,13 @@ class Mapper {
     Mapper(MapType map)
     : map_(map) {}
 
-    auto getMap() const noexcept -> PoseType {
+    auto getMap() const noexcept -> MapType {
         return map_;
     }
 
     // Operator overload for <<.
-    friend auto operator<<(std::ostream& os, Localiser const& localiser) noexcept -> std::ostream& {
-        localiser.print(os);
+    friend auto operator<<(std::ostream& os, Mapper const& mapper) noexcept -> std::ostream& {
+        mapper.print(os);
         return os;
     }
 
