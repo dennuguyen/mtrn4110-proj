@@ -1,0 +1,128 @@
+[z1234567_MTRN4110_PhaseB] Reading in map from ../../Map.txt...
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] |           |               |       |
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] |       |   |       |       |   | ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] |       |       | x         |       |
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] |   |       |       |       |       |
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] |       |       |       |           |
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Map read in!
+[z1234567_MTRN4110_PhaseB] Finding shortest paths...
+[z1234567_MTRN4110_PhaseB] Path - 1:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12| 7   6   5   4 | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8     |     3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31| 34  35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33    |
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 2:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12| 7   6   5   4 | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8     |     3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31|     35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33  34|
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 3:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12|     6   5   4 | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8   7 |     3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31| 34  35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33    |
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 4:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12|     6   5   4 | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8   7 |     3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31|     35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33  34|
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 5:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12| 7   6   5     | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8     | 4   3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31| 34  35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33    |
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 6:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12| 7   6   5     | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8     | 4   3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31|     35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33  34|
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 7:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12|     6   5     | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8   7 | 4   3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31| 34  35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33    |
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path - 8:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12|     6   5     | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8   7 | 4   3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31|     35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33  34|
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] 8 shortest paths found!
+[z1234567_MTRN4110_PhaseB] Finding shortest path with least turns...
+[z1234567_MTRN4110_PhaseB] Path - 1:
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] | 14  13  12| 7   6   5   4 | 39  40|
+[z1234567_MTRN4110_PhaseB]      ---                             
+[z1234567_MTRN4110_PhaseB] | 15  16| 11| 8     |     3 | 38| ^ |
+[z1234567_MTRN4110_PhaseB]  ---             --- ---         --- 
+[z1234567_MTRN4110_PhaseB] | 18  17| 10  9 | 0   1   2 | 37  36|
+[z1234567_MTRN4110_PhaseB]      --- --- --- --- --- --- ---     
+[z1234567_MTRN4110_PhaseB] | 19| 22  23| 26  27| 30  31|     35|
+[z1234567_MTRN4110_PhaseB]                                      
+[z1234567_MTRN4110_PhaseB] | 20  21| 24  25| 28  29| 32  33  34|
+[z1234567_MTRN4110_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[z1234567_MTRN4110_PhaseB] Path Plan (70 steps): 18NFLFLFFLFRFFRFFRFLFLFRFRFLFLFRFRFLFLFRFRFFRFLFLFRFRFFRFFLFLFFRFFFRFFRFF
+[z1234567_MTRN4110_PhaseB] Shortest path with least turns found!
+[z1234567_MTRN4110_PhaseB] Writing path plan to ../../PathPlan.txt...
+[z1234567_MTRN4110_PhaseB] Path plan written to ../../PathPlan.txt!
