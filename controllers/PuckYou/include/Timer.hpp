@@ -18,6 +18,9 @@ class Timer {
     // Check if timer has expired.
     auto expired() const noexcept -> bool;
 
+    // Blocking timer.
+    auto wait(double duration) noexcept -> void;
+
     // Write timer to output stream.
     friend auto operator<<(std::ostream& os, Timer const& timer) noexcept -> std::ostream&;
 
