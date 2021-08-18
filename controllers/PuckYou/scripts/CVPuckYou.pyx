@@ -4,6 +4,7 @@
 
 import cython
 from libcpp.pair cimport pair
+from libcpp.vector cimport vector
 
 from functools import wraps
 import cv2
@@ -40,15 +41,15 @@ cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const
     return destination
 
 
-cdef public char* runCVMapper(const char* mazeFileName):
+cdef public vector[char] runCVMapper(const char* mazeFileName):
     '''
     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
     walls = get_walls(maze_transformed_hsv)
-    maze_map = get_map_string(walls)
-    return <char*>maze_map
+    maze_map = list(get_map_string(walls))
+    return maze_map
 
 
 BGR_B = (255, 0, 0)
