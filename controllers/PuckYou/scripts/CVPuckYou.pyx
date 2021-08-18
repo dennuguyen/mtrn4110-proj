@@ -4,7 +4,7 @@
 
 import cython
 from libcpp.pair cimport pair
-from libcpp.vector cimport vector
+from libcpp.string cimport string
 
 from functools import wraps
 import cv2
@@ -18,7 +18,7 @@ cdef public void print_hello():
     print("Hello!")
 
 
-cdef public pair[pair[double, double], char] runCVLocaliser(const char* mazeFileName, const char* robotFileName):
+cdef public pair[pair[int, int], char] runCVLocaliser(const string mazeFileName, const string robotFileName):
     '''
     CVLocaliser reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current position and current heading of the robot.
@@ -30,7 +30,7 @@ cdef public pair[pair[double, double], char] runCVLocaliser(const char* mazeFile
     return epuck_position, epuck_direction
 
 
-cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const char* destinationFileName):
+cdef public pair[int, int] runCVWaypointer(const string mazeFileName, const string destinationFileName):
     '''
     CVWaypointer reads the maze file name for a bird's eye image of the maze, and detects and
     returns the intended destination as deliberated by the user using openCV.
@@ -41,14 +41,14 @@ cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const
     return destination
 
 
-cdef public vector[char] runCVMapper(const char* mazeFileName):
+cdef public string runCVMapper(const string mazeFileName):
     '''
     CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
     maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
     walls = get_walls(maze_transformed_hsv)
-    maze_map = list(get_map_string(walls))
+    maze_map = get_map_string(walls)
     return maze_map
 
 
