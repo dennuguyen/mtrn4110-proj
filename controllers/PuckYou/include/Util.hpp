@@ -2,6 +2,7 @@
 #define UTIL_HPP
 
 #include <array>
+#include <map>
 #include <tuple>
 #include <utility>
 #include <vector>
