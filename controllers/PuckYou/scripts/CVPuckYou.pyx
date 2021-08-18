@@ -443,13 +443,13 @@ def get_map_string(walls):
     for row in range(ROWS):
         line = '|' # border
         for col in range(COLS - 1):
-            line += '    '
+            line += '   '
             if (vertical[row][col]):
                 line += '|'
             else:
                 line += ' '
         # check content of last col
-        line += '    '
+        line += '   '
         line += '|' # border
         vertical_output.append(line)
 
