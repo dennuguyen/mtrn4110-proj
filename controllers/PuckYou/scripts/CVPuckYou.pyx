@@ -149,9 +149,9 @@ def perspective_transform(maze_img, magenta_contours, cyan_contour):
     point_transformed = np.float32([TL, TR, BL, BR])
 
     H = cv2.getPerspectiveTransform(point_original, point_transformed)
-    cv2.warpPerspective(maze_img, H, (WIDE_RES, TALL_RES))
+    transformed = cv2.warpPerspective(maze_img, H, (WIDE_RES, TALL_RES))
 
-    return maze_img, H
+    return transformed, H
 
 def create_corner(contour, colour):
     m = cv2.moments(contour)
