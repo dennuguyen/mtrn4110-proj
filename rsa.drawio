@@ -689,24 +689,29 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="432" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="403" target="385">
+                <mxCell id="432" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="448" target="385">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
-                            <mxPoint x="20" y="1460"/>
+                            <mxPoint x="-142" y="1460"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="433" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="403" target="389">
+                <mxCell id="433" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="448" target="389">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="434" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="448" target="390">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-142" y="1660"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="449" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="403" target="448">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="20" y="1560"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="434" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="403" target="390">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="20" y="1660"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -769,6 +774,12 @@
                 </mxCell>
                 <mxCell id="446" value="If teleoperation mode" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="1">
                     <mxGeometry x="-840" y="1330" width="130" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="447" value="Control Loop" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fontSize=24;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="-1120" y="1210" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="448" value="Snap world image" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-202" y="1520" width="120" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
