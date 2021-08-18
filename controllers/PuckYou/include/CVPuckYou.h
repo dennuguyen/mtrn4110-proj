@@ -20,9 +20,10 @@
 #endif
 
 __PYX_EXTERN_C void print_hello(void);
-__PYX_EXTERN_C std::pair<std::pair<int,int> ,char>  runCVLocaliser(std::string const , std::string const );
-__PYX_EXTERN_C std::pair<int,int>  runCVWaypointer(std::string const , std::string const );
-__PYX_EXTERN_C std::string runCVMapper(std::string const );
+__PYX_EXTERN_C int getHeading(std::string const , std::string const );
+__PYX_EXTERN_C std::pair<int,int>  getPose(std::string const , std::string const );
+__PYX_EXTERN_C std::pair<int,int>  getDestination(std::string const , std::string const );
+__PYX_EXTERN_C std::string getMap(std::string const );
 
 #endif /* !__PYX_HAVE_API__CVPuckYou */
 

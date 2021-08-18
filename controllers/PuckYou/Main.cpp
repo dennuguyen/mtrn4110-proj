@@ -7,7 +7,7 @@
 
 // Used exclusively in autonomous control.
 #include "BFSDFS.hpp"
-#include "CVPuckYou.h"
+#include "CVProcessor.hpp"
 // #include "Camera.hpp"
 #include "DistanceSensor.hpp"
 #include "Grapher.hpp"
@@ -33,19 +33,6 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // This function contains the control loop logic for the EPuck. It supports both autonomous control
 // and teleoperation.
 static auto mouse(webots::Robot& robot) -> void {
-    // Startup Python interpretter.
-    if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
-        throw std::runtime_error("Could not extend built-in modules table.");
-    }
-    Py_Initialize();
-
-    // Import CVPuckYou into the Python interpretter.
-    auto module = PyImport_ImportModule("CVPuckYou");
-    if (module == nullptr) {
-        PyErr_Print();
-        throw std::runtime_error("Could not import CVPuckYou.");
-    }
-
     // Instantiate our task controller class.
     auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
@@ -54,6 +41,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
     // These RSA elements are exclusive to autonomous control.
     // auto camera = mtrn4110::Camera(robot);
+    auto cvProcessor = mtrn4110::CVProcessor();
     // auto distanceSensor = mtrn4110::DistanceSensor(robot);
     // auto lidarSensor = mtrn4110::LidarSensor(robot);
     auto grapher = mtrn4110::Grapher();
@@ -66,23 +54,9 @@ static auto mouse(webots::Robot& robot) -> void {
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
 
-    auto const destination =
-        runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-    std::cout << "1: " << destination.first << " " << destination.second << std::endl;
-
-    auto const [pose, heading] =
-        runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::robotImage);
-    std::cout << "2: " << pose.first << " " << pose.second << " " << heading << std::endl;
-
-    print_hello();
-
-    auto const map = runCVMapper(mtrn4110::files::mazeImage);
-    std::cout << "3: " << map.size() << std::endl;
-    for (auto const& i : map)
-        std::cout << i;
-    std::cout << std::endl;
-
-    Py_Finalize();
+    cvProcessor.localise();
+    cvProcessor.waypoint();
+    cvProcessor.map();
 
     // Enter control loop.
     while (1) {
