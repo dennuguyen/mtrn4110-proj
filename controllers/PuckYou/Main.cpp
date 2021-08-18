@@ -9,7 +9,6 @@
 #include "BFSDFS.hpp"
 #include "CVProcessor.hpp"
 // #include "Camera.hpp"
-#include "DistanceSensor.hpp"
 #include "Grapher.hpp"
 #include "PathSequencer.hpp"
 
@@ -21,6 +20,9 @@
 
 // Extra control over control loop.
 #include "TaskControl.hpp"
+
+// Abstract classes.
+#include "Mapper.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
 static auto simulationSteps(webots::Robot& robot) -> void {
@@ -42,8 +44,6 @@ static auto mouse(webots::Robot& robot) -> void {
     // These RSA elements are exclusive to autonomous control.
     // auto camera = mtrn4110::Camera(robot);
     auto cvProcessor = mtrn4110::CVProcessor();
-    // auto distanceSensor = mtrn4110::DistanceSensor(robot);
-    // auto lidarSensor = mtrn4110::LidarSensor(robot);
     auto grapher = mtrn4110::Grapher();
     auto pathPlanner = mtrn4110::BFSDFS();
     auto pathSequencer = mtrn4110::PathSequencer();
@@ -79,27 +79,23 @@ static auto mouse(webots::Robot& robot) -> void {
             // Not sequencing path plan. Check for new path plan.
             if (taskControl.isLockBusy(pathLock) == false) {
                 // Get image of map.
-                // camera.snap(mtrn4110::files::mazeImage);
+                // camera.snap("output.png", 100);
 
                 // Map the image.
                 cvProcessor.localise(mtrn4110::files::mazeImage, mtrn4110::files::robotImage);
                 cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
                 cvProcessor.map(mtrn4110::files::mazeImage);
+                // std::cout << dynamic_cast<Mapper>(cvProcessor);
 
-                // // Graph map.
-                // grapher.readMap(map);
-                // auto const graph = grapher.buildGraph();
+                // Graph map.
+                auto const graph = grapher.buildGraph(cvProcessor.getMap());
 
-                // // Deliberate.
-                // auto const destination =
-                //     runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-
-                // // Localise.
-                // auto const [pose, heading] =
-                //     runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-
-                // // Path plan.
-                // pathPlanner.update(graph, destination, pose, heading);
+                // Path plan.
+                pathPlanner.update(graph,
+                                   cvProcessor.getDeliberatedValue(),
+                                   {0, 0},  // cvProcessor.getCurrentPose(),
+                                   cvProcessor.getCurrentHeading());
+                std::cout << pathPlanner;
 
                 // // Path sequencer.
                 // pathSequencer.updatePath(pathPlanner.getPath());
