@@ -20,8 +20,8 @@ class Grapher {
         }
 
         auto graph = GraphType();
-        auto const& maxLine = static_cast<int>(tokenisedMap.size());
-        auto const& maxColumn = static_cast<int>(tokenisedMap.at(0).size());
+        auto const& maxLine = static_cast<int>(map.size());
+        auto const& maxColumn = static_cast<int>(map.at(0).size());
         for (auto line = 0; line < maxLine; line++) {
             for (auto col = 0; col < maxColumn; col++) {
                 // At centre of tile.
@@ -31,7 +31,7 @@ class Grapher {
 
                     // Check vertical wall to right of centre of tile.
                     if (col + 2 < maxColumn) {
-                        if (tokenisedMap[line][col + 2] == ' ') {
+                        if (map[line][col + 2] == ' ') {
                             graph[{x, y}].first = unvisited;
                             graph[{x, y}].second.emplace_back(x + 1, y);
                             graph[{x + 1, y}].first = unvisited;
@@ -41,7 +41,7 @@ class Grapher {
 
                     // Check horizontal wall below centre of tile.
                     if (line + 1 < maxLine) {
-                        if (tokenisedMap[line + 1][col] == ' ') {
+                        if (map[line + 1][col] == ' ') {
                             graph[{x, y}].first = unvisited;
                             graph[{x, y}].second.emplace_back(x, y + 1);
                             graph[{x, y + 1}].first = unvisited;
