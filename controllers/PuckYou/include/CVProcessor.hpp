@@ -38,7 +38,7 @@ class CVProcessor final
 
     auto map(std::string const& mazeImage) noexcept -> void {
         auto const map = getMap(mazeImage);
-        this->map_ = MapType(map.begin(), map.end());
+        this->map_ = util::tokenise(map, '\n');
     }
 
    private:

@@ -7,20 +7,17 @@
 
 namespace mtrn4110 {
 // An interface for a grapher.
-template<typename GraphType = defaultTypes::GraphType>
+template<typename MapType = defaultTypes::MapType, typename GraphType = defaultTypes::GraphType>
 class Grapher {
    public:
     // Default constructor.
     Grapher() = default;
 
     // Build the graph from the read-in map.
-    auto buildGraph(std::string const& map) -> GraphType {
+    auto buildGraph(MapType map) -> GraphType {
         if (map.empty() == true) {
             throw std::runtime_error("Cannot build graph from empty map.");
         }
-
-        // Tokenise the map string for [][] access operator.
-        auto tokenisedMap = util::tokenise(map, '\n');
 
         auto graph = GraphType();
         auto const& maxLine = static_cast<int>(tokenisedMap.size());
