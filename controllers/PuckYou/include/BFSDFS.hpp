@@ -31,9 +31,10 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         searchLeastTurnsPath();
     }
 
-    auto
-    update(GraphType graph, PoseType destination, PoseType currentPose, HeadingType currentHeading)
-        -> void {
+    auto update(GraphType const& graph,
+                PoseType const& destination,
+                PoseType const& currentPose,
+                HeadingType const& currentHeading) -> void {
         this->graph_ = graph;
         this->destination_ = destination;
         this->initialPose_ = currentPose;
@@ -41,14 +42,16 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         update();
     }
 
-    auto update(PoseType destination, PoseType currentPose, HeadingType currentHeading) -> void {
+    auto update(PoseType const& destination,
+                PoseType const& currentPose,
+                HeadingType const& currentHeading) -> void {
         this->destination_ = destination;
         this->initialPose_ = currentPose;
         this->initialHeading_ = currentHeading;
         update();
     }
 
-    auto update(GraphType graph) -> void {
+    auto update(GraphType const& graph) -> void {
         this->graph_ = graph;
         update();
     }
