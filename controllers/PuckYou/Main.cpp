@@ -8,6 +8,7 @@
 // Used exclusively in autonomous control.
 #include "BFSDFS.hpp"
 #include "CVPuckYou.h"
+// #include "Camera.hpp"
 #include "DistanceSensor.hpp"
 #include "Grapher.hpp"
 #include "PathSequencer.hpp"
@@ -32,6 +33,19 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // This function contains the control loop logic for the EPuck. It supports both autonomous control
 // and teleoperation.
 static auto mouse(webots::Robot& robot) -> void {
+    // Startup Python interpretter.
+    if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
+        throw std::runtime_error("Could not extend built-in modules table.");
+    }
+    Py_Initialize();
+
+    // Import CVPuckYou into the Python interpretter.
+    auto module = PyImport_ImportModule("CVPuckYou");
+    if (module == nullptr) {
+        PyErr_Print();
+        throw std::runtime_error("Could not import CVPuckYou.");
+    }
+
     // Instantiate our task controller class.
     auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
@@ -39,7 +53,8 @@ static auto mouse(webots::Robot& robot) -> void {
     auto constexpr pathLock = 0;  // true = sequencing path, false = not sequencing path
 
     // These RSA elements are exclusive to autonomous control.
-    auto distanceSensor = mtrn4110::DistanceSensor(robot);
+    // auto camera = mtrn4110::Camera(robot);
+    // auto distanceSensor = mtrn4110::DistanceSensor(robot);
     // auto lidarSensor = mtrn4110::LidarSensor(robot);
     auto grapher = mtrn4110::Grapher();
     auto pathPlanner = mtrn4110::BFSDFS();
@@ -50,6 +65,22 @@ static auto mouse(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
+
+    auto const destination =
+        runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+    std::cout << "1: " << destination.first << " " << destination.second << std::endl;
+
+    auto const [pose, heading] =
+        runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+    std::cout << "2: " << pose.first << " " << pose.second << " " << heading << std::endl;
+
+    print_hello();
+
+    auto const map = runCVMapper(mtrn4110::files::mazeImage);
+    std::cout << "3: " << map.size() << std::endl;
+    for (auto const& i : map)
+        std::cout << i;
+    std::cout << std::endl;
 
     // Enter control loop.
     while (1) {
@@ -79,25 +110,25 @@ static auto mouse(webots::Robot& robot) -> void {
                 // camera.snap(mtrn4110::files::mazeImage);
 
                 // Map the image.
-                auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
+                // auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
 
-                // Graph map.
-                grapher.readMap(map);
-                auto const graph = grapher.buildGraph();
+                // // Graph map.
+                // grapher.readMap(map);
+                // auto const graph = grapher.buildGraph();
 
-                // Deliberate.
-                auto const destination =
-                    runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                // // Deliberate.
+                // auto const destination =
+                //     runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
 
-                // Localise.
-                auto const [pose, heading] =
-                    runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                // // Localise.
+                // auto const [pose, heading] =
+                //     runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
 
-                // Path plan.
-                pathPlanner.update(graph, destination, pose, heading);
+                // // Path plan.
+                // pathPlanner.update(graph, destination, pose, heading);
 
-                // Path sequencer.
-                pathSequencer.updatePath(pathPlanner.getPath());
+                // // Path sequencer.
+                // pathSequencer.updatePath(pathPlanner.getPath());
 
                 // Sequencing path plan.
                 taskControl.acquireLock(pathLock);
@@ -143,19 +174,6 @@ static auto mouse(webots::Robot& robot) -> void {
 }
 
 auto main(int argc, char** argv) -> int {
-    // Startup Python interpretter.
-    if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
-        throw std::runtime_error("Could not extend built-in modules table.");
-    }
-    Py_Initialize();
-
-    // Import CVPuckYou into the Python interpretter.
-    auto module = PyImport_ImportModule("CVPuckYou");
-    if (module == nullptr) {
-        PyErr_Print();
-        throw std::runtime_error("Could not import CVPuckYou.");
-    }
-
     // Instantiate webots robot.
     auto robot = webots::Robot();
 
@@ -166,9 +184,6 @@ auto main(int argc, char** argv) -> int {
     // Wait for threads to finish.
     t1.join();
     t2.join();
-
-    // End the Python interpretter.
-    Py_Finalize();
 
     return 0;
 }
