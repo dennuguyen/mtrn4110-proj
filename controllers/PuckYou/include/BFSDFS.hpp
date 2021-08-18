@@ -149,8 +149,8 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
 
     // Gets the heading when moving from point a to point b.
     auto getHeadingIndex(std::pair<int, int> a, std::pair<int, int> b) const -> int {
-        auto westEastHeading = a.first - b.first;  // W = 1, E = -1
-        auto northSouthHeading = b.second - a.second;  // S = 1, N = -1
+        auto westEastHeading = a.second - b.second;  // W = 1, E = -1
+        auto northSouthHeading = b.first - a.first;  // S = 1, N = -1
         auto heading = northSouthHeading == 0 ? westEastHeading + 2 : northSouthHeading + 1;
         return heading;
     }

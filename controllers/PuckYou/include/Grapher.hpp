@@ -32,20 +32,20 @@ class Grapher {
                     // Check vertical wall to right of centre of tile.
                     if (col + 2 < maxColumn) {
                         if (map[line][col + 2] == ' ') {
-                            graph[{x, y}].first = unvisited;
-                            graph[{x, y}].second.emplace_back(x + 1, y);
-                            graph[{x + 1, y}].first = unvisited;
-                            graph[{x + 1, y}].second.emplace_back(x, y);
+                            graph[{y, x}].first = unvisited;
+                            graph[{y, x}].second.emplace_back(y, x + 1);
+                            graph[{y, x + 1}].first = unvisited;
+                            graph[{y, x + 1}].second.emplace_back(y, x);
                         }
                     }
 
                     // Check horizontal wall below centre of tile.
                     if (line + 1 < maxLine) {
                         if (map[line + 1][col] == ' ') {
-                            graph[{x, y}].first = unvisited;
-                            graph[{x, y}].second.emplace_back(x, y + 1);
-                            graph[{x, y + 1}].first = unvisited;
-                            graph[{x, y + 1}].second.emplace_back(x, y);
+                            graph[{y, x}].first = unvisited;
+                            graph[{y, x}].second.emplace_back(y + 1, x);
+                            graph[{y + 1, x}].first = unvisited;
+                            graph[{y + 1, x}].second.emplace_back(y, x);
                         }
                     }
                 }
