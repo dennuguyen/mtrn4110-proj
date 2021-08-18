@@ -44,7 +44,7 @@ class PathSequencer {
     }
 
     PathType path_;
-    int pathIndex_ = 0;
+    int pathIndex_ = 3;  // Cheese the path plan string because motion starts at 3rd index.
 };
 }  // namespace mtrn4110
 
