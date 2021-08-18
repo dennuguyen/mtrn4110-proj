@@ -4,38 +4,56 @@
 #include <Python.h>
 
 #include "CVPuckYou.h"
+#include "Deliberator.hpp"
+#include "Localiser.hpp"
+#include "Mapper.hpp"
 #include "Util.hpp"
 
 namespace mtrn4110 {
-
-class CVProcessor /*final : public Localiser<>, public Deliberator<>*/ {
+template<typename PoseType = defaultTypes::PoseType,
+         typename HeadingType = defaultTypes::HeadingType,
+         typename MotionType = defaultTypes::MotionType,
+         typename DeliberateType = defaultTypes::PoseType,
+         typename MapType = defaultTypes::MapType>
+class CVProcessor final
+: public Localiser<PoseType, HeadingType, MotionType>
+, public Deliberator<DeliberateType>
+, public Mapper<MapType> {
    public:
-    CVProcessor() {
+    CVProcessor()
+    : Localiser<PoseType, HeadingType, MotionType>()
+    , Deliberator<DeliberateType>()
+    , Mapper<MapType>() {
         init();
     }
 
-    auto localise(std::string const& mazeImage, std::string const& robotImage) const noexcept
-        -> void {
-        auto const pose = getPose(mazeImage, robotImage);
-        auto const heading = getHeading(mazeImage, mtrn4110::files::robotImage);
-        std::cout << pose.first << " " << pose.second << " " << cardinalPoints[heading] << std::endl;
+    auto localise(std::string const& mazeImage, std::string const& robotImage) noexcept -> void {
+        this->currentPose_ = getPose(mazeImage, robotImage);
+        this->currentHeading_ = getHeading(mazeImage, mtrn4110::files::robotImage);
     }
 
-    auto waypoint(std::string const& mazeImage, std::string const& ladybugImage) const noexcept
-        -> void {
-        auto const destination = getDestination(mazeImage, ladybugImage);
-        std::cout << destination.first << " " << destination.second << std::endl;
+    auto waypoint(std::string const& mazeImage, std::string const& ladybugImage) noexcept -> void {
+        this->delib_ = getDestination(mazeImage, ladybugImage);
     }
 
-    auto map(std::string const& mazeImage) const noexcept -> void {
+    auto map(std::string const& mazeImage) noexcept -> void {
         auto const map = getMap(mazeImage);
-        for (auto const& i : map)
-            std::cout << i;
-        std::cout << std::endl;
+        this->map_ = MapType(map.begin(), map.end());
     }
 
    private:
-   auto init() const -> void {
+    auto print(std::ostream& os) const noexcept -> void override final {
+        os << "Current Location: (" << this->currentPose_.first << ", " << this->currentPose_.second
+           << ")" << std::endl;
+        os << "Current Heading: " << this->currentHeading_ << std::endl;
+        os << "Destination: (" << this->delib_.first << ", " << this->delib_.second << std::endl;
+        os << "Map:" << std::endl;
+        std::for_each (this->map_.begin(), this->map_.end(), [&os](auto const& i) {
+            os << i << std::endl;
+        });
+    }
+
+    auto init() const -> void {
         // Add a built-in module, before Py_Initialize
         if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
             throw std::runtime_error("Could not extend built-in modules table.");
