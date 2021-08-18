@@ -11,9 +11,12 @@ namespace mtrn4110 {
 template<typename DeliberateType = defaultTypes::PathType>
 class Deliberator {
    public:
+    // Default constructor.
+    Deliberator() = default;
+
     // Constructor to initialise deliberation type.
-    Deliberator()
-    : delib_() {}
+    Deliberator(DeliberateType delib)
+    : delib_(delib) {}
 
     auto getDeliberatedValue() const noexcept -> DeliberateType {
         return delib_;

@@ -13,6 +13,9 @@ template<typename PoseType = defaultTypes::PoseType,
          typename MotionType = defaultTypes::MotionType>
 class Localiser {
    public:
+    // Default constructor.
+    Localiser() = default;
+
     // Constructor taking an initial pose and initial heading.
     Localiser(PoseType initialPose, HeadingType initialHeading)
     : currentPose_(initialPose)
