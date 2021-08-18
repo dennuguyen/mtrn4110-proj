@@ -38,8 +38,8 @@ using GraphType =
 }  // namespace defaultTypes
 
 namespace files {
-auto constexpr mazeImage = "../../tests/Phase C/Course/Maze_6.png";
-auto constexpr robotImage = "../../tests/Phase C/Course/Robot_6.png";
+auto constexpr mazeImage = "../../tests/Phase C/Course/Maze.png";
+auto constexpr robotImage = "../../tests/Phase C/Course/Robot.png";
 auto constexpr ladybugImage = "../../tests/Phase C/Ladybug_small.png";
 }  // namespace files
 }  // namespace mtrn4110
