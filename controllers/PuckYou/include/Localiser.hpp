@@ -24,6 +24,7 @@ class Localiser {
     auto getCurrentPose() const noexcept -> PoseType {
         return currentPose_;
     }
+
     auto getCurrentHeading() const noexcept -> HeadingType {
         return currentHeading_;
     }
