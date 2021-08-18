@@ -1,5 +1,5 @@
-#ifndef LIDAR_SENSOR_HPP
-#define LIDAR_SENSOR_HPP
+#ifndef PUCK_YOU_LIDAR_SENSOR_HPP
+#define PUCK_YOU_LIDAR_SENSOR_HPP
 
 #include <webots/Lidar.hpp>
 #include <webots/Robot.hpp>
@@ -106,4 +106,4 @@ class LidarSensor {
 };
 }  // namespace mtrn4110
 
-#endif  // DISTANCE_SENSOR_HPP
+#endif  // PUCK_YOU_DISTANCE_SENSOR_HPP

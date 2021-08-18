@@ -1,5 +1,5 @@
-#ifndef MOTOR_CONTROLLER_HPP
-#define MOTOR_CONTROLLER_HPP
+#ifndef PUCK_YOU_MOTOR_CONTROLLER_HPP
+#define PUCK_YOU_MOTOR_CONTROLLER_HPP
 
 #include <webots/Motor.hpp>
 #include <webots/PositionSensor.hpp>
@@ -79,4 +79,4 @@ class MotorController {
 };
 }  // namespace mtrn4110
 
-#endif  // MOTOR_CONTROLLER_HPP
+#endif  // PUCK_YOU_MOTOR_CONTROLLER_HPP
