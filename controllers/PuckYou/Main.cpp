@@ -54,10 +54,6 @@ static auto mouse(webots::Robot& robot) -> void {
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
 
-    cvProcessor.localise();
-    cvProcessor.waypoint();
-    cvProcessor.map();
-
     // Enter control loop.
     while (1) {
         auto motion = '\0';
@@ -86,7 +82,9 @@ static auto mouse(webots::Robot& robot) -> void {
                 // camera.snap(mtrn4110::files::mazeImage);
 
                 // Map the image.
-                // auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
+                cvProcessor.localise(mtrn4110::files::mazeImage, mtrn4110::files::robotImage);
+                cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                cvProcessor.map(mtrn4110::files::mazeImage);
 
                 // // Graph map.
                 // grapher.readMap(map);
