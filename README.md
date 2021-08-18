@@ -117,7 +117,7 @@ py -m pip install -r requirements.txt
 ## Run Instructions
 
 1. File paths are defined in `Util.hpp`.
-1. Select the `PuckYou` file as the EPuck controller.
+1. Select `PuckYou` as the EPuck controller.
 1. Execute the program using Webots' run tool.
 
 ---
