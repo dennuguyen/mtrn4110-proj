@@ -36,9 +36,6 @@ class Localiser {
     HeadingType currentHeading_;
 
    private:
-    // Update current position and current heading.
-    virtual auto updateLocale(MotionType motion) -> void = 0;
-
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };
