@@ -87,19 +87,20 @@ static auto mouse(webots::Robot& robot) -> void {
                 cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
                 cvProcessor.map(mtrn4110::files::mazeImage);
 
-                // Graph map.
+                // Create a graph from the map.
                 auto const graph = grapher.buildGraph(cvProcessor.getMap());
 
-                // Path plan.
+                // Compute a path plan from the graph with a destination, starting position and
+                // starting heading.
                 pathPlanner.update(graph,
                                    cvProcessor.getDeliberatedValue(),
                                    {0, 0},  // cvProcessor.getCurrentPose(),
                                    cvProcessor.getCurrentHeading());
 
-                // Path sequencer.
+                // Give the path sequencer the path plan.
                 pathSequencer.updatePath(pathPlanner.getPath());
 
-                // Sequencing path plan.
+                // Sequencing path plan so lock this block of code.
                 taskControl.acquireLock(pathLock);
             }
             // Get next motion in path plan.
