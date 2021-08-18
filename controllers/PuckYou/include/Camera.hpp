@@ -1,5 +1,5 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#ifndef PUCK_YOU_CAMERA_HPP
+#define PUCK_YOU_CAMERA_HPP
 
 #include <memory>
 
@@ -10,7 +10,7 @@ namespace mtrn4110 {
 class Camera {
    public:
     Camera(webots::Robot& robot)
-    : camera_(robot.getCamera("camera")) {
+    : camera_(robot.getCamera("bird")) {
         camera_->enable(robot.getBasicTimeStep());
     }
 
@@ -26,4 +26,4 @@ class Camera {
 };
 }  // namespace mtrn4110
 
-#endif  // CAMERA_HPP
+#endif  // PUCK_YOU_CAMERA_HPP
