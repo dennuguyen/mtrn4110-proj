@@ -25,6 +25,7 @@ class TaskControl {
     // Timer methods.
     auto time(int timer, double duration) -> void;
     auto expired(int timer) const -> bool;
+    auto wait(int timer, double duration) -> void;
 
    private:
     unsigned int step_ = 0;

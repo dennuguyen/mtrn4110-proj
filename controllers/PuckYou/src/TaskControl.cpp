@@ -48,4 +48,11 @@ auto TaskControl::expired(int timer) const -> bool {
     return timers_.at(timer).expired();
 }
 
+auto TaskControl::wait(int timer, double duration) -> void {
+    if (timer < 0 || numLocks_ < timer) {
+        throw std::invalid_argument("Invalid timer number");
+    }
+    timers_.at(timer).wait(duration);
+}
+
 }  // namespace mtrn4110

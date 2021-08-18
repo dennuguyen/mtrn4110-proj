@@ -36,10 +36,11 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // and teleoperation.
 static auto mouse(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot, 3, 0);
+    auto taskControl = mtrn4110::TaskControl(robot, 3, 1);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
     auto constexpr motionLock = 1;  // true = in motion, false = not in motion
     auto constexpr pathLock = 2;  // true = sequencing path, false = not sequencing path
+    auto constexpr motionTimer = 0;
 
     // These RSA elements are exclusive to autonomous control.
     // auto camera = mtrn4110::Camera(robot);
@@ -133,6 +134,7 @@ static auto mouse(webots::Robot& robot) -> void {
         while (taskControl.isLockBusy(motionLock) == true) {
             if (motorController.isAtPosition() == true) {
                 taskControl.releaseLock(motionLock);
+                // taskControl.wait(motionTimer, 0.01);  // Wait after motion is completed.
             }
         }
     }
