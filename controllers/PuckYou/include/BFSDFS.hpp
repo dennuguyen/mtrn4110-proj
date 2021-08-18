@@ -25,7 +25,7 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
     , paths_()
     , leastTurnsPath_() {}
 
-    auto update() -> void {
+    auto update() -> void override final {
         buildDirectedGraph();
         searchPaths();
         searchLeastTurnsPath();
