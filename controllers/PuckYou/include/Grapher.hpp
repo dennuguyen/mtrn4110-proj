@@ -32,29 +32,6 @@ class Grapher {
                     auto const x = (col - 2) / 4;
                     auto const y = (line - 1) / 2;
 
-                    // Check start and end position.
-                    // switch (tokenisedMap[line][col]) {
-                    // case ' ': break;
-                    // case 'x': end_ = {x, y}; break;
-                    // case '^':
-                    //     initialHeading_ = 0;
-                    //     start_ = {x, y};
-                    //     break;
-                    // case '>':
-                    //     initialHeading_ = 1;
-                    //     start_ = {x, y};
-                    //     break;
-                    // case 'v':
-                    //     initialHeading_ = 2;
-                    //     start_ = {x, y};
-                    //     break;
-                    // case '<':
-                    //     initialHeading_ = 3;
-                    //     start_ = {x, y};
-                    //     break;
-                    // default: throw std::runtime_error("Invalid map character");
-                    // }
-
                     // Check vertical wall to right of centre of tile.
                     if (col + 2 < maxColumn) {
                         if (tokenisedMap[line][col + 2] == ' ') {
@@ -77,7 +54,6 @@ class Grapher {
                 }
             }
         }
-
         return graph;
     }
 };
