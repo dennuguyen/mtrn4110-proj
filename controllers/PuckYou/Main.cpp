@@ -85,7 +85,6 @@ static auto mouse(webots::Robot& robot) -> void {
                 cvProcessor.localise(mtrn4110::files::mazeImage, mtrn4110::files::robotImage);
                 cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
                 cvProcessor.map(mtrn4110::files::mazeImage);
-                // std::cout << dynamic_cast<Mapper>(cvProcessor);
 
                 // Graph map.
                 auto const graph = grapher.buildGraph(cvProcessor.getMap());
@@ -97,8 +96,8 @@ static auto mouse(webots::Robot& robot) -> void {
                                    cvProcessor.getCurrentHeading());
                 std::cout << pathPlanner;
 
-                // // Path sequencer.
-                // pathSequencer.updatePath(pathPlanner.getPath());
+                // Path sequencer.
+                pathSequencer.updatePath(pathPlanner.getPath());
 
                 // Sequencing path plan.
                 taskControl.acquireLock(pathLock);
