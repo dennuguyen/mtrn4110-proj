@@ -71,7 +71,7 @@ static auto mouse(webots::Robot& robot) -> void {
     std::cout << "1: " << destination.first << " " << destination.second << std::endl;
 
     auto const [pose, heading] =
-        runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+        runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::robotImage);
     std::cout << "2: " << pose.first << " " << pose.second << " " << heading << std::endl;
 
     print_hello();
