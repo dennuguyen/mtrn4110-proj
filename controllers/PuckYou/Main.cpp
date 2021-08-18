@@ -36,10 +36,10 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // and teleoperation.
 static auto mouse(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
+    auto taskControl = mtrn4110::TaskControl(robot, 3, 0);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
     auto constexpr motionLock = 1;  // true = in motion, false = not in motion
-    auto constexpr pathLock = 0;  // true = sequencing path, false = not sequencing path
+    auto constexpr pathLock = 2;  // true = sequencing path, false = not sequencing path
 
     // These RSA elements are exclusive to autonomous control.
     // auto camera = mtrn4110::Camera(robot);
@@ -94,7 +94,6 @@ static auto mouse(webots::Robot& robot) -> void {
                                    cvProcessor.getDeliberatedValue(),
                                    {0, 0},  // cvProcessor.getCurrentPose(),
                                    cvProcessor.getCurrentHeading());
-                std::cout << pathPlanner;
 
                 // Path sequencer.
                 pathSequencer.updatePath(pathPlanner.getPath());
@@ -102,7 +101,6 @@ static auto mouse(webots::Robot& robot) -> void {
                 // Sequencing path plan.
                 taskControl.acquireLock(pathLock);
             }
-
             // Get next motion in path plan.
             motion = pathSequencer.nextMotion();
 
@@ -117,8 +115,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 1});
-        // std::cout << trajectoryPlanner;
+        trajectoryPlanner.computeTrajectory({0.005, 0, 0}, {0, 0, 0.4});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
@@ -126,7 +123,6 @@ static auto mouse(webots::Robot& robot) -> void {
         auto const linearVelocity = trajectoryPlanner.getLinearVelocity();
         auto const angularVelocity = trajectoryPlanner.getAngularVelocity();
         motionPlanner.computeMotorSetpoints(angle, distance, linearVelocity, angularVelocity);
-        // std::cout << motionPlanner;
 
         // Feed motor setpoints to motor controller.
         motorController.setPosition(motionPlanner.getMotorPositions());
