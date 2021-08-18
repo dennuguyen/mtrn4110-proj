@@ -57,15 +57,12 @@ BGR_G = (0, 255, 0)
 BGR_R = (0, 0, 255)
 BGR_CYAN = (248, 242, 123)
 BGR_MAGENTA = (246, 27, 242)
+LINE_THICKNESS = 4
 
 def get_transformed_maze_hsv(path):
     maze_hsv = read_image_hsv(path)
     magenta_contours, cyan_contour = get_cornerstone_contours(maze_hsv)
     return perspective_transform(maze_hsv, magenta_contours, cyan_contour)
-
-BGR_CYAN = (248, 242, 123)
-BGR_MAGENTA = (246, 27, 242)
-LINE_THICKNESS = 4
 
 # TASK 3.1
 
@@ -330,13 +327,8 @@ def get_robot_heading(robot_img, H):
     parameters = cv2.aruco.DetectorParameters_create()
     marker_corners, marker_ids, rejected = cv2.aruco.detectMarkers(robot_img, dictionary, parameters=parameters)
 
-    head = None
-    tail = None
-    for i, marker_id in enumerate(marker_ids):
-        if marker_id == 1:
-            head = marker_corners[i][0][0]
-            tail = marker_corners[i][0][2]
-            break
+    head = marker_corners[0][0][0]
+    tail = marker_corners[0][0][2]
 
     heading_angle = line_angle_4th_quadrant(head, tail)
     offset = np.rad2deg(-np.arctan2(H[1][0], H[0][0]))
