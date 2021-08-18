@@ -18,7 +18,7 @@ namespace utility {
 auto tokenise(std::string const& str, char const& delimiter) -> std::vector<std::string> {
     auto const regex_delimiter = std::regex("\n");
     return std::vector<std::string>(
-        std::sregex_token_iterator(map.begin(), map.end(), regex_delimiter, -1),
+        std::sregex_token_iterator(str.begin(), str.end(), regex_delimiter, -1),
         std::sregex_token_iterator());
 }
 }  // namespace utility
