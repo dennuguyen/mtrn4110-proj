@@ -327,8 +327,19 @@ def get_robot_heading(robot_img, H):
     parameters = cv2.aruco.DetectorParameters_create()
     marker_corners, marker_ids, rejected = cv2.aruco.detectMarkers(robot_img, dictionary, parameters=parameters)
 
-    head = marker_corners[0][0][0]
-    tail = marker_corners[0][0][2]
+    # get marker points
+    head = None
+    tail = None
+    for i, marker_id in enumerate(marker_ids):
+        if marker_id == 1:
+            head = marker_corners[i][0][0]
+            tail = marker_corners[i][0][2]
+
+    if (head is None or tail is None):
+        print("ERROR: ARUCO MARKER NOT FOUND")
+        print(marker_corners)
+        print(marker_ids)
+        print(rejected)
 
     heading_angle = line_angle_4th_quadrant(head, tail)
     offset = np.rad2deg(-np.arctan2(H[1][0], H[0][0]))
