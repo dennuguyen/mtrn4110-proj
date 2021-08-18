@@ -11,11 +11,11 @@ class Camera {
    public:
     Camera(webots::Robot& robot)
     : camera_(robot.getCamera("camera")) {
-        camera_->enable(robot.getTimeStep());
+        camera_->enable(robot.getBasicTimeStep());
     }
 
     auto saveImage(std::string const& outputFile, int quality) const -> void {
-        if (camera->saveImage(outputFile, quality) != 0) {
+        if (camera_->saveImage(outputFile, quality) != 0) {
             throw std::runtime_error("Could not save image to " + outputFile);
         }
     }
