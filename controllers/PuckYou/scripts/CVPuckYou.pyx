@@ -449,7 +449,6 @@ def get_map_string(walls):
             else:
                 line += ' '
         # check content of last col
-        line += '    '
         line += '|' # border
         vertical_output.append(line)
 
