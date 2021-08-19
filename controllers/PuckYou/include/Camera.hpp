@@ -10,7 +10,8 @@ namespace mtrn4110 {
 class Camera {
    public:
     Camera(webots::Robot& robot)
-    : camera_(robot.getCamera("bird"), timeStep_(robot.getBasicTimeStep())) {}
+    : camera_(robot.getCamera("bird"))
+    , timeStep_(robot.getBasicTimeStep()) {}
 
     // Take an image of the world from the robot's camera and save it to the outputFile. Camera is
     // only enabled when used.
@@ -24,7 +25,7 @@ class Camera {
 
    private:
     std::unique_ptr<webots::Camera> camera_;
-    auto const timeStep_;
+    int const timeStep_;
 };
 }  // namespace mtrn4110
 
