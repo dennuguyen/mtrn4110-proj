@@ -26,7 +26,6 @@ cdef public int getHeading(const string mazeFileName, const string robotFileName
     the current heading of the robot.
     '''
     maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
-    epuck_position = get_robot_coordinates(maze_transformed_bgr)
     robot_gray = read_image_gray(robotFileName)
     epuck_direction = get_robot_heading(robot_gray, H)
     return epuck_direction
@@ -37,8 +36,8 @@ cdef public pair[int, int] getPose(const string mazeFileName, const string robot
     getPose reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current position of the robot.
     '''
-    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
-    epuck_position = get_robot_coordinates(maze_transformed_hsv)
+    maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
+    epuck_position = get_robot_coordinates(maze_transformed_bgr)
     return epuck_position[0], epuck_position[1]
 
 
