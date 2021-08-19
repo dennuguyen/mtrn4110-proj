@@ -1,6 +1,7 @@
 #ifndef PUCK_YOU_CAMERA_HPP
 #define PUCK_YOU_CAMERA_HPP
 
+#include <functional>
 #include <memory>
 
 #include <webots/Camera.hpp>
@@ -15,8 +16,9 @@ class Camera {
 
     // Take an image of the world from the robot's camera and save it to the outputFile. Camera is
     // only enabled when used.
-    auto snap(std::string const& outputFile, int quality) const -> void {
+    auto snap(webots::Robot& robot, std::string const& outputFile, int quality) const -> void {
         camera_->enable(timeStep_);
+        robot.step(timeStep_);
         if (camera_->saveImage(outputFile, quality) != 0) {
             throw std::runtime_error("Could not save image to " + outputFile);
         }
@@ -24,6 +26,7 @@ class Camera {
     }
 
    private:
+    // std::function<void(int)> step_; // cannot figure out compiler error
     std::unique_ptr<webots::Camera> camera_;
     int const timeStep_;
 };
