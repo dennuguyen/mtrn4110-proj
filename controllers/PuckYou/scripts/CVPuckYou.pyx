@@ -25,7 +25,7 @@ cdef public int getHeading(const string mazeFileName, const string robotFileName
     getHeading reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current heading of the robot.
     '''
-    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
+    maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
     robot_gray = read_image_gray(robotFileName)
     epuck_direction = get_robot_heading(robot_gray, H)
     return epuck_direction
@@ -36,8 +36,8 @@ cdef public pair[int, int] getPose(const string mazeFileName, const string robot
     getPose reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current position of the robot.
     '''
-    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
-    epuck_position = get_robot_coordinates(maze_transformed_hsv)
+    maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
+    epuck_position = get_robot_coordinates(maze_transformed_bgr)
     return epuck_position[0], epuck_position[1]
 
 
@@ -46,9 +46,9 @@ cdef public pair[int, int] getDestination(const string mazeFileName, const strin
     getDestination reads the maze file name for a bird's eye image of the maze, and detects and
     returns the intended destination as deliberated by the user using openCV.
     '''
-    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
+    maze_transformed_bgr, _ = get_transformed_maze_bgr(mazeFileName)
     bug_gray = read_image_gray(destinationFileName)
-    destination = get_target_coordinates(maze_transformed_hsv, bug_gray)
+    destination = get_target_coordinates(maze_transformed_bgr, bug_gray)
     return destination[0], destination[1]
 
 
@@ -57,8 +57,8 @@ cdef public string getMap(const string mazeFileName):
     getMap reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
-    maze_transformed_hsv, _ = get_transformed_maze_hsv(mazeFileName)
-    walls = get_walls(maze_transformed_hsv)
+    maze_transformed_bgr, _ = get_transformed_maze_bgr(mazeFileName)
+    walls = get_walls(maze_transformed_bgr)
     maze_map = get_map_string(walls)
     return <string>maze_map
 
@@ -70,12 +70,19 @@ BGR_CYAN = (248, 242, 123)
 BGR_MAGENTA = (246, 27, 242)
 LINE_THICKNESS = 4
 
-def get_transformed_maze_hsv(path):
+def get_transformed_maze_bgr(path):
     maze_hsv = read_image_hsv(path)
     magenta_contours, cyan_contour = get_cornerstone_contours(maze_hsv)
-    return perspective_transform(maze_hsv, magenta_contours, cyan_contour)
+    maze_bgr = read_image_bgr(path)
+    return perspective_transform(maze_bgr, magenta_contours, cyan_contour)
 
 # TASK 3.1
+
+def read_image_bgr(path):
+    image_bgr = cv2.imread(path) 
+    if image_bgr is None:
+        raise FileNotFoundError('Could not read in: ' + path)
+    return image_bgr
 
 def read_image_rgb(path):
     image_bgr = cv2.imread(path) 
@@ -94,6 +101,9 @@ def read_image_gray(path):
     if image_gray is None:
         raise FileNotFoundError('Could not read in: ' + path)
     return image_gray
+
+def bgr_to_hsv(image_bgr):
+    return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
 
 # TASK 3.2
 
@@ -232,7 +242,8 @@ MID_BUFF = 45
 END_BUFF = 95
 WALL_THRESHOLD = 75
 
-def get_walls(maze_hsv):
+def get_walls(maze_bgr):
+    maze_hsv = bgr_to_hsv(maze_bgr)
     # masking
     wall_lower = np.array([16, 85, 215])
     wall_upper = np.array([20, 115, 245])
@@ -266,7 +277,8 @@ def get_walls(maze_hsv):
 
     return (vertical, horizontal)
 
-def draw_walls(maze_hsv, maze_bgr):
+def draw_walls(maze_bgr):
+    maze_hsv = bgr_to_hsv(maze_bgr)
     # masking
     wall_lower = np.array([16, 85, 215])
     wall_upper = np.array([20, 115, 245])
@@ -309,7 +321,8 @@ def draw_walls(maze_hsv, maze_bgr):
 
 # TASK 3.5
 
-def get_robot_coordinates(maze_hsv):
+def get_robot_coordinates(maze_bgr):
+    maze_hsv = bgr_to_hsv(maze_bgr)
     # mask
     robot_lower = np.array([35, 50, 50])
     robot_upper = np.array([85, 250, 250])
@@ -396,8 +409,8 @@ def line_angle_4th_quadrant(head, tail):
 
 # TASK 3.6
 
-def get_target_coordinates(maze_hsv, bug_gray):
-    _, _, maze_gray = cv2.split(maze_hsv)
+def get_target_coordinates(maze_bgr, bug_gray):
+    maze_gray = cv2.cvtColor(maze_bgr, cv2.COLOR_BGR2GRAY)
     surf = cv2.xfeatures2d.SURF_create()
     kp_maze, des_maze = surf.detectAndCompute(maze_gray, None) # query
     kp_bug, des_bug = surf.detectAndCompute(bug_gray, None) # train
