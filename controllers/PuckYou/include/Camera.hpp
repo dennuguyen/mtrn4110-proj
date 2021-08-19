@@ -10,15 +10,16 @@ namespace mtrn4110 {
 class Camera {
    public:
     Camera(webots::Robot& robot)
-    : camera_(robot.getCamera("bird")) {
-        camera_->enable(robot.getBasicTimeStep());
-    }
+    : camera_(robot.getCamera("bird")) {}
 
-    // Take an image of the world from the robot's camera and save it to the outputFile.
+    // Take an image of the world from the robot's camera and save it to the outputFile. Camera is
+    // only enabled when used.
     auto snap(std::string const& outputFile, int quality) const -> void {
+        camera_->enable(robot.getBasicTimeStep());
         if (camera_->saveImage(outputFile, quality) != 0) {
             throw std::runtime_error("Could not save image to " + outputFile);
         }
+        camera_->disable();
     }
 
    private:
