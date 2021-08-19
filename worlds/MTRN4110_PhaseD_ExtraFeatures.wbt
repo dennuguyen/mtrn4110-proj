@@ -1,11 +1,10 @@
 #VRML_SIM R2021a utf8
 WorldInfo {
-  basicTimeStep 64
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9999961159750155 -0.002062141836329619 -0.0018749949147168377 1.475804172621596
-  position 0.1016089077461796 2.6865251433522204 0.13263390026758395
+  orientation -0.9994172597931992 -0.03129776293862783 -0.01362317373045748 0.8212238526587121
+  position 0.6226669390086563 0.42920964388224775 0.6767746443888288
 }
 TexturedBackground {
 }
@@ -20,6 +19,35 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation -0.7425 0.0325 -0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.333333 1 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
             baseColor 1 0 1
@@ -39,6 +67,35 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation 0.7425 0.0325 -0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
             baseColor 1 0 1
@@ -58,6 +115,35 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation 0.7425 0.0325 0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation -0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
             baseColor 1 0 1
@@ -77,6 +163,35 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation -0.7425 0.0325 0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 -0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
             baseColor 1 0 1
@@ -467,96 +582,160 @@ DEF MAZE Group {
     }
   ]
 }
-DEF z1234567 E-puck {
+DEF Mouse E-puck {
   translation -0.66 0 -0.33
   rotation 0 1 0 3.141592653589793
   name "Mouse"
-  controller "void"
-  camera_width 320
-  camera_height 240
+  controller "PuckYou"
+  camera_width 120
+  camera_height 120
   turretSlot [
-    DistanceSensor {
-      translation 0 -1.01962e-08 -0.04
-      rotation -2.653589999981315e-06 -0.9999999999929585 -2.653589999981315e-06 -1.5708053071795867
-      name "DS_FRONT"
-    }
-    DistanceSensor {
-      translation -0.03 -1.01962e-08 0
-      rotation -2.39745e-09 1 8.39753e-07 3.14159
-      name "DS_LEFT"
-    }
-    DistanceSensor {
-      translation 0.03 0 -0.01
-      name "DS_RIGHT"
-    }
-  ]
-}
-DEF z1234567 E-puck {
-  translation 0.66 0 0.32
-  rotation 0 1 0 3.141592653589793
-  name "Cat"
-  controller "void"
-  camera_width 320
-  camera_height 240
-  turretSlot [
-    Solid {
-      translation 0 0.015 -0.01
+    DEF Marker Solid {
+      translation 0 0.0001 -0.01
+      rotation 0 1 0 -0.7854003061004253
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0 1 0
+            baseColorMap ImageTexture {
+              url [
+                "marker1.png"
+              ]
+            }
             roughness 1
             metalness 0
           }
-          geometry Cylinder {
-            height 0.02
-            radius 0.04
+          geometry Plane {
+            size 0.02 0.02
           }
-          castShadows FALSE
         }
       ]
+      name "solid1"
     }
-    DistanceSensor {
-      translation 0 -1.01962e-08 -0.04
-      rotation -2.653589999981315e-06 -0.9999999999929585 -2.653589999981315e-06 -1.5708053071795867
-      name "DS_FRONT"
-    }
-    DistanceSensor {
-      translation -0.03 -1.01962e-08 0
-      rotation -2.39745e-09 1 8.39753e-07 3.14159
-      name "DS_LEFT"
-    }
-    DistanceSensor {
-      translation 0.03 0 -0.01
-      name "DS_RIGHT"
-    }
-  ]
-}
-Robot {
-  translation 0 0.66 -4.77648e-07
-  rotation 1 0 0 3.14159
-  children [
-    Solid {
+    DEF White Solid {
+      translation 0 0 -0.01
+      rotation 0 1 0 -0.7854003061004253
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0 1 0
+            baseColorMap ImageTexture {
+            }
             roughness 1
             metalness 0
+          }
+          geometry Plane {
+            size 0.025 0.025
+          }
+        }
+      ]
+      name "solid2"
+    }
+  ]
+  groundSensorsSlot [
+    DEF bird Camera {
+      translation -4 0 0
+      rotation 0 -1 0 1.5707963267948968
+      name "bird"
+      fieldOfView 0.7854
+      width 3600
+      height 3600
+      near 1
+    }
+  ]
+}
+DEF Cat E-puck {
+  translation 0.66 -6.88505e-05 0.32
+  rotation -2.9767369205328937e-06 -0.9999999999955695 -9.285891217937908e-10 3.141592649880054
+  name "Cat"
+  controller "PuckYou"
+  camera_width 120
+  camera_height 120
+  turretSlot [
+    Solid {
+      translation 0 0.01 0.033
+      scale 0.25 0.25 0.25
+      children [
+        Shape {
+          appearance Appearance {
+            texture ImageTexture {
+              url [
+                "marker1.png"
+              ]
+            }
           }
           geometry Box {
-            size 0.05 0.05 0.05
+            size 0.1 0.001 0.1
           }
-          castShadows FALSE
-        }
-        Camera {
-          rotation -1 0 0 -1.5708053071795867
-          fieldOfView 1.8
-          width 3840
-          height 2133
         }
       ]
     }
+    Solid {
+      translation 0 0.01 0
+      children [
+        Shape {
+          appearance Appearance {
+            texture ImageTexture {
+              url [
+                "ladybug.png"
+              ]
+            }
+          }
+          geometry Cylinder {
+            height 0.0001
+            radius 0.05
+          }
+          castShadows FALSE
+        }
+      ]
+    }
+    DEF Marker Solid {
+      translation 0 0.0001 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "marker1.png"
+              ]
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.02 0.02
+          }
+        }
+      ]
+      name "solid1"
+    }
+    DEF White Solid {
+      translation 0 0 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.025 0.025
+          }
+        }
+      ]
+      name "solid2"
+    }
   ]
-  controller "extra_features_camera_controller"
+  groundSensorsSlot [
+    DEF bird Camera {
+      translation -4 0 0
+      rotation 0 -1 0 1.5707963267948968
+      name "bird"
+      fieldOfView 0.7854
+      width 3600
+      height 3600
+      near 1
+    }
+  ]
 }
