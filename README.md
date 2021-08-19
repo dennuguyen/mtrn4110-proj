@@ -191,19 +191,21 @@ stateDiagram-v2
     path_plan: Compute path plan
     path_sequence: Sequence path plan
     trajectory_planner: Compute trajectory
-    motionPlanner: Compute motor setpoints
-    beginMotion: Begin motion
-    endMotion: End motion
+    motion_planner: Compute motor setpoints
+    begin_motion: Begin motion
+    end_motion: End motion
 
     [*] --> key
 
-    key --> trajectory_planner : if teleoperation mode
-    key --> path_sequence: if still sequencing path
+    state key_choice <<choice>>
+    key --> key_choice
+    key_choice --> trajectory_planner : if teleoperation mode
+    key_choice --> path_sequence: if still sequencing path
+    key_choice --> snap: if starting autonomous mode
 
     state snap_fork <<fork>>
     state snap_join <<fork>>
 
-    key --> snap: if starting autonomous mode
     snap --> snap_fork
     snap_fork --> localise
     snap_fork --> waypoint
@@ -216,11 +218,11 @@ stateDiagram-v2
 
     path_plan --> path_sequence
     path_sequence --> trajectory_planner
-    trajectory_planner --> motionPlanner
-    motionPlanner --> beginMotion
-    beginMotion --> endMotion
+    trajectory_planner --> motion_planner
+    motion_planner --> begin_motion
+    begin_motion --> end_motion
 
-    endMotion --> key: check key input
+    end_motion --> key: check key input
 ```
 
 ## Gantt Chart
@@ -235,18 +237,18 @@ gantt
     Analyse Phase C Solution        :04-08-2021, 05-08-2021
 
     section Integration
-    Phase A Integration             :07-08-2021, 7d
-    Phase B Integration             :05-08-2021, 9d
-    Phase C Integration             :05-08-2021, 9d
+    Phase A Integration             :07-08-2021, 8d
+    Phase B Integration             :05-08-2021, 13d
+    Phase C Integration             :05-08-2021, 11d
 
     section Extra Features
-    keyeration              :12-08-2021, 6d
-    Obstacle avoidance         :12-08-2021, 6d
-    Bang-bang trajectory       :12-08-2021, 6d
+    Teleoperation              :16-08-2021, 3d
+    Camera Module              :18-08-2021, 3d
+    Cat & Mouse                :19-08-2021, 2d
 
     section Video
-    Record Comparison Milestone           :10-08-2021, 3d
-    Record Integration Milestones         :12-08-2021, 4d
-    Record Extra Features Milestones      :16-08-2021, 4d
-    Edit Video Segments                   :20-08-2021, 1d
+    Record Comparison Milestone           :18-08-2021, 2d
+    Record Integration Milestones         :20-08-2021, 1d
+    Record Extra Features Milestones      :20-08-2021, 2d
+    Edit Video Segments                   :19-08-2021, 3d
 ```
