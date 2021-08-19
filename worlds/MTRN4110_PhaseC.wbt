@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 1 0 0 -1.5707996938995747
-  position 0 2.5 0
+  orientation -0.9999999999830854 5.575391567742857e-06 1.656568733458803e-06 1.570797312181649
+  position -1.3877787807814457e-17 2.5000000000000004 -5.551115123125783e-17
 }
 TexturedBackground {
 }
@@ -582,10 +582,12 @@ DEF MAZE Group {
     }
   ]
 }
-DEF z1234567 E-puck {
+DEF PuckYou E-puck {
   translation -0.66 0 -0.33
   rotation 0 1 0 3.141592653589793
-  controller ""
+  controller "PuckYou"
+  camera_width 120
+  camera_height 120
   turretSlot [
     DEF Marker Solid {
       translation 0 0.0001 -0.01
@@ -625,6 +627,17 @@ DEF z1234567 E-puck {
         }
       ]
       name "solid2"
+    }
+  ]
+  groundSensorsSlot [
+    DEF bird Camera {
+      translation -4 0 0
+      rotation 0 -1 0 1.5707963267948968
+      name "bird"
+      fieldOfView 0.7854
+      width 3600
+      height 3600
+      near 1
     }
   ]
 }

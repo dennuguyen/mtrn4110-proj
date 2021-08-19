@@ -13,6 +13,9 @@ template<typename PoseType = defaultTypes::PoseType,
          typename MotionType = defaultTypes::MotionType>
 class Localiser {
    public:
+    // Default constructor.
+    Localiser() = default;
+
     // Constructor taking an initial pose and initial heading.
     Localiser(PoseType initialPose, HeadingType initialHeading)
     : currentPose_(initialPose)
@@ -21,6 +24,7 @@ class Localiser {
     auto getCurrentPose() const noexcept -> PoseType {
         return currentPose_;
     }
+
     auto getCurrentHeading() const noexcept -> HeadingType {
         return currentHeading_;
     }
@@ -36,9 +40,6 @@ class Localiser {
     HeadingType currentHeading_;
 
    private:
-    // Update current position and current heading.
-    virtual auto updateLocale(MotionType motion) -> void = 0;
-
     // Write any required data to an output stream.
     virtual auto print(std::ostream& os) const noexcept -> void = 0;
 };

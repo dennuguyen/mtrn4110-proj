@@ -5,11 +5,13 @@
 import cython
 from libcpp.pair cimport pair
 from libcpp.vector cimport vector
+from libcpp.string cimport string
 
 from functools import wraps
 import cv2
 import itertools as it
 import numpy as np
+
 
 cdef public void print_hello():
     '''
@@ -18,38 +20,48 @@ cdef public void print_hello():
     print("Hello!")
 
 
-cdef public pair[pair[double, double], char] runCVLocaliser(const char* mazeFileName, const char* robotFileName):
+cdef public int getHeading(const string mazeFileName, const string robotFileName):
     '''
-    CVLocaliser reads the maze file name for a bird's eye image of the maze, and detects and returns
-    the current position and current heading of the robot.
+    getHeading reads the maze file name for a bird's eye image of the maze, and detects and returns
+    the current heading of the robot.
     '''
     maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
     epuck_position = get_robot_coordinates(maze_transformed_bgr)
     robot_gray = read_image_gray(robotFileName)
-    epuck_direction = get_robot_heading(robot_gray, H) # TODO: currently returns as a char - ^ v < >
-    return epuck_position, epuck_direction
+    epuck_direction = get_robot_heading(robot_gray, H)
+    return epuck_direction
 
 
-cdef public pair[double, double] runCVWaypointer(const char* mazeFileName, const char* destinationFileName):
+cdef public pair[int, int] getPose(const string mazeFileName, const string robotFileName):
     '''
-    CVWaypointer reads the maze file name for a bird's eye image of the maze, and detects and
+    getPose reads the maze file name for a bird's eye image of the maze, and detects and returns
+    the current position of the robot.
+    '''
+    maze_transformed_hsv, H = get_transformed_maze_hsv(mazeFileName)
+    epuck_position = get_robot_coordinates(maze_transformed_hsv)
+    return epuck_position[0], epuck_position[1]
+
+
+cdef public pair[int, int] getDestination(const string mazeFileName, const string destinationFileName):
+    '''
+    getDestination reads the maze file name for a bird's eye image of the maze, and detects and
     returns the intended destination as deliberated by the user using openCV.
     '''
     maze_transformed_bgr, _ = get_transformed_maze_bgr(mazeFileName)
     bug_gray = read_image_gray(destinationFileName)
     destination = get_target_coordinates(maze_transformed_bgr, bug_gray)
-    return destination
+    return destination[0], destination[1]
 
 
-cdef public vector[char] runCVMapper(const char* mazeFileName):
+cdef public string getMap(const string mazeFileName):
     '''
-    CVMapper reads in the maze file name for a bird's eye image of the maze and returns the map of
+    getMap reads in the maze file name for a bird's eye image of the maze and returns the map of
     it in string format.
     '''
     maze_transformed_bgr, _ = get_transformed_maze_bgr(mazeFileName)
     walls = get_walls(maze_transformed_bgr)
-    maze_map = list(get_map_string(walls))
-    return maze_map
+    maze_map = get_map_string(walls)
+    return <string>maze_map
 
 
 BGR_B = (255, 0, 0)
@@ -360,13 +372,13 @@ def get_robot_heading(robot_img, H):
 
     heading = 'o'
     if (angle >= 0 and angle <= 30) or (angle >= 330 and angle <= 360):
-        heading = '>'
+        heading = 1
     elif angle > 60 and angle <= 120:
-        heading = '^'
+        heading = 0
     elif angle >= 150 and angle <= 210:
-        heading = '<'
+        heading = 3
     elif angle >= 240 and angle <= 300:
-        heading = 'v'
+        heading = 2
 
     return heading
 

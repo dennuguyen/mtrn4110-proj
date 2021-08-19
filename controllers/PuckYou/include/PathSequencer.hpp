@@ -15,13 +15,11 @@ class PathSequencer {
 
     // Constructor for path sequencer to initialise the path.
     PathSequencer(PathType path)
-    : path_(path)
-    , pathIndex_(0) {}
+    : path_(path) {}
 
     // Renew the motion sequence.
     auto updatePath(PathType const& path) noexcept -> void {
         path_ = path;
-        pathIndex_ = 0;
     }
 
     // Gets the next motion of the motion sequence.
@@ -42,11 +40,11 @@ class PathSequencer {
 
    private:
     auto print(std::ostream& os) const noexcept -> void {
-        (void)os;
+        std::for_each (path_.at(pathIndex_), path_.end(), [&os](auto const& i) { os << i; });
     }
 
     PathType path_;
-    int pathIndex_;  // Index to current motion of path sequence.
+    int pathIndex_ = 3;  // Cheese the path plan string because motion starts at 3rd index.
 };
 }  // namespace mtrn4110
 

@@ -23,6 +23,7 @@ else
     endif
     ifeq ($(UNAME_S),Darwin)
         DETECTED_OS := -D macos
+        LIB := python3.7m
     endif
 endif
 

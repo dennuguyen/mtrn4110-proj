@@ -16,7 +16,7 @@ class HCLocaliser final : public Localiser<PoseType, HeadingType> {
     // Update the position and heading of the robot by checking the given motion type and current
     // position and heading. It is up to the user that this function is called the right number of
     // times.
-    auto updateLocale(MotionType motion) -> void override final {
+    auto updateLocale(MotionType motion) -> void {
         switch (motion) {
         case 'F': updatePosition(); break;
         case 'L':

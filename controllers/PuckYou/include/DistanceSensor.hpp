@@ -1,5 +1,5 @@
-#ifndef DISTANCE_SENSOR_HPP
-#define DISTANCE_SENSOR_HPP
+#ifndef PUCK_YOU_DISTANCE_SENSOR_HPP
+#define PUCK_YOU_DISTANCE_SENSOR_HPP
 
 #include <webots/DistanceSensor.hpp>
 #include <webots/Robot.hpp>
@@ -54,4 +54,4 @@ class DistanceSensor {
 };
 }  // namespace mtrn4110
 
-#endif  // DISTANCE_SENSOR_HPP
+#endif  // PUCK_YOU_DISTANCE_SENSOR_HPP

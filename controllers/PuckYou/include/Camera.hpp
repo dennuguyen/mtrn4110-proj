@@ -1,5 +1,5 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#ifndef PUCK_YOU_CAMERA_HPP
+#define PUCK_YOU_CAMERA_HPP
 
 #include <memory>
 
@@ -10,11 +10,12 @@ namespace mtrn4110 {
 class Camera {
    public:
     Camera(webots::Robot& robot)
-    : camera_(robot.getCamera("camera")) {
+    : camera_(robot.getCamera("bird")) {
         camera_->enable(robot.getBasicTimeStep());
     }
 
-    auto saveImage(std::string const& outputFile, int quality) const -> void {
+    // Take an image of the world from the robot's camera and save it to the outputFile.
+    auto snap(std::string const& outputFile, int quality) const -> void {
         if (camera_->saveImage(outputFile, quality) != 0) {
             throw std::runtime_error("Could not save image to " + outputFile);
         }
@@ -25,4 +26,4 @@ class Camera {
 };
 }  // namespace mtrn4110
 
-#endif  // CAMERA_HPP
+#endif  // PUCK_YOU_CAMERA_HPP

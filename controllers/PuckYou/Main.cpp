@@ -7,9 +7,8 @@
 
 // Used exclusively in autonomous control.
 #include "BFSDFS.hpp"
-#include "CVPuckYou.h"
-// #include "Camera.hpp"
-#include "DistanceSensor.hpp"
+#include "CVProcessor.hpp"
+#include "Camera.hpp"
 #include "Grapher.hpp"
 #include "PathSequencer.hpp"
 
@@ -33,29 +32,16 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // This function contains the control loop logic for the EPuck. It supports both autonomous control
 // and teleoperation.
 static auto mouse(webots::Robot& robot) -> void {
-    // Startup Python interpretter.
-    if (PyImport_AppendInittab("CVPuckYou", PyInit_CVPuckYou) == -1) {
-        throw std::runtime_error("Could not extend built-in modules table.");
-    }
-    Py_Initialize();
-
-    // Import CVPuckYou into the Python interpretter.
-    auto module = PyImport_ImportModule("CVPuckYou");
-    if (module == nullptr) {
-        PyErr_Print();
-        throw std::runtime_error("Could not import CVPuckYou.");
-    }
-
     // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot, 2, 0);
+    auto taskControl = mtrn4110::TaskControl(robot, 3, 1);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
     auto constexpr motionLock = 1;  // true = in motion, false = not in motion
-    auto constexpr pathLock = 0;  // true = sequencing path, false = not sequencing path
+    auto constexpr pathLock = 2;  // true = sequencing path, false = not sequencing path
+    auto constexpr motionTimer = 0;
 
     // These RSA elements are exclusive to autonomous control.
-    // auto camera = mtrn4110::Camera(robot);
-    // auto distanceSensor = mtrn4110::DistanceSensor(robot);
-    // auto lidarSensor = mtrn4110::LidarSensor(robot);
+    auto camera = mtrn4110::Camera(robot);
+    auto cvProcessor = mtrn4110::CVProcessor();
     auto grapher = mtrn4110::Grapher();
     auto pathPlanner = mtrn4110::BFSDFS();
     auto pathSequencer = mtrn4110::PathSequencer();
@@ -65,24 +51,6 @@ static auto mouse(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
-
-    auto const destination =
-        runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-    std::cout << "1: " << destination.first << " " << destination.second << std::endl;
-
-    auto const [pose, heading] =
-        runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-    std::cout << "2: " << pose.first << " " << pose.second << " " << heading << std::endl;
-
-    print_hello();
-
-    auto const map = runCVMapper(mtrn4110::files::mazeImage);
-    std::cout << "3: " << map.size() << std::endl;
-    for (auto const& i : map)
-        std::cout << i;
-    std::cout << std::endl;
-
-    Py_Finalize();
 
     // Enter control loop.
     while (1) {
@@ -109,33 +77,29 @@ static auto mouse(webots::Robot& robot) -> void {
             // Not sequencing path plan. Check for new path plan.
             if (taskControl.isLockBusy(pathLock) == false) {
                 // Get image of map.
-                // camera.snap(mtrn4110::files::mazeImage);
+                camera.snap("output.png", 100);
 
                 // Map the image.
-                // auto const map = std::string(runCVMapper(mtrn4110::files::mazeImage));
+                cvProcessor.localise("output.png", mtrn4110::files::robotImage);
+                cvProcessor.waypoint("output.png", mtrn4110::files::ladybugImage);
+                cvProcessor.map("output.png");
 
-                // // Graph map.
-                // grapher.readMap(map);
-                // auto const graph = grapher.buildGraph();
+                // Create a graph from the map.
+                auto const graph = grapher.buildGraph(cvProcessor.getMap());
 
-                // // Deliberate.
-                // auto const destination =
-                //     runCVWaypointer(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                // Compute a path plan from the graph with a destination, starting position and
+                // starting heading.
+                pathPlanner.update(graph,
+                                   cvProcessor.getDeliberatedValue(),
+                                   {0, 0},  // cvProcessor.getCurrentPose(),
+                                   cvProcessor.getCurrentHeading());
 
-                // // Localise.
-                // auto const [pose, heading] =
-                //     runCVLocaliser(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                // Give the path sequencer the path plan.
+                pathSequencer.updatePath(pathPlanner.getPath());
 
-                // // Path plan.
-                // pathPlanner.update(graph, destination, pose, heading);
-
-                // // Path sequencer.
-                // pathSequencer.updatePath(pathPlanner.getPath());
-
-                // Sequencing path plan.
+                // Sequencing path plan so lock this block of code.
                 taskControl.acquireLock(pathLock);
             }
-
             // Get next motion in path plan.
             motion = pathSequencer.nextMotion();
 
@@ -150,8 +114,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 1});
-        // std::cout << trajectoryPlanner;
+        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.4});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
@@ -159,7 +122,6 @@ static auto mouse(webots::Robot& robot) -> void {
         auto const linearVelocity = trajectoryPlanner.getLinearVelocity();
         auto const angularVelocity = trajectoryPlanner.getAngularVelocity();
         motionPlanner.computeMotorSetpoints(angle, distance, linearVelocity, angularVelocity);
-        // std::cout << motionPlanner;
 
         // Feed motor setpoints to motor controller.
         motorController.setPosition(motionPlanner.getMotorPositions());
@@ -170,6 +132,7 @@ static auto mouse(webots::Robot& robot) -> void {
         while (taskControl.isLockBusy(motionLock) == true) {
             if (motorController.isAtPosition() == true) {
                 taskControl.releaseLock(motionLock);
+                // taskControl.wait(motionTimer, 0.01);  // Wait after motion is completed.
             }
         }
     }
