@@ -51,7 +51,7 @@ static auto mouse(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
-
+    int i = 0;
     // Enter control loop.
     while (1) {
         auto motion = '\0';
@@ -72,17 +72,22 @@ static auto mouse(webots::Robot& robot) -> void {
             continue;  // Invalidate the deliberated value.
         }
 
+        if (key == 'G') {
+            camera.snap(robot, "output_" + std::to_string(i++) + ".png", 100);
+        }
+
         // In autonomous mode so perform autonomous operations.
         if (taskControl.isLockBusy(modeLock) == false) {
+            /*
             // Not sequencing path plan. Check for new path plan.
             if (taskControl.isLockBusy(pathLock) == false) {
                 // Get image of map.
-                camera.snap("output.png", 100);
+                camera.snap(mtrn44110::files::mazeImage, 100);
 
                 // Map the image.
-                cvProcessor.localise("output.png", mtrn4110::files::robotImage);
-                cvProcessor.waypoint("output.png", mtrn4110::files::ladybugImage);
-                cvProcessor.map("output.png");
+                cvProcessor.localise(mtrn44110::files::mazeImage, mtrn4110::files::robotImage);
+                cvProcessor.waypoint(mtrn44110::files::mazeImage, mtrn4110::files::ladybugImage);
+                cvProcessor.map(mtrn44110::files::mazeImage);
 
                 // Create a graph from the map.
                 auto const graph = grapher.buildGraph(cvProcessor.getMap());
@@ -106,7 +111,7 @@ static auto mouse(webots::Robot& robot) -> void {
             // Reached end of path plan.
             if (motion == '\0') {
                 taskControl.releaseLock(pathLock);
-            }
+            }*/
         }
         else {
             motion = teleoperation.getDeliberatedValue();
@@ -114,7 +119,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.4});
+        trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 0.4});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
