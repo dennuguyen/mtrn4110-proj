@@ -61,7 +61,8 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         os << leastTurnsPath_->second << std::endl;
     }
 
-    // Perform a BFS to get directedness of the graph from end_ to start_.
+    // Perform a BFS to get directedness of the graph from end_ to start_. Unvisitable nodes have
+    // infinite weighting. Destination has zero weighting.
     auto buildDirectedGraph() -> void {
         this->graph_.at(this->destination_).first = 0;
 
