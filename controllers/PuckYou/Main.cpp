@@ -51,7 +51,7 @@ static auto mouse(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
-    int i = 0;
+
     // Enter control loop.
     while (1) {
         auto motion = '\0';
@@ -72,22 +72,18 @@ static auto mouse(webots::Robot& robot) -> void {
             continue;  // Invalidate the deliberated value.
         }
 
-        if (key == 'G') {
-            camera.snap(robot, "output_" + std::to_string(i++) + ".png", 100);
-        }
-
         // In autonomous mode so perform autonomous operations.
         if (taskControl.isLockBusy(modeLock) == false) {
-            /*
             // Not sequencing path plan. Check for new path plan.
             if (taskControl.isLockBusy(pathLock) == false) {
                 // Get image of map.
-                camera.snap(mtrn44110::files::mazeImage, 100);
+                camera.snap(mtrn4110::files::mazeImage, 100);
 
                 // Map the image.
-                cvProcessor.localise(mtrn44110::files::mazeImage, mtrn4110::files::robotImage);
-                cvProcessor.waypoint(mtrn44110::files::mazeImage, mtrn4110::files::ladybugImage);
-                cvProcessor.map(mtrn44110::files::mazeImage);
+                cvProcessor.localise(mtrn4110::files::mazeImage);
+                cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                cvProcessor.map(mtrn4110::files::mazeImage);
+                std::cout << cvProcessor;
 
                 // Create a graph from the map.
                 auto const graph = grapher.buildGraph(cvProcessor.getMap());
@@ -96,8 +92,9 @@ static auto mouse(webots::Robot& robot) -> void {
                 // starting heading.
                 pathPlanner.update(graph,
                                    cvProcessor.getDeliberatedValue(),
-                                   {0, 0},  // cvProcessor.getCurrentPose(),
+                                   cvProcessor.getCurrentPose(),
                                    cvProcessor.getCurrentHeading());
+                std::cout << pathPlanner;
 
                 // Give the path sequencer the path plan.
                 pathSequencer.updatePath(pathPlanner.getPath());
@@ -111,7 +108,8 @@ static auto mouse(webots::Robot& robot) -> void {
             // Reached end of path plan.
             if (motion == '\0') {
                 taskControl.releaseLock(pathLock);
-            }*/
+                return;
+            }
         }
         else {
             motion = teleoperation.getDeliberatedValue();

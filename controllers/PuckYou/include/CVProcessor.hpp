@@ -27,9 +27,9 @@ class CVProcessor final
         init();
     }
 
-    auto localise(std::string const& mazeImage, std::string const& robotImage) noexcept -> void {
-        this->currentPose_ = getPose(mazeImage, robotImage);
-        this->currentHeading_ = getHeading(mazeImage, mtrn4110::files::robotImage);
+    auto localise(std::string const& mazeImage) noexcept -> void {
+        this->currentPose_ = getPose(mazeImage);
+        this->currentHeading_ = getHeading(mazeImage);
     }
 
     auto waypoint(std::string const& mazeImage, std::string const& ladybugImage) noexcept -> void {
@@ -41,12 +41,19 @@ class CVProcessor final
         this->map_ = util::tokenise(map, '\n');
     }
 
+    // Operator overload for <<.
+    friend auto operator<<(std::ostream& os, CVProcessor const& processor) noexcept -> std::ostream& {
+        processor.print(os);
+        return os;
+    }
+
    private:
     auto print(std::ostream& os) const noexcept -> void override final {
         os << "Current Location: (" << this->currentPose_.first << ", " << this->currentPose_.second
            << ")" << std::endl;
         os << "Current Heading: " << this->currentHeading_ << std::endl;
-        os << "Destination: (" << this->delib_.first << ", " << this->delib_.second << std::endl;
+        os << "Destination: (" << this->delib_.first << ", " << this->delib_.second << ")"
+           << std::endl;
         os << "Map:" << std::endl;
         std::for_each (this->map_.begin(), this->map_.end(), [&os](auto const& i) {
             os << i << std::endl;
