@@ -25,7 +25,7 @@ class Camera {
     }
 
    private:
-    webots::Robot const& robot_;
+    webots::Robot& robot_;
     std::unique_ptr<webots::Camera> camera_;
 };
 }  // namespace mtrn4110
