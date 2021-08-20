@@ -97,7 +97,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
                 std::cout << pathPlanner;
 
                 // Give the path sequencer the path plan.
-                pathSequencer.updatePath(pathPlanner.getPath());
+                pathSequencer.resetPath(pathPlanner.getPath());
 
                 // Sequencing path plan so lock this block of code.
                 taskControl.acquireLock(pathLock);

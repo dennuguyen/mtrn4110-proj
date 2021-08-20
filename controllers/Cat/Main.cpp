@@ -36,7 +36,6 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
     auto taskControl = mtrn4110::TaskControl(robot, 3, 1);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
     auto constexpr motionLock = 1;  // true = in motion, false = not in motion
-    auto constexpr pathLock = 2;  // true = sequencing path, false = not sequencing path
     auto constexpr motionTimer = 0;
 
     // These RSA elements are exclusive to autonomous control.
@@ -74,42 +73,31 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
 
         // In autonomous mode so perform autonomous operations.
         if (taskControl.isLockBusy(modeLock) == false) {
-            // Not sequencing path plan. Check for new path plan.
-            if (taskControl.isLockBusy(pathLock) == false) {
-                // Get image of map.
-                camera.snap(mtrn4110::files::mazeImage, 100);
+            // Get image of map.
+            camera.snap(mtrn4110::files::mazeImage, 100);
 
-                // Map the image.
-                cvProcessor.localise(mtrn4110::files::mazeImage);
-                cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
-                cvProcessor.map(mtrn4110::files::mazeImage);
-                std::cout << cvProcessor;
+            // Map the image.
+            cvProcessor.localise(mtrn4110::files::mazeImage);
+            cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+            cvProcessor.map(mtrn4110::files::mazeImage);
+            std::cout << cvProcessor;
 
-                // Create a graph from the map.
-                auto const graph = grapher.buildGraph(cvProcessor.getMap());
+            // Create a graph from the map.
+            auto const graph = grapher.buildGraph(cvProcessor.getMap());
 
-                // Compute a path plan from the graph with a destination, starting position and
-                // starting heading.
-                pathPlanner.update(graph,
-                                   cvProcessor.getDeliberatedValue(),
-                                   cvProcessor.getCurrentPose(),
-                                   cvProcessor.getCurrentHeading());
-                std::cout << pathPlanner;
+            // Compute a path plan from the graph with a destination, starting position and
+            // starting heading.
+            pathPlanner.update(graph,
+                                cvProcessor.getDeliberatedValue(),
+                                cvProcessor.getCurrentPose(),
+                                cvProcessor.getCurrentHeading());
+            std::cout << pathPlanner;
 
-                // Give the path sequencer the path plan.
-                pathSequencer.updatePath(pathPlanner.getPath());
-
-                // Sequencing path plan so lock this block of code.
-                taskControl.acquireLock(pathLock);
-            }
+            // Give the path sequencer the path plan.
+            pathSequencer.resetPath(pathPlanner.getPath());
+            
             // Get next motion in path plan.
             motion = pathSequencer.nextMotion();
-
-            // Reached end of path plan.
-            if (motion == '\0') {
-                taskControl.releaseLock(pathLock);
-                return;
-            }
         }
         else {
             motion = teleoperation.getDeliberatedValue();
