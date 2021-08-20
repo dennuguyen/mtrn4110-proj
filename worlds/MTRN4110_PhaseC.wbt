@@ -635,8 +635,8 @@ DEF PuckYou E-puck {
       rotation -0.5773502691896258 -0.5773502691896258 0.5773502691896258 2.0944
       name "bird"
       fieldOfView 0.7854
-      width 3600
-      height 3600
+      width 900
+      height 900
       near 1
     }
   ]
