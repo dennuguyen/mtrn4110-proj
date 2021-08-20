@@ -178,7 +178,7 @@ This is to force Cython to compile using C++ standard libraries.
 # distutils: language=c++
 ```
 
-## State Diagram
+## Control Loop State Diagram
 
 ```mermaid
 stateDiagram-v2
