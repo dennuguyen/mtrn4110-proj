@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <ostream>
+
 #include <webots/Robot.hpp>
 
 namespace mtrn4110 {
