@@ -1405,7 +1405,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 static PyTypeObject *__pyx_ptype_9CVPuckYou___pyx_scope_struct__perspective_transform = 0;
 __PYX_EXTERN_C void print_hello(void); /*proto*/
 __PYX_EXTERN_C int getHeading(std::string const ); /*proto*/
-__PYX_EXTERN_C std::pair<int,int>  getPose(std::string const , std::string const ); /*proto*/
+__PYX_EXTERN_C std::pair<int,int>  getPose(std::string const ); /*proto*/
 __PYX_EXTERN_C std::pair<int,int>  getDestination(std::string const , std::string const ); /*proto*/
 __PYX_EXTERN_C std::string getMap(std::string const ); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
@@ -2263,12 +2263,12 @@ int getHeading(std::string const __pyx_v_mazeFileName) {
 /* "CVPuckYou.pyx":33
  * 
  * 
- * cdef public pair[int, int] getPose(const string mazeFileName, const string robotFileName):             # <<<<<<<<<<<<<<
+ * cdef public pair[int, int] getPose(const string mazeFileName):             # <<<<<<<<<<<<<<
  *     '''
  *     getPose reads the maze file name for a bird's eye image of the maze, and detects and returns
  */
 
-std::pair<int,int>  getPose(std::string const __pyx_v_mazeFileName, CYTHON_UNUSED std::string const __pyx_v_robotFileName) {
+std::pair<int,int>  getPose(std::string const __pyx_v_mazeFileName) {
   PyObject *__pyx_v_maze_transformed_bgr = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_v_epuck_position = NULL;
@@ -2417,7 +2417,7 @@ std::pair<int,int>  getPose(std::string const __pyx_v_mazeFileName, CYTHON_UNUSE
   /* "CVPuckYou.pyx":33
  * 
  * 
- * cdef public pair[int, int] getPose(const string mazeFileName, const string robotFileName):             # <<<<<<<<<<<<<<
+ * cdef public pair[int, int] getPose(const string mazeFileName):             # <<<<<<<<<<<<<<
  *     '''
  *     getPose reads the maze file name for a bird's eye image of the maze, and detects and returns
  */
