@@ -3,6 +3,7 @@
 
 #include <array>
 #include <map>
+#include <numeric>
 #include <regex>
 #include <tuple>
 #include <utility>
@@ -11,7 +12,7 @@
 namespace mtrn4110 {
 
 auto constexpr cardinalPoints = std::array<char, 4>({'N', 'E', 'S', 'W'});
-auto constexpr unvisited = -1;
+auto constexpr unvisited = std::numeric_limits<int>::max();
 
 namespace util {
 // Tokenise the string by delimiter.
