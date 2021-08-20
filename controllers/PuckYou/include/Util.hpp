@@ -39,7 +39,7 @@ using GraphType =
 
 namespace files {
 auto constexpr mazeImage = "Maze.png";
-auto constexpr ladybugImage = "Ladybug_small.png";
+auto constexpr ladybugImage = "../../images/Ladybug_small.png";
 }  // namespace files
 }  // namespace mtrn4110
 
