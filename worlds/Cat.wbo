@@ -1,0 +1,60 @@
+#VRML_OBJ R2021a utf8
+DEF PuckYou E-puck {
+  translation -0.66 0 -0.33
+  rotation 0 1 0 3.141592653589793
+  controller "PuckYou"
+  camera_width 120
+  camera_height 120
+  turretSlot [
+    DEF Marker Solid {
+      translation 0 0.0001 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "marker1.png"
+              ]
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.02 0.02
+          }
+        }
+      ]
+      name "solid1"
+    }
+    DEF White Solid {
+      translation 0 0 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.025 0.025
+          }
+        }
+      ]
+      name "solid2"
+    }
+  ]
+  groundSensorsSlot [
+    DEF bird Camera {
+      translation -4 0 0
+      rotation -0.5773502691896258 -0.5773502691896258 0.5773502691896258 2.0944
+      name "bird"
+      fieldOfView 0.7854
+      width 900
+      height 900
+      near 1
+    }
+  ]
+}
