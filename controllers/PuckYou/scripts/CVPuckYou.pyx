@@ -72,7 +72,7 @@ LINE_THICKNESS = 4
 
 def get_transformed_maze_bgr(path):
     maze_hsv = read_image_hsv(path)
-    magenta_contours, cyan_contour = get_cornerstone_contours(maze_hsv)
+    magenta_contours, cyan_contour, _ = get_cornerstone_contours(maze_hsv)
     maze_bgr = read_image_bgr(path)
     return perspective_transform(maze_bgr, magenta_contours, cyan_contour)
 
@@ -128,35 +128,93 @@ def get_cornerstone_contours(maze_hsv):
     cyan_contours = sorted(cyan_contours, reverse=True, key=lambda x : cv2.contourArea(x))
     cyan_contour = cyan_contours[0]
     
-    return magenta_contours, cyan_contour
+    return magenta_contours, cyan_contour, cyan_contours
 
-def draw_cornerstones(maze_bgr, magenta_contours, cyan_contour):
+def draw_cornerstones(maze_bgr, magenta_contours, cyan_contours):
     # draw magenta corners
     cv2.drawContours(maze_bgr, magenta_contours, -1, BGR_CYAN, LINE_THICKNESS)
     # draw cyan corners
-    cv2.drawContours(maze_bgr, cyan_contour, 0, BGR_MAGENTA, LINE_THICKNESS)
+    cv2.drawContours(maze_bgr, cyan_contours, 0, BGR_MAGENTA, LINE_THICKNESS)
 
     return maze_bgr
 
 
 # TASK 3.3
 
-LEFT_LOWER = 0
-LEFT_UPPER = 337.5
-RIGHT_LOWER = 1012.5
-RIGHT_UPPER = 1350
-TOP_LOWER = 0
-TOP_UPPER = 375
-BOTTOM_LOWER = 375
-BOTTOM_UPPER = 750
-TL = [0, 0]
-TR = [900, 0]
-BL = [0, 500]
-BR = [900, 500]
-TALL_RES = 500
-WIDE_RES = 900
-
 def perspective_transform(maze_img, magenta_contours, cyan_contour):
+
+    LEFT = 0
+    MIDDLE_LR = int(0.5 * maze_img.shape[1])
+    RIGHT = maze_img.shape[1]
+
+    TOP = 0
+    MIDDLE_TB =  int(0.5 * maze_img.shape[0])
+    BOTTOM = maze_img.shape[0]
+
+    TL = [0, 0]
+    TR = [900, 0]
+    BL = [0, 500]
+    BR = [900, 500]
+    TALL_RES = 500
+    WIDE_RES = 900
+
+    def create_corner(contour, colour):
+        m = cv2.moments(contour)
+        cx = m['m10'] // (m['m00'] or 0.00000001)
+        cy = m['m01'] // (m['m00'] or 0.00000001)
+        return {
+            'colour': colour,
+            'x' : cx,
+            'y' : cy,
+            'id' : left_or_right(cx) + top_or_bottom(cy),
+        }
+
+    def left_or_right(x):
+        # left
+        if (x >= LEFT and x <= MIDDLE_LR):
+            return 0
+        # right
+        elif (x > MIDDLE_LR and x <= RIGHT):
+            return 1
+
+    def top_or_bottom(y):
+        # top
+        if (y >= TOP and y <= MIDDLE_TB):
+            return 0
+        # bottom
+        elif (y > MIDDLE_TB and y <= BOTTOM):
+            return 2
+
+    def sort_corners(cyan, magenta):
+        # ordered corners
+        corner_1 = None
+        corner_2 = None
+        corner_3 = None
+        # ordering depending on where the cyan corner is
+        if (cyan.get('id') == 0):
+            corner_1 = magenta.get('1')
+            corner_2 = magenta.get('2')
+            corner_3 = magenta.get('3')
+        elif (cyan.get('id') == 1):
+            corner_1 = magenta.get('3')
+            corner_2 = magenta.get('0')
+            corner_3 = magenta.get('2')
+        elif (cyan.get('id') == 2):
+            corner_1 = magenta.get('0')
+            corner_2 = magenta.get('3')
+            corner_3 = magenta.get('1')
+        elif (cyan.get('id') == 3):
+            corner_1 = magenta.get('2')
+            corner_2 = magenta.get('1')
+            corner_3 = magenta.get('0')
+        
+        # add ordered corners to the list
+        ordered = [[cyan.get('x'), cyan.get('y')]]
+        ordered.append([corner_1.get('x'), corner_1.get('y')])
+        ordered.append([corner_2.get('x'), corner_2.get('y')])
+        ordered.append([corner_3.get('x'), corner_3.get('y')])
+        return ordered
+
     magenta_corners = {}
     cyan_corners = []
 
@@ -173,64 +231,6 @@ def perspective_transform(maze_img, magenta_contours, cyan_contour):
     transformed = cv2.warpPerspective(maze_img, H, (WIDE_RES, TALL_RES))
 
     return transformed, H
-
-def create_corner(contour, colour):
-    m = cv2.moments(contour)
-    cx = m['m10'] // (m['m00'] or 0.00000001)
-    cy = m['m01'] // (m['m00'] or 0.00000001)
-    return {
-        'colour': colour,
-        'x' : cx,
-        'y' : cy,
-        'id' : left_or_right(cx) + top_or_bottom(cy),
-    }
-
-def left_or_right(x):
-    # left
-    if (x >= LEFT_LOWER and x <= LEFT_UPPER):
-        return 0
-    # right
-    elif (x >= RIGHT_LOWER and x <= RIGHT_UPPER):
-        return 1
-
-def top_or_bottom(y):
-    # top
-    if (y >= TOP_LOWER and y <= TOP_UPPER):
-        return 0
-    # bottom
-    elif (y > BOTTOM_LOWER and y <= BOTTOM_UPPER):
-        return 2
-
-def sort_corners(cyan, magenta):
-    # ordered corners
-    corner_1 = None
-    corner_2 = None
-    corner_3 = None
-    # ordering depending on where the cyan corner is
-    if (cyan.get('id') == 0):
-        corner_1 = magenta.get('1')
-        corner_2 = magenta.get('2')
-        corner_3 = magenta.get('3')
-    elif (cyan.get('id') == 1):
-        corner_1 = magenta.get('3')
-        corner_2 = magenta.get('0')
-        corner_3 = magenta.get('2')
-    elif (cyan.get('id') == 2):
-        corner_1 = magenta.get('0')
-        corner_2 = magenta.get('3')
-        corner_3 = magenta.get('1')
-    elif (cyan.get('id') == 3):
-        corner_1 = magenta.get('2')
-        corner_2 = magenta.get('1')
-        corner_3 = magenta.get('0')
-    
-    # add ordered corners to the list
-    ordered = [[cyan.get('x'), cyan.get('y')]]
-    ordered.append([corner_1.get('x'), corner_1.get('y')])
-    ordered.append([corner_2.get('x'), corner_2.get('y')])
-    ordered.append([corner_3.get('x'), corner_3.get('y')])
-    return ordered
-
 
 # TASK 3.4
 
@@ -347,27 +347,27 @@ def get_robot_coordinates(maze_bgr):
     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
 
 def get_robot_heading(robot_img, H):
-    dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
-    parameters = cv2.aruco.DetectorParameters_create()
-    marker_corners, marker_ids, rejected = cv2.aruco.detectMarkers(robot_img, dictionary, parameters=parameters)
+    # dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
+    # parameters = cv2.aruco.DetectorParameters_create()
+    # marker_corners, marker_ids, rejected = cv2.aruco.detectMarkers(robot_img, dictionary, parameters=parameters)
 
-    # get marker points
-    head = None
-    tail = None
-    for i, marker_id in enumerate(marker_ids):
-        if marker_id == 1:
-            head = marker_corners[i][0][0]
-            tail = marker_corners[i][0][2]
+    # # get marker points
+    # head = None
+    # tail = None
+    # for i, marker_id in enumerate(marker_ids):
+    #     if marker_id == 1:
+    #         head = marker_corners[i][0][0]
+    #         tail = marker_corners[i][0][2]
 
-    if (head is None or tail is None):
-        print("ERROR: ARUCO MARKER NOT FOUND")
-        print(marker_corners)
-        print(marker_ids)
-        print(rejected)
+    # if (head is None or tail is None):
+    #     print("ERROR: ARUCO MARKER NOT FOUND")
+    #     print(marker_corners)
+    #     print(marker_ids)
+    #     print(rejected)
 
-    heading_angle = line_angle_4th_quadrant(head, tail)
+    # heading_angle = line_angle_4th_quadrant(head, tail)
     offset = np.rad2deg(-np.arctan2(H[1][0], H[0][0]))
-    angle = int(heading_angle + offset) % 360
+    angle = int(360 + offset) % 360 # int(heading_angle + offset) % 360
 
     heading = 'o'
     if (angle >= 0 and angle <= 30) or (angle >= 330 and angle <= 360):
@@ -388,13 +388,13 @@ def draw_robot(maze_bgr, robot_coordinates, robot_heading):
     cv2.circle(maze_bgr, (cx, cy), radius, BGR_R, LINE_THICKNESS)
 
     location = (cx, cy)
-    if robot_heading == '>':
+    if robot_heading == 1:
         location = (cx - 10, cy + 10)
-    elif robot_heading == '^':
+    elif robot_heading == 0:
         location = (cx - 11, cy + 9)
-    elif robot_heading == '<':
+    elif robot_heading == 3:
         location = (cx - 15, cy + 10)
-    elif robot_heading == 'v':
+    elif robot_heading == 2:
         location = (cx - 8, cy + 8)
 
     cv2.putText(maze_bgr, robot_heading, location, cv2.FONT_HERSHEY_SIMPLEX, 1, BGR_R, 2, cv2.LINE_AA)
@@ -446,9 +446,11 @@ def draw_target(maze_bgr, target_coordinates):
 
 # TASK 3.7
 
-BORDER_H = " --- --- --- --- --- --- --- --- --- "
 
 def get_map_string(walls):
+    
+    BORDER_H = " --- --- --- --- --- --- --- --- --- "
+    
     horizontal = walls[1]
     # adding horizontal walls
     horizontal_output = [BORDER_H] # add border
