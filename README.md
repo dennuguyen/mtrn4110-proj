@@ -80,6 +80,9 @@ py -m pip install -r requirements.txt
 
 ## Run Instructions
 
+1. Select desired Webots world.
+    - `Integration.wbt` for world showing off integration.
+    - `Extra Features.wbt` for world showing off extra features.
 1. Select the desired E-Puck controller(s).
     - `PuckYou` to show off Phase A, B, C integration.
         - Will take an image of the world and path plan once at the start.
