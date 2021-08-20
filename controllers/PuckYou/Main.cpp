@@ -62,7 +62,7 @@ static auto mouse(webots::Robot& robot) -> void {
         // Toggle operation modes.
         if (key == ' ') {
             if (taskControl.isLockBusy(modeLock) == false) {
-                std::cout << "Teloperating!" << std::endl;
+                std::cout << "Teleoperating!" << std::endl;
                 taskControl.acquireLock(modeLock);
             }
             else {
