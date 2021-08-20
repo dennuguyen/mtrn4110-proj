@@ -16,8 +16,8 @@ class Camera {
     // Take an image of the world from the robot's camera and save it to the outputFile. Camera is
     // only enabled when used.
     auto snap(std::string const& outputFile, int quality) const -> void {
-        camera_->enable(robot.getBasicTimeStep());
-        robot_.step(robot.getBasicTimeStep());
+        camera_->enable(robot_.getBasicTimeStep());
+        robot_.step(robot_.getBasicTimeStep());
         if (camera_->saveImage(outputFile, quality) != 0) {
             throw std::runtime_error("Could not save image to " + outputFile);
         }
