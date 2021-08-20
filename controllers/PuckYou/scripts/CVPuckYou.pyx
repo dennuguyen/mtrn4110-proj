@@ -20,14 +20,13 @@ cdef public void print_hello():
     print("Hello!")
 
 
-cdef public int getHeading(const string mazeFileName, const string robotFileName):
+cdef public int getHeading(const string mazeFileName):
     '''
     getHeading reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current heading of the robot.
     '''
     maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
-    robot_gray = read_image_gray(robotFileName)
-    epuck_direction = get_robot_heading(robot_gray, H)
+    epuck_direction = get_robot_heading(H)
     return epuck_direction
 
 
@@ -346,7 +345,7 @@ def get_robot_coordinates(maze_bgr):
 
     return robot_y // GRID_PIXELS, robot_x // GRID_PIXELS
 
-def get_robot_heading(robot_img, H):
+def get_robot_heading(H):
     # dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
     # parameters = cv2.aruco.DetectorParameters_create()
     # marker_corners, marker_ids, rejected = cv2.aruco.detectMarkers(robot_img, dictionary, parameters=parameters)
