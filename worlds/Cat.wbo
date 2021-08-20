@@ -6,44 +6,10 @@ DEF PuckYou E-puck {
   camera_width 120
   camera_height 120
   turretSlot [
-    DEF Marker Solid {
-      translation 0 0.0001 -0.01
-      rotation 0 1 0 -0.7854003061004253
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-              url [
-                "marker1.png"
-              ]
-            }
-            roughness 1
-            metalness 0
-          }
-          geometry Plane {
-            size 0.02 0.02
-          }
-        }
-      ]
-      name "solid1"
-    }
-    DEF White Solid {
-      translation 0 0 -0.01
-      rotation 0 1 0 -0.7854003061004253
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-            }
-            roughness 1
-            metalness 0
-          }
-          geometry Plane {
-            size 0.025 0.025
-          }
-        }
-      ]
-      name "solid2"
+    Lidar {
+      fieldOfView 6.28
+      numberOfLayers 1
+      maxRange 0.2
     }
   ]
   groundSensorsSlot [

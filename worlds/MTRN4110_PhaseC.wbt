@@ -4,7 +4,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.9999999999830854 5.575391567742857e-06 1.656568733458803e-06 1.570797312181649
-  position -1.3877787807814457e-17 2.5 -5.551115123125783e-17
+  position 2.3965246721385652e-06 3.111542233909857 -6.026039376529577e-07
 }
 TexturedBackground {
 }
@@ -589,44 +589,10 @@ DEF PuckYou E-puck {
   camera_width 120
   camera_height 120
   turretSlot [
-    DEF Marker Solid {
-      translation 0 0.0001 -0.01
-      rotation 0 1 0 -0.7854003061004253
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-              url [
-                "marker1.png"
-              ]
-            }
-            roughness 1
-            metalness 0
-          }
-          geometry Plane {
-            size 0.02 0.02
-          }
-        }
-      ]
-      name "solid1"
-    }
-    DEF White Solid {
-      translation 0 0 -0.01
-      rotation 0 1 0 -0.7854003061004253
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-            }
-            roughness 1
-            metalness 0
-          }
-          geometry Plane {
-            size 0.025 0.025
-          }
-        }
-      ]
-      name "solid2"
+    Lidar {
+      fieldOfView 6.28
+      numberOfLayers 1
+      maxRange 0.2
     }
   ]
   groundSensorsSlot [
