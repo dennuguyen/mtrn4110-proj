@@ -17,11 +17,12 @@ class Camera {
     // only enabled when used.
     auto snap(std::string const& outputFile, int quality) const -> void {
         camera_->enable(robot_.getBasicTimeStep());
-        robot_.step(robot_.getBasicTimeStep());
+        robot_.step(robot_.getBasicTimeStep());  // Let camera enable.
         if (camera_->saveImage(outputFile, quality) != 0) {
             throw std::runtime_error("Could not save image to " + outputFile);
         }
         camera_->disable();
+        robot_.step(robot_.getBasicTimeStep());  // Let camera disable.
     }
 
    private:
