@@ -51,7 +51,7 @@ class CVProcessor final
     auto print(std::ostream& os) const noexcept -> void override final {
         os << "Current Location: (" << this->currentPose_.first << ", " << this->currentPose_.second
            << ")" << std::endl;
-        os << "Current Heading: " << this->currentHeading_ << std::endl;
+        os << "Current Heading: " << cardinalPoints[this->currentHeading_] << std::endl;
         os << "Destination: (" << this->delib_.first << ", " << this->delib_.second << ")"
            << std::endl;
         os << "Map:" << std::endl;
