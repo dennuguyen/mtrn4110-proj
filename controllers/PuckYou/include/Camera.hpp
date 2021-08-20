@@ -18,8 +18,15 @@ class Camera {
     // Take an image of the world from the robot's camera and save it to the outputFile. Camera is
     // only enabled when used.
     auto snap(std::string const& outputFile, int quality) const -> void {
-        if (camera_->saveImage(outputFile, quality) != 0) {
-            throw std::runtime_error("Could not save image to " + outputFile);
+        try {
+            if (camera_->saveImage(outputFile, quality) != 0) {
+                throw std::runtime_error("Could not save image to " + outputFile);
+            }
+        } catch (std::runtime_error const& e) {
+            // Try saving the image one more time.
+            if (camera_->saveImage(outputFile, quality) != 0) {
+                throw e;
+            }
         }
     }
 
