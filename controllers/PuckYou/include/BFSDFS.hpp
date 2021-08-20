@@ -26,6 +26,7 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
     , leastTurnsPath_() {}
 
     auto update() -> void override final {
+        clear();
         buildDirectedGraph();
         searchPaths();
         searchLeastTurnsPath();
@@ -177,6 +178,11 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         case -3: return "LF";
         default: throw std::runtime_error("Invalid heading index.");
         }
+    }
+
+    // Clear this class' members.
+    auto clear() noexcept -> void {
+        paths_.clear();
     }
 
     // A vector of the shortest paths which is paired with their path plan sequence. Pythonically:
