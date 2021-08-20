@@ -117,7 +117,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 0.4});
+        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.2});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
