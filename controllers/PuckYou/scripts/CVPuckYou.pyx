@@ -20,14 +20,13 @@ cdef public void print_hello():
     print("Hello!")
 
 
-cdef public int getHeading(const string mazeFileName, const string robotFileName):
+cdef public int getHeading(const string mazeFileName):
     '''
     getHeading reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current heading of the robot.
     '''
     maze_transformed_bgr, H = get_transformed_maze_bgr(mazeFileName)
-    robot_gray = read_image_gray(robotFileName)
-    epuck_direction = get_robot_heading(robot_gray, H)
+    epuck_direction = get_robot_heading(H)
     return epuck_direction
 
 
