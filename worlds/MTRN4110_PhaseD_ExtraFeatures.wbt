@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.9999262552745505 0.009423729872719395 0.007660112786423217 4.918565840057372
-  position 0.04636473432628502 3.381199788455964 0.6016206336165024
+  orientation 0.9617687718274526 0.21255427170018612 0.17268905906141507 4.880340300137547
+  position -0.08503411827852797 2.8921967642804423 0.9079952500502598
 }
 TexturedBackground {
 }
@@ -28,13 +28,12 @@ DEF Cat E-puck {
           appearance Appearance {
             texture ImageTexture {
               url [
-                "ladybug_middle_resized.png"
+                "ladybug.png"
               ]
             }
           }
-          geometry Cylinder {
-            height 0.001
-            radius 0.05
+          geometry Box {
+            size 0.15 0.0001 0.15
           }
           castShadows FALSE
         }
