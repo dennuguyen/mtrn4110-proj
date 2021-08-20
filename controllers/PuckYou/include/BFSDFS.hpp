@@ -102,6 +102,9 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
                         + cardinalPoints[this->initialHeading_];
         pathStack.push({this->initialPose_, path, pathPlan});
 
+        // Set max path size to "infinity".
+        auto maxPathSize = static_cast<std::size_t>(std::numeric_limits<int>::max());
+
         while (pathStack.empty() == false) {
             auto const [currentPosition, path, pathPlan] = pathStack.top();
             pathStack.pop();
@@ -109,6 +112,12 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
             // Found the destination.
             if (currentPosition == this->destination_) {
                 paths_.emplace_back(path, pathPlan);
+                maxPathSize = path.size();  // Any path greater than this is not a shortest path.
+            }
+
+            // Set limit on path size.
+            if (path.size() > maxPathSize) {
+                continue;
             }
 
             for (auto const& adjacentPosition : this->graph_.at(currentPosition).second) {
