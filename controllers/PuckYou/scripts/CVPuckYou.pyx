@@ -366,8 +366,9 @@ def get_robot_heading(robot_img, H):
     #     print(rejected)
 
     # heading_angle = line_angle_4th_quadrant(head, tail)
-    offset = np.rad2deg(-np.arctan2(H[1][0], H[0][0]))
-    angle = int(360 + offset) % 360 # int(heading_angle + offset) % 360
+    offset = 90
+    rotation = np.rad2deg(-np.arctan2(H[1][0], H[0][0]))
+    angle = int(360 + rotation + offset) % 360 # int(heading_angle + offset) % 360
 
     heading = 'o'
     if (angle >= 0 and angle <= 30) or (angle >= 330 and angle <= 360):
