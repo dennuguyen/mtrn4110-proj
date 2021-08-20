@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.9617687718274526 0.21255427170018612 0.17268905906141507 4.880340300137547
-  position -0.08503411827852797 2.8921967642804423 0.9079952500502598
+  orientation 0.9999979741649271 0.0014363982404075912 0.0014101156465545681 4.7336359751675
+  position 0.002835857913620885 3.647977247105467 0.11619459804248691
 }
 TexturedBackground {
 }
@@ -14,10 +14,11 @@ RectangleArena {
   floorSize 2.1445 1.4855
   floorTileSize 0.33 0.33
 }
-DEF Cat E-puck {
+DEF Mouse E-puck {
   translation 0.66 0 0.33
   rotation 0 1 0 4.692820414042842e-06
-  controller "PuckYou"
+  name "mouse"
+  controller "Mouse"
   camera_width 120
   camera_height 120
   turretSlot [
@@ -625,51 +626,18 @@ DEF MAZE Group {
     }
   ]
 }
-DEF Mouse E-puck {
+DEF Cat E-puck {
   translation -0.66 0 -0.33
   rotation 0 1 0 3.141592653589793
-  controller "PuckYou"
+  name "cat"
+  controller "Cat"
   camera_width 120
   camera_height 120
   turretSlot [
-    DEF Marker Solid {
-      translation 0 0.0001 -0.01
-      rotation 0 1 0 -0.7854003061004253
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-              url [
-                "marker1.png"
-              ]
-            }
-            roughness 1
-            metalness 0
-          }
-          geometry Plane {
-            size 0.02 0.02
-          }
-        }
-      ]
-      name "solid1"
-    }
-    DEF White Solid {
-      translation 0 0 -0.01
-      rotation 0 1 0 -0.7854003061004253
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-            }
-            roughness 1
-            metalness 0
-          }
-          geometry Plane {
-            size 0.025 0.025
-          }
-        }
-      ]
-      name "solid2"
+    Lidar {
+      fieldOfView 6.28
+      numberOfLayers 1
+      maxRange 0.2
     }
   ]
   groundSensorsSlot [
