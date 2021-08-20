@@ -117,7 +117,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.2});
+        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.05});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
@@ -135,7 +135,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
         while (taskControl.isLockBusy(motionLock) == true) {
             if (motorController.isAtPosition() == true) {
                 taskControl.releaseLock(motionLock);
-                // taskControl.wait(motionTimer, 0.01);  // Wait after motion is completed.
+                taskControl.wait(motionTimer, 0.1);  // Wait after motion is completed.
             }
         }
     }
