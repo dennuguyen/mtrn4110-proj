@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9994172597931992 -0.03129776293862783 -0.01362317373045748 0.8212238526587121
-  position 0.6226669390086563 0.42920964388224775 0.6767746443888288
+  orientation -0.9998882849725822 -0.011739210221622599 -0.009252487122971257 1.334655895275612
+  position 0.19609355225064423 4.6659986635686455 0.8857621942318747
 }
 TexturedBackground {
 }
@@ -633,7 +633,7 @@ DEF Mouse E-puck {
   groundSensorsSlot [
     DEF bird Camera {
       translation -4 0 0
-      rotation 0 -1 0 1.5707963267948968
+      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 -2.094395307179586
       name "bird"
       fieldOfView 0.7854
       width 3600
@@ -730,7 +730,7 @@ DEF Cat E-puck {
   groundSensorsSlot [
     DEF bird Camera {
       translation -4 0 0
-      rotation 0 -1 0 1.5707963267948968
+      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 -2.094395307179586
       name "bird"
       fieldOfView 0.7854
       width 3600
