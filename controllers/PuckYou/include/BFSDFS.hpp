@@ -97,8 +97,8 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         auto pathStack = std::stack<std::tuple<std::pair<int, int>,
                                                std::vector<std::pair<int, int>>,
                                                std::string>>();  // [(point, path, pathPlan)]
-        auto pathPlan = std::to_string(this->initialPose_.second)
-                        + std::to_string(this->initialPose_.first)
+        auto pathPlan = std::to_string(this->initialPose_.first)
+                        + std::to_string(this->initialPose_.second)
                         + cardinalPoints[this->initialHeading_];
         pathStack.push({this->initialPose_, path, pathPlan});
 
