@@ -5,13 +5,6 @@
 
 #include <webots/Robot.hpp>
 
-// Used exclusively in autonomous control.
-#include "BFSDFS.hpp"
-#include "CVProcessor.hpp"
-#include "Camera.hpp"
-#include "Grapher.hpp"
-#include "PathSequencer.hpp"
-
 // Used in both teleoperation and autonomous control.
 #include "DeadReckoning.hpp"
 #include "EPuckMotionPlanner.hpp"
@@ -32,8 +25,9 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // This function contains the control loop logic for the EPuck. It supports only teleoperation.
 static auto realTimeSteps(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
-    auto taskControl = mtrn4110::TaskControl(robot, 1, 0);
+    auto taskControl = mtrn4110::TaskControl(robot, 1, 1);
     auto constexpr motionLock = 0;  // true = in motion, false = not in motion
+    auto constexpr motionTimer = 0;  // true = in motion, false = not in motion
 
     // These RSA elements are used in both teleoperation and autonomous control.
     auto teleoperation = mtrn4110::SimpleTeleoperation(robot);
@@ -47,6 +41,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
 
         // Get teleoperation motion command.
         auto const key = teleoperation.readInput();
+        motion = teleoperation.getDeliberatedValue();
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
