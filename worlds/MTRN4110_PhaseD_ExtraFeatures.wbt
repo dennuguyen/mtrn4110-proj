@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.9999927477501266 -0.003005303572257691 -0.0023393583714557144 4.958630952344245
-  position 0.6775293989042922 0.6330812244781117 0.41136465949386175
+  orientation 0.9999262552745505 0.009423729872719395 0.007660112786423217 4.918565840057372
+  position 0.04636473432628502 3.381199788455964 0.6016206336165024
 }
 TexturedBackground {
 }
@@ -22,7 +22,7 @@ DEF PuckYou E-puck {
   camera_height 120
   turretSlot [
     Solid {
-      translation 0 0.041 0
+      translation 0 0.011 -0.01
       children [
         Shape {
           appearance Appearance {
@@ -33,7 +33,7 @@ DEF PuckYou E-puck {
             }
           }
           geometry Cylinder {
-            height 0.01
+            height 0.001
             radius 0.05
           }
           castShadows FALSE
