@@ -80,8 +80,15 @@ py -m pip install -r requirements.txt
 
 ## Run Instructions
 
-1. File paths are defined in `Util.hpp`.
-1. Select `PuckYou` as the EPuck controller.
+1. Select the desired E-Puck controller(s).
+    - `PuckYou` to show off Phase A, B, C integration.
+        - Will take an image of the world and path plan once at the start.
+        - Teleoperation can be toggled.
+    - `Cat` for the E-Puck role-playing as the cat for phase D extra features.
+        - Will take an image of the world and path plan at every step.
+        - Teleoperation can be toggled.
+    - `Mouse` for the E-Puck role-playing as the mouse for phase D extra features.
+        - Can only be teleoperated.
 1. Execute the program using Webots' run tool.
 
 ## FAQ
