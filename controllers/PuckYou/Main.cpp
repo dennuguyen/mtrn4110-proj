@@ -31,7 +31,7 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // Perform real-time steps.
 // This function contains the control loop logic for the EPuck. It supports both autonomous control
 // and teleoperation.
-static auto mouse(webots::Robot& robot) -> void {
+static auto realTimeSteps(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
     auto taskControl = mtrn4110::TaskControl(robot, 3, 1);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
@@ -147,7 +147,7 @@ auto main(int argc, char** argv) -> int {
 
     // Spin threads.
     auto t1 = std::thread(simulationSteps, std::ref(robot));
-    auto t2 = std::thread(mouse, std::ref(robot));
+    auto t2 = std::thread(realTimeSteps, std::ref(robot));
 
     // Wait for threads to finish.
     t1.join();
