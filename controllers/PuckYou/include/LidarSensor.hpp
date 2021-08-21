@@ -91,6 +91,17 @@ class LidarSensor {
         return nearbyObjects;
     }
 
+    // Detects any obstacle within the lidar range. It is recommended this function only to be used
+    // for extremely short distances.
+    auto detectAny(double const& distanceThreshold,
+                   double const& sectorWidth,
+                   double const& sensitivity) const noexcept -> bool {
+        auto const nearbyObjects = detectCardinal(distanceThreshold, sectorWidth, sensitivity);
+        return std::any_of(nearbyObjects.begin(), nearbyObjects.end(), [](auto const& i) {
+            return i == true;
+        });
+    }
+
     // Operator overload for <<.
     friend auto operator<<(std::ostream& os, LidarSensor const& lidarSensor) noexcept
         -> std::ostream& {
