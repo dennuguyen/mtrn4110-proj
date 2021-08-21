@@ -46,9 +46,9 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
         motion = teleoperation.getDeliberatedValue();
 
         // Don't drive into obstacles.
-        auto obstacles =
-            lidarSensor.detectCardinal(mtrn4110::models::maze.distanceBetweenCells / 2, 20, 0.9);
-        if (obstacles[1] == true && motion == 'F') {
+        if (lidarSensor.detectCardinal(mtrn4110::models::maze.distanceBetweenCells / 2, 20, 0.9)[1]
+                == true
+            && motion == 'F') {
             continue;
         }
 
