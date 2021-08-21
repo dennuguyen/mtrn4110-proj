@@ -30,7 +30,7 @@ class LidarSensor {
     // Distance threshold is in metres, any point distance below this is a nearby object.
     // Sector width is in degrees with a maximum of 360 degrees.
     // Point detection sensitivity within [0, 1].
-    auto detectPoints(double const& distanceThreshold) noexcept
+    auto detectPoints(double const& distanceThreshold) const noexcept
         -> std::pair<std::vector<bool>, double> {
         auto pointCloud = lidar_->getPointCloud();
         while (pointCloud == nullptr) {
@@ -64,7 +64,7 @@ class LidarSensor {
     // Cardinality order is left, front, right, back.
     auto detectCardinal(double const& distanceThreshold,
                         double const& sectorWidth,
-                        double const& sensitivity) -> std::vector<int> {
+                        double const& sensitivity) const noexcept -> std::vector<int> {
         auto const [points, pointDensity] = detectPoints(distanceThreshold);
 
         // Convert sector angles into point densities.
