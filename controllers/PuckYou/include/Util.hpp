@@ -41,7 +41,7 @@ using GraphType =
 namespace files {
 auto constexpr mazeImage = "Maze.png";
 auto constexpr ladybugImage = "../../images/Ladybug_small.png";
-auto constexpr mouseImage = "../../images/pepe_mouse.png";
+auto constexpr mouseImage = "../../images/mouse.png";
 }  // namespace files
 }  // namespace mtrn4110
 
