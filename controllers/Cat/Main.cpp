@@ -1,5 +1,6 @@
 #include <Python.h>
 
+#include <algorithm>
 #include <iostream>
 #include <thread>
 
@@ -15,10 +16,12 @@
 // Used in both teleoperation and autonomous control.
 #include "DeadReckoning.hpp"
 #include "EPuckMotionPlanner.hpp"
+#include "LidarSensor.hpp"
 #include "MotorController.hpp"
 #include "SimpleTeleoperation.hpp"
 
 // Extra control over control loop.
+#include "Models.hpp"
 #include "TaskControl.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
@@ -49,6 +52,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
+    auto lidarSensor = mtrn4110::LidarSensor(robot);
 
     // Enter control loop.
     while (1) {
@@ -101,6 +105,15 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
         else {
             motion = teleoperation.getDeliberatedValue();
         }
+
+        // If about to move forwards into an obstacle, 99% chance it's the mouse so cat wins.
+        // TODO: not working because lidar rays go thru epuck's turret slot space.
+        // if (lidarSensor.detectCardinal(mtrn4110::models::maze.distanceBetweenCells / 2, 10,
+        // 0.5)[1]
+        //     && motion == 'F') {
+        //     std::cout << "GAME OVER" << std::endl;
+        //     return;
+        // }
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
