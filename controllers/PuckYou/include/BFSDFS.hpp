@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "Mapper.hpp"
 #include "PathPlanner.hpp"
 
 namespace mtrn4110 {
@@ -219,7 +220,7 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
     std::vector<std::pair<std::vector<std::pair<int, int>>, std::string>> paths_;
 
     // An iterator to paths_ representing the shortest path with the least turns.
-    std::vector<std::pair<std::vector<std::pair<int, int>>, std::string>>::iterator leastTurnsPath_;
+    decltype(paths_)::iterator leastTurnsPath_;
 };
 }  // namespace mtrn4110
 #endif  // BFS_DFS_HPP
