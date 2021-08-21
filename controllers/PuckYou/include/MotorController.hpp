@@ -1,13 +1,13 @@
 #ifndef PUCK_YOU_MOTOR_CONTROLLER_HPP
 #define PUCK_YOU_MOTOR_CONTROLLER_HPP
 
-#include <webots/Motor.hpp>
-#include <webots/PositionSensor.hpp>
-#include <webots/Robot.hpp>
-
 #include <cmath>
 #include <memory>
 #include <tuple>
+
+#include <webots/Motor.hpp>
+#include <webots/PositionSensor.hpp>
+#include <webots/Robot.hpp>
 
 namespace mtrn4110 {
 class MotorController {

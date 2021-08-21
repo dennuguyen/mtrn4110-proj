@@ -1,6 +1,8 @@
 #ifndef MAPPER_HPP
 #define MAPPER_HPP
 
+#include "Util.hpp"
+
 namespace mtrn4110 {
 template<typename MapType = defaultTypes::MapType>
 class Mapper {
