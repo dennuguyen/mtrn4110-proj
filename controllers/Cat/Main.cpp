@@ -77,7 +77,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
 
             // Map the image.
             cvProcessor.localise(mtrn4110::files::mazeImage);
-            cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+            cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::mouseImage);
             cvProcessor.map(mtrn4110::files::mazeImage);
 
             // Create a graph from the map.
