@@ -16,12 +16,12 @@
 // Used in both teleoperation and autonomous control.
 #include "DeadReckoning.hpp"
 #include "EPuckMotionPlanner.hpp"
-#include "LidarSensor.hpp"
+// #include "LidarSensor.hpp"
 #include "MotorController.hpp"
 #include "SimpleTeleoperation.hpp"
 
 // Extra control over control loop.
-#include "Models.hpp"
+// #include "Models.hpp"
 #include "TaskControl.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
@@ -52,7 +52,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
-    auto lidarSensor = mtrn4110::LidarSensor(robot);
+    // auto lidarSensor = mtrn4110::LidarSensor(robot);
 
     // Enter control loop.
     while (1) {
