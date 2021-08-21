@@ -59,7 +59,7 @@ py -m pip install -r requirements.txt
     </tr>
     <tr>
         <td rowspan="3">Compiling <code>.hpp/.cpp/.h/.c</code> files</td>
-        <td rowspan="3">Use Webots build tool</td>
+        <td rowspan="3">Use Webots build tool for each controller that needs to be compiled.</td>
         <td rowspan="3">Windows 10</td>
         <td>Webots R2021a</td>
         <td><a href="https://cyberbotics.com/doc/guide/installation-procedure"> Webots install instructions</a></td>
