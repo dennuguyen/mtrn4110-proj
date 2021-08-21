@@ -15,17 +15,18 @@ gantt
 
     section Integration
     Phase A Integration             :07-08-2021, 11d
-    Phase B Integration             :05-08-2021, 13d
-    Phase C Integration             :05-08-2021, 13d
+    Phase B Integration             :05-08-2021, 09d
+    Phase C Integration             :05-08-2021, 08d
 
     section Extra Features
-    Teleoperation              :14-08-2021, 2d
-    Cat Controller             :19-08-2021, 6d
+    Mouse Teleoperation           :14-08-2021, 2d
+    Bird's eye camera             :16-08-2021, 2d
+    Autonomous Cat                :18-08-2021, 2d
 
     section Video
     Record Comparison Milestones          :13-08-2021, 3d
     Record Integration Milestones         :19-08-2021, 2d
-    Record Extra Features Milestones      :21-08-2021, 1d
+    Record Extra Features Milestones      :20-08-2021, 1d
     Edit Video Segments                   :13-08-2021, 8d
 ```
 
