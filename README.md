@@ -192,6 +192,8 @@ This is to force Cython to compile using C++ standard libraries.
 
 ## Control Loop State Diagram
 
+[You should use a Markdown viewer which supports Mermaid.](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+
 ```mermaid
 stateDiagram-v2
     key: Get key input
@@ -238,8 +240,6 @@ stateDiagram-v2
 ```
 
 ## Gantt Chart
-
-[You should use a Markdown viewer which supports Mermaid.](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
 
 ```mermaid
 gantt
