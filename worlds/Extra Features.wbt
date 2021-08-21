@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.9999979741649271 0.0014363982404075912 0.0014101156465545681 4.7336359751675
-  position 0.002832002170280693 3.716913176899557 0.11765963408067812
+  orientation 0.9999993734123367 0.0007979761003032562 0.0007851172379535451 4.733637371651651
+  position 0.002860692587051309 2.7399541502766467 0.09689711188718221
 }
 TexturedBackground {
 }
@@ -29,7 +29,7 @@ DEF Mouse E-puck {
           appearance Appearance {
             texture ImageTexture {
               url [
-                "ladybug.png"
+                "../images/pepe_mouse.png"
               ]
             }
           }

@@ -1,0 +1,45 @@
+#VRML_OBJ R2021a utf8
+DEF Mouse E-puck {
+  translation -0.33 0 -0.16
+  rotation 0 1 0 4.692820414042842e-06
+  name "mouse"
+  controller "Mouse"
+  camera_width 120
+  camera_height 120
+  turretSlot [
+    Solid {
+      translation 0 0.011 -0.01
+      children [
+        Shape {
+          appearance Appearance {
+            texture ImageTexture {
+              url [
+                "../images/pepe_mouse.png"
+              ]
+            }
+          }
+          geometry Box {
+            size 0.15 0.0001 0.15
+          }
+          castShadows FALSE
+        }
+      ]
+    }
+    Lidar {
+      fieldOfView 6.28
+      numberOfLayers 1
+      maxRange 0.2
+    }
+  ]
+  groundSensorsSlot [
+    DEF bird Camera {
+      translation -4 0 0
+      rotation -0.5773502691896258 -0.5773502691896258 0.5773502691896258 2.0944
+      name "bird"
+      fieldOfView 0.7854
+      width 1200
+      height 1200
+      near 1
+    }
+  ]
+}
