@@ -14,6 +14,7 @@
 
 // Extra control over control loop.
 #include "TaskControl.hpp"
+#include "Models.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
 static auto simulationSteps(webots::Robot& robot) -> void {
