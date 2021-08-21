@@ -4,7 +4,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.9999979741649271 0.0014363982404075912 0.0014101156465545681 4.7336359751675
-  position 0.002835857913620885 3.647977247105467 0.11619459804248691
+  position 0.002832002170280693 3.716913176899557 0.11765963408067812
 }
 TexturedBackground {
 }
@@ -15,7 +15,7 @@ RectangleArena {
   floorTileSize 0.33 0.33
 }
 DEF Mouse E-puck {
-  translation 0.66 0 0.33
+  translation -0.33 0 -0.16
   rotation 0 1 0 4.692820414042842e-06
   name "mouse"
   controller "Mouse"
