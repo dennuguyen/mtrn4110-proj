@@ -14,7 +14,7 @@ DEF Mouse E-puck {
           appearance Appearance {
             texture ImageTexture {
               url [
-                "../images/pepe_mouse.png"
+                "../images/mouse.png"
               ]
             }
           }
