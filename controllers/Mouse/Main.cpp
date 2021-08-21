@@ -8,6 +8,7 @@
 // Used in both teleoperation and autonomous control.
 #include "DeadReckoning.hpp"
 #include "EPuckMotionPlanner.hpp"
+#include "LidarSensor.hpp"
 #include "MotorController.hpp"
 #include "SimpleTeleoperation.hpp"
 
@@ -34,6 +35,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
+    auto lidarSensor = mtrn4110::LidarSensor(robot);
 
     // Enter control loop.
     while (1) {
@@ -42,6 +44,13 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
         // Get teleoperation motion command.
         auto const key = teleoperation.readInput();
         motion = teleoperation.getDeliberatedValue();
+
+        // Don't drive into obstacles.
+        auto obstacles =
+            lidarSensor.detectCardinal(mtrn4110::models::maze.distanceBetweenCells / 2, 20, 0.9);
+        if (obstacles[1] == true && motion == 'F') {
+            continue;
+        }
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
