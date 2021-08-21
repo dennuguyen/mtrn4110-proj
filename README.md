@@ -35,6 +35,8 @@ py -m pip install -r requirements.txt
 
 ## Build Instructions & Dependencies
 
+* This build has only been verified on Windows 10. See the table below for more information.
+
 <table>
 <thead>
     <tr>
@@ -236,6 +238,8 @@ stateDiagram-v2
 ```
 
 ## Gantt Chart
+
+[You should use a Markdown viewer which supports Mermaid.](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
 
 ```mermaid
 gantt
