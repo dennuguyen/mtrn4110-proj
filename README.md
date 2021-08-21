@@ -1,37 +1,5 @@
 # Phase D
 
----
-
-## Gantt Chart
-
-```mermaid
-gantt
-    title Gantt Chart for MTRN4110
-    dateFormat  DD-MM-YYYY
-    section Solution Comparison
-    Analyse Phase A Solutions       :04-08-2021, 07-08-2021
-    Analyse Phase B Solutions       :04-08-2021, 05-08-2021
-    Analyse Phase C Solution        :04-08-2021, 05-08-2021
-
-    section Integration
-    Phase A Integration             :07-08-2021, 7d
-    Phase B Integration             :05-08-2021, 9d
-    Phase C Integration             :05-08-2021, 9d
-
-    section Extra Features
-    Teleoperation              :12-08-2021, 6d
-    Obstacle avoidance         :12-08-2021, 6d
-    Bang-bang trajectory       :12-08-2021, 6d
-
-    section Video
-    Record Comparison Milestone           :10-08-2021, 3d
-    Record Integration Milestones         :12-08-2021, 4d
-    Record Extra Features Milestones      :16-08-2021, 4d
-    Edit Video Segments                   :20-08-2021, 1d
-```
-
----
-
 ## Python Setup
 
 Python setup is required for all build steps.
@@ -64,8 +32,6 @@ Windows:
 ```
 py -m pip install -r requirements.txt
 ```
-
----
 
 ## Build Instructions & Dependencies
 
@@ -112,15 +78,21 @@ py -m pip install -r requirements.txt
 </tbody>
 </table>
 
----
-
 ## Run Instructions
 
-1. File paths are defined in `Util.hpp`.
-1. Select the `Puck_You_MTRN4110_PhaseD.cpp` file as the EPuck controller.
+1. Select desired Webots world.
+    - `Integration.wbt` for world showing off integration.
+    - `Extra Features.wbt` for world showing off extra features.
+1. Select the desired E-Puck controller(s).
+    - `PuckYou` to show off Phase A, B, C integration.
+        - Will take an image of the world and path plan once at the start.
+        - Teleoperation can be toggled.
+    - `Cat` for the E-Puck role-playing as the cat for phase D extra features.
+        - Will take an image of the world and path plan at every step.
+        - Teleoperation can be toggled.
+    - `Mouse` for the E-Puck role-playing as the mouse for phase D extra features.
+        - Can only be teleoperated.
 1. Execute the program using Webots' run tool.
-
----
 
 ## FAQ
 
@@ -214,4 +186,79 @@ This is to allow implicit conversion of C/C++ strings to Python.
 This is to force Cython to compile using C++ standard libraries.
 ```
 # distutils: language=c++
+```
+
+## Control Loop State Diagram
+
+```mermaid
+stateDiagram-v2
+    key: Get key input
+    snap: Snap world image
+    localise: Get pose and heading
+    waypoint: Get waypoint
+    map: Get map
+    graph: Build graph
+    path_plan: Compute path plan
+    path_sequence: Sequence path plan
+    trajectory_planner: Compute trajectory
+    motion_planner: Compute motor setpoints
+    begin_motion: Begin motion
+    end_motion: End motion
+
+    [*] --> key
+
+    state key_choice <<choice>>
+    key --> key_choice
+    key_choice --> trajectory_planner : if teleoperation mode
+    key_choice --> path_sequence: if still sequencing path
+    key_choice --> snap: if starting autonomous mode
+
+    state snap_fork <<fork>>
+    state snap_join <<fork>>
+
+    snap --> snap_fork
+    snap_fork --> localise
+    snap_fork --> waypoint
+    snap_fork --> map
+    map --> graph
+    localise --> snap_join
+    waypoint --> snap_join
+    graph --> snap_join
+    snap_join --> path_plan
+
+    path_plan --> path_sequence
+    path_sequence --> trajectory_planner
+    trajectory_planner --> motion_planner
+    motion_planner --> begin_motion
+    begin_motion --> end_motion
+
+    end_motion --> key: check key input
+```
+
+## Gantt Chart
+
+```mermaid
+gantt
+    title Gantt Chart for MTRN4110
+    dateFormat  DD-MM-YYYY
+    section Solution Comparison
+    Analyse Phase A Solutions       :04-08-2021, 07-08-2021
+    Analyse Phase B Solutions       :04-08-2021, 05-08-2021
+    Analyse Phase C Solution        :04-08-2021, 05-08-2021
+
+    section Integration
+    Phase A Integration             :07-08-2021, 8d
+    Phase B Integration             :05-08-2021, 13d
+    Phase C Integration             :05-08-2021, 11d
+
+    section Extra Features
+    Teleoperation              :16-08-2021, 3d
+    Camera Module              :18-08-2021, 3d
+    Cat & Mouse                :19-08-2021, 2d
+
+    section Video
+    Record Comparison Milestone           :18-08-2021, 2d
+    Record Integration Milestones         :20-08-2021, 1d
+    Record Extra Features Milestones      :20-08-2021, 2d
+    Edit Video Segments                   :19-08-2021, 3d
 ```
