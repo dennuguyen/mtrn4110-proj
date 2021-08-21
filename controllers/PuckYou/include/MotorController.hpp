@@ -1,13 +1,13 @@
 #ifndef PUCK_YOU_MOTOR_CONTROLLER_HPP
 #define PUCK_YOU_MOTOR_CONTROLLER_HPP
 
-#include <webots/Motor.hpp>
-#include <webots/PositionSensor.hpp>
-#include <webots/Robot.hpp>
-
 #include <cmath>
 #include <memory>
 #include <tuple>
+
+#include <webots/Motor.hpp>
+#include <webots/PositionSensor.hpp>
+#include <webots/Robot.hpp>
 
 namespace mtrn4110 {
 class MotorController {
@@ -23,7 +23,7 @@ class MotorController {
         rightPositionSensor_->enable(timeStep);
 
         // Initialise motors.
-        setGain({10, 0, 0}, {10, 0, 0});
+        setGain({9.58, 0, 0.78}, {9.58, 0, 0.78});
         setPosition(0, 0);
         setVelocity(0, 0);
     }
@@ -71,7 +71,7 @@ class MotorController {
     }
 
    private:
-    static auto constexpr atPositionSensitivity = 0.0035;
+    static auto constexpr atPositionSensitivity = 0.0005;
     std::unique_ptr<webots::Motor> leftMotor_;
     std::unique_ptr<webots::Motor> rightMotor_;
     std::unique_ptr<webots::PositionSensor> leftPositionSensor_;

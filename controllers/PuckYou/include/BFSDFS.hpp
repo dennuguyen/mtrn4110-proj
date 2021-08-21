@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "Mapper.hpp"
 #include "PathPlanner.hpp"
 
 namespace mtrn4110 {
@@ -26,6 +27,7 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
     , leastTurnsPath_() {}
 
     auto update() -> void override final {
+        clear();
         buildDirectedGraph();
         searchPaths();
         searchLeastTurnsPath();
@@ -56,12 +58,42 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         update();
     }
 
+    template<typename MapType = defaultTypes::MapType>
+    friend auto operator<<(BFSDFS const& pathPlanner, Mapper<MapType> const& mapper) noexcept
+        -> std::stringstream {
+        auto constexpr symbolicHeading = std::array<char, 4>({'^', '>', 'v', '<'});
+
+        // Fill out a map with the given path.
+        auto tempMap = mapper.getMap();
+        for (auto const& position : pathPlanner.leastTurnsPath_->first) {
+            auto const row = 2 * position.first + 1;
+            auto const col = 4 * position.second + 2;
+
+            // Write heading into map.
+            if (position == pathPlanner.getInitialPose()) {
+                tempMap[row][col] = symbolicHeading.at(pathPlanner.getInitialHeading());
+                continue;
+            }
+
+            // Write path weighting into map.
+            auto const index = std::to_string(pathPlanner.getGraph().at(position).first);
+            tempMap[row][col] = index[0];
+            tempMap[row][col + 1] = index.size() > 1 ? index[1] : ' ';
+        }
+
+        // Write out map to stream.
+        auto ss = std::stringstream();
+        std::for_each (tempMap.begin(), tempMap.end(), [&ss](auto const& l) { ss << l << std::endl; });
+        return ss;
+    }
+
    private:
     auto print(std::ostream& os) const noexcept -> void {
         os << leastTurnsPath_->second << std::endl;
     }
 
-    // Perform a BFS to get directedness of the graph from end_ to start_.
+    // Perform a BFS to get directedness of the graph from end_ to start_. Unvisitable nodes have
+    // infinite weighting. Destination has zero weighting.
     auto buildDirectedGraph() -> void {
         this->graph_.at(this->destination_).first = 0;
 
@@ -97,10 +129,13 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         auto pathStack = std::stack<std::tuple<std::pair<int, int>,
                                                std::vector<std::pair<int, int>>,
                                                std::string>>();  // [(point, path, pathPlan)]
-        auto pathPlan = std::to_string(this->initialPose_.second)
-                        + std::to_string(this->initialPose_.first)
+        auto pathPlan = std::to_string(this->initialPose_.first)
+                        + std::to_string(this->initialPose_.second)
                         + cardinalPoints[this->initialHeading_];
         pathStack.push({this->initialPose_, path, pathPlan});
+
+        // Set max path size to "infinity".
+        auto maxPathSize = static_cast<std::size_t>(std::numeric_limits<int>::max());
 
         while (pathStack.empty() == false) {
             auto const [currentPosition, path, pathPlan] = pathStack.top();
@@ -109,6 +144,12 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
             // Found the destination.
             if (currentPosition == this->destination_) {
                 paths_.emplace_back(path, pathPlan);
+                maxPathSize = path.size();  // Any path greater than this is not a shortest path.
+            }
+
+            // Set limit on path size.
+            if (path.size() > maxPathSize) {
+                continue;
             }
 
             for (auto const& adjacentPosition : this->graph_.at(currentPosition).second) {
@@ -169,12 +210,17 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         }
     }
 
+    // Clear this class' members.
+    auto clear() noexcept -> void {
+        paths_.clear();
+    }
+
     // A vector of the shortest paths which is paired with their path plan sequence. Pythonically:
     // [(path, pathPlan)]
     std::vector<std::pair<std::vector<std::pair<int, int>>, std::string>> paths_;
 
     // An iterator to paths_ representing the shortest path with the least turns.
-    std::vector<std::pair<std::vector<std::pair<int, int>>, std::string>>::iterator leastTurnsPath_;
+    decltype(paths_)::iterator leastTurnsPath_;
 };
 }  // namespace mtrn4110
 #endif  // BFS_DFS_HPP

@@ -29,8 +29,8 @@ class TaskControl {
 
    private:
     unsigned int step_ = 0;
-    unsigned int numLocks_;
-    unsigned int numTimers_;
+    int numLocks_;
+    int numTimers_;
     std::vector<bool> locks_;
     std::vector<Timer> timers_;
 };

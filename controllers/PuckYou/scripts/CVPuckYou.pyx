@@ -30,7 +30,7 @@ cdef public int getHeading(const string mazeFileName):
     return epuck_direction
 
 
-cdef public pair[int, int] getPose(const string mazeFileName, const string robotFileName):
+cdef public pair[int, int] getPose(const string mazeFileName):
     '''
     getPose reads the maze file name for a bird's eye image of the maze, and detects and returns
     the current position of the robot.

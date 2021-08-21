@@ -17,9 +17,10 @@ class PathSequencer {
     PathSequencer(PathType path)
     : path_(path) {}
 
-    // Renew the motion sequence.
-    auto updatePath(PathType const& path) noexcept -> void {
+    // Reset the motion sequence.
+    auto resetPath(PathType const& path) noexcept -> void {
         path_ = path;
+        pathIndex_ = 3;
     }
 
     // Gets the next motion of the motion sequence.

@@ -31,7 +31,7 @@ static auto simulationSteps(webots::Robot& robot) -> void {
 // Perform real-time steps.
 // This function contains the control loop logic for the EPuck. It supports both autonomous control
 // and teleoperation.
-static auto mouse(webots::Robot& robot) -> void {
+static auto realTimeSteps(webots::Robot& robot) -> void {
     // Instantiate our task controller class.
     auto taskControl = mtrn4110::TaskControl(robot, 3, 1);
     auto constexpr modeLock = 0;  // true = teleoperation, false = autonomous
@@ -51,7 +51,7 @@ static auto mouse(webots::Robot& robot) -> void {
     auto trajectoryPlanner = mtrn4110::DeadReckoning('\0');
     auto motionPlanner = mtrn4110::EPuckMotionPlanner();
     auto motorController = mtrn4110::MotorController(robot);
-    int i = 0;
+
     // Enter control loop.
     while (1) {
         auto motion = '\0';
@@ -62,7 +62,7 @@ static auto mouse(webots::Robot& robot) -> void {
         // Toggle operation modes.
         if (key == ' ') {
             if (taskControl.isLockBusy(modeLock) == false) {
-                std::cout << "Teloperating!" << std::endl;
+                std::cout << "Teleoperating!" << std::endl;
                 taskControl.acquireLock(modeLock);
             }
             else {
@@ -72,22 +72,17 @@ static auto mouse(webots::Robot& robot) -> void {
             continue;  // Invalidate the deliberated value.
         }
 
-        if (key == 'G') {
-            camera.snap(robot, "output_" + std::to_string(i++) + ".png", 100);
-        }
-
         // In autonomous mode so perform autonomous operations.
         if (taskControl.isLockBusy(modeLock) == false) {
-            /*
             // Not sequencing path plan. Check for new path plan.
             if (taskControl.isLockBusy(pathLock) == false) {
                 // Get image of map.
-                camera.snap(mtrn44110::files::mazeImage, 100);
+                camera.snap(mtrn4110::files::mazeImage, 100);
 
                 // Map the image.
-                cvProcessor.localise(mtrn44110::files::mazeImage, mtrn4110::files::robotImage);
-                cvProcessor.waypoint(mtrn44110::files::mazeImage, mtrn4110::files::ladybugImage);
-                cvProcessor.map(mtrn44110::files::mazeImage);
+                cvProcessor.localise(mtrn4110::files::mazeImage);
+                cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
+                cvProcessor.map(mtrn4110::files::mazeImage);
 
                 // Create a graph from the map.
                 auto const graph = grapher.buildGraph(cvProcessor.getMap());
@@ -96,11 +91,13 @@ static auto mouse(webots::Robot& robot) -> void {
                 // starting heading.
                 pathPlanner.update(graph,
                                    cvProcessor.getDeliberatedValue(),
-                                   {0, 0},  // cvProcessor.getCurrentPose(),
+                                   cvProcessor.getCurrentPose(),
                                    cvProcessor.getCurrentHeading());
+                std::cout << pathPlanner;
+                std::cout << (pathPlanner << cvProcessor).str();
 
                 // Give the path sequencer the path plan.
-                pathSequencer.updatePath(pathPlanner.getPath());
+                pathSequencer.resetPath(pathPlanner.getPath());
 
                 // Sequencing path plan so lock this block of code.
                 taskControl.acquireLock(pathLock);
@@ -111,7 +108,8 @@ static auto mouse(webots::Robot& robot) -> void {
             // Reached end of path plan.
             if (motion == '\0') {
                 taskControl.releaseLock(pathLock);
-            }*/
+                return;
+            }
         }
         else {
             motion = teleoperation.getDeliberatedValue();
@@ -119,7 +117,7 @@ static auto mouse(webots::Robot& robot) -> void {
 
         // Calculate the trajectory.
         trajectoryPlanner.updateMotion(motion);
-        trajectoryPlanner.computeTrajectory({0.1, 0, 0}, {0, 0, 0.4});
+        trajectoryPlanner.computeTrajectory({0.01, 0, 0}, {0, 0, 0.05});
 
         // Calculate the motor setpoints for current trajectory.
         auto const angle = trajectoryPlanner.getAngle();
@@ -137,7 +135,7 @@ static auto mouse(webots::Robot& robot) -> void {
         while (taskControl.isLockBusy(motionLock) == true) {
             if (motorController.isAtPosition() == true) {
                 taskControl.releaseLock(motionLock);
-                // taskControl.wait(motionTimer, 0.01);  // Wait after motion is completed.
+                taskControl.wait(motionTimer, 0.1);  // Wait after motion is completed.
             }
         }
     }
@@ -149,7 +147,7 @@ auto main(int argc, char** argv) -> int {
 
     // Spin threads.
     auto t1 = std::thread(simulationSteps, std::ref(robot));
-    auto t2 = std::thread(mouse, std::ref(robot));
+    auto t2 = std::thread(realTimeSteps, std::ref(robot));
 
     // Wait for threads to finish.
     t1.join();
