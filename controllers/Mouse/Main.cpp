@@ -13,8 +13,8 @@
 #include "SimpleTeleoperation.hpp"
 
 // Extra control over control loop.
-#include "TaskControl.hpp"
 #include "Models.hpp"
+#include "TaskControl.hpp"
 
 // Perform simulation steps until Webots is stopping the controller.
 static auto simulationSteps(webots::Robot& robot) -> void {
@@ -48,7 +48,6 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
 
         // Don't drive into obstacles.
         if (lidarSensor.detectCardinal(mtrn4110::models::maze.distanceBetweenCells / 2, 20, 0.9)[1]
-                == true
             && motion == 'F') {
             continue;
         }
