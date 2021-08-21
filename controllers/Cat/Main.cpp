@@ -80,7 +80,6 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
             cvProcessor.localise(mtrn4110::files::mazeImage);
             cvProcessor.waypoint(mtrn4110::files::mazeImage, mtrn4110::files::ladybugImage);
             cvProcessor.map(mtrn4110::files::mazeImage);
-            std::cout << cvProcessor;
 
             // Create a graph from the map.
             auto const graph = grapher.buildGraph(cvProcessor.getMap());
@@ -92,6 +91,7 @@ static auto realTimeSteps(webots::Robot& robot) -> void {
                                 cvProcessor.getCurrentPose(),
                                 cvProcessor.getCurrentHeading());
             std::cout << pathPlanner;
+            std::cout << (pathPlanner << cvProcessor).str();
 
             // Give the path sequencer the path plan.
             pathSequencer.resetPath(pathPlanner.getPath());

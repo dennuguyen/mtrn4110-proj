@@ -57,6 +57,35 @@ class BFSDFS final : public PathPlanner<PoseType, HeadingType, PathType, GraphTy
         update();
     }
 
+    template<typename MapType = defaultTypes::MapType>
+    friend auto operator<<(BFSDFS const& pathPlanner, Mapper<MapType> const& mapper) noexcept
+        -> std::stringstream {
+        auto constexpr symbolicHeading = std::array<char, 4>({'^', '>', 'v', '<'});
+
+        // Fill out a map with the given path.
+        auto tempMap = mapper.getMap();
+        for (auto const& position : pathPlanner.leastTurnsPath_->first) {
+            auto const row = 2 * position.first + 1;
+            auto const col = 4 * position.second + 2;
+
+            // Write heading into map.
+            if (position == pathPlanner.getInitialPose()) {
+                tempMap[row][col] = symbolicHeading.at(pathPlanner.getInitialHeading());
+                continue;
+            }
+
+            // Write path weighting into map.
+            auto const index = std::to_string(pathPlanner.getGraph().at(position).first);
+            tempMap[row][col] = index[0];
+            tempMap[row][col + 1] = index.size() > 1 ? index[1] : ' ';
+        }
+
+        // Write out map to stream.
+        auto ss = std::stringstream();
+        std::for_each (tempMap.begin(), tempMap.end(), [&ss](auto const& l) { ss << l << std::endl; });
+        return ss;
+    }
+
    private:
     auto print(std::ostream& os) const noexcept -> void {
         os << leastTurnsPath_->second << std::endl;
